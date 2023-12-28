@@ -12,6 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { antdReducer } from "@/features/antd";
 
 const persistConfig = {
   key: "root",
@@ -21,6 +22,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  antd: antdReducer,
   auth: authReducer,
   search: searchReducer,
 });

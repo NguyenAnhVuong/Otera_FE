@@ -1,23 +1,25 @@
 "use client";
-import { authApi } from "@/api/authApi";
+import { messageApiSelector } from "@/features/antd";
 import {
   UserRegisterInput,
   useUserRegisterMutation,
 } from "@/graphql/generated/schema";
-import { Button, Checkbox, DatePicker, Form, Input, message } from "antd";
+import { useAppSelector } from "@/rtk/hook";
+import { Button, DatePicker, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
 type Props = {};
 
 const Register = (props: Props) => {
   const router = useRouter();
-  const [messageApi, contextHolder] = message.useMessage();
+  // const [messageApi, contextHolder] = message.useMessage();
   const [userRegister] = useUserRegisterMutation();
+  const messageApi = useAppSelector(messageApiSelector);
   const onFinish = async (
     input: UserRegisterInput & { confirmPassword?: string }
   ) => {
     // const success = await authApi.register(values);
     delete input.confirmPassword;
-    const { data, errors } = await userRegister({
+    const { errors } = await userRegister({
       variables: {
         input,
       },
@@ -40,9 +42,9 @@ const Register = (props: Props) => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <div className="flex justify-center items-center h-screen w-full">
-      {contextHolder}
       <div className="bg-white shadow-xl p-12 flex items-center flex-col w-full max-w-[320px]">
         <h3>Đăng ký</h3>
         <Form
