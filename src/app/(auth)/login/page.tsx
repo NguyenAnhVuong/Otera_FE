@@ -1,6 +1,7 @@
 "use client";
 import { authApi } from "@/api/authApi";
 import { authActions } from "@/features/auth";
+import { useUserRegisterMutation } from "@/graphql/generated/schema";
 import { User } from "@/models/auth";
 import { useAppDispatch } from "@/rtk/hook";
 import { Button, Form, Input, message } from "antd";
@@ -37,11 +38,12 @@ const Login = (props: Props) => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <div className="flex justify-center items-center h-screen">
       {contextHolder}
       <div className="bg-white shadow-xl p-12 flex items-center flex-col w-full max-w-[240px]">
-        <h3>Đăng nhập</h3>
+        <h3 className="text-black">Đăng nhập</h3>
         <Form
           className="w-full"
           name="basic"

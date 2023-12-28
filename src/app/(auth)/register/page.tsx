@@ -1,5 +1,9 @@
 "use client";
 import { authApi } from "@/api/authApi";
+import {
+  UserRegisterInput,
+  useUserRegisterMutation,
+} from "@/graphql/generated/schema";
 import { Button, Checkbox, DatePicker, Form, Input, message } from "antd";
 import { useRouter } from "next/navigation";
 type Props = {};
@@ -7,9 +11,19 @@ type Props = {};
 const Register = (props: Props) => {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
-  const onFinish = async (values: any) => {
-    const success = await authApi.register(values);
-    if (success) {
+  const [userRegister] = useUserRegisterMutation();
+  const onFinish = async (
+    input: UserRegisterInput & { confirmPassword?: string }
+  ) => {
+    // const success = await authApi.register(values);
+    delete input.confirmPassword;
+    const { data, errors } = await userRegister({
+      variables: {
+        input,
+      },
+    });
+
+    if (!errors) {
       messageApi.open({
         type: "success",
         content: "Register success!",
