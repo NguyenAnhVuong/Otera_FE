@@ -1,19 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
-import "./globals.css";
-import { Inter } from "next/font/google";
-import { usePathname, useRouter } from "next/navigation";
-import { ConfigProvider } from "antd";
 import Header from "@/components/Header";
-import { Provider } from "react-redux";
+import AntdProvider from "@/lib/AntdProvider";
 import { store } from "@/rtk/store";
 import {
   ApolloClient,
   ApolloProvider,
-  InMemoryCache,
   HttpLink,
+  InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
+import { ConfigProvider } from "antd";
+import { Inter } from "next/font/google";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+
   const publicRoutes = ["/register", "/login", "/home"];
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>(
     createApolloClient("")
@@ -63,22 +65,24 @@ export default function RootLayout({
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#FEDB39",
-            },
-          }}
-        >
-          <html lang="en">
-            <body className={inter.className}>
-              <Header />
-              <div className="flex justify-center w-full">
-                <div className="max-w-[1200px] w-full">{children}</div>
-              </div>
-            </body>
-          </html>
-        </ConfigProvider>
+        <AntdProvider>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#FEDB39",
+              },
+            }}
+          >
+            <html lang="en">
+              <body className={inter.className}>
+                <Header />
+                <div className="flex justify-center w-full">
+                  <div className="max-w-[1200px] w-full">{children}</div>
+                </div>
+              </body>
+            </html>
+          </ConfigProvider>
+        </AntdProvider>
       </Provider>
     </ApolloProvider>
   );

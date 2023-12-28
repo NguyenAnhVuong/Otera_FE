@@ -1,9 +1,10 @@
 "use client";
 import { authApi } from "@/api/authApi";
+import { messageApiSelector } from "@/features/antd";
 import { authActions } from "@/features/auth";
 import { useUserRegisterMutation } from "@/graphql/generated/schema";
 import { User } from "@/models/auth";
-import { useAppDispatch } from "@/rtk/hook";
+import { useAppDispatch, useAppSelector } from "@/rtk/hook";
 import { Button, Form, Input, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,7 +13,8 @@ type Props = {};
 
 const Login = (props: Props) => {
   const router = useRouter();
-  const [messageApi, contextHolder] = message.useMessage();
+  // const [messageApi, contextHolder] = message.useMessage();
+  const messageApi = useAppSelector(messageApiSelector);
   const dispatch = useAppDispatch();
 
   const onFinish = async (values: any) => {
@@ -41,7 +43,6 @@ const Login = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      {contextHolder}
       <div className="bg-white shadow-xl p-12 flex items-center flex-col w-full max-w-[240px]">
         <h3 className="text-black">Đăng nhập</h3>
         <Form

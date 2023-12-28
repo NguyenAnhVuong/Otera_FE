@@ -6,13 +6,13 @@ mutation UserRegister($input: UserRegisterInput!) {
     errorCode
     data {
       birthday
-      createdAt
       email
       familyId
       id
       name
       refreshToken
       role
+      createdAt
     }
   }
 }
