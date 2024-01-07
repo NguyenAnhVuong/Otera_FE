@@ -1,45 +1,19 @@
-import { searchReducer } from "@/features/search";
-import { authReducer } from "../features/auth";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import { antdReducer } from "@/features/antd";
-
-const persistConfig = {
-  key: "root",
-  version: 1,
-  storage,
-  blacklist: ["search"],
-};
-
-const rootReducer = combineReducers({
-  antd: antdReducer,
-  auth: authReducer,
-  search: searchReducer,
-});
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+import { authReducer } from "@/features/auth";
+import { searchReducer } from "@/features/search";
+import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    antd: antdReducer,
+    auth: authReducer,
+    search: searchReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      serializableCheck: false,
     }),
 });
-
-export let persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
