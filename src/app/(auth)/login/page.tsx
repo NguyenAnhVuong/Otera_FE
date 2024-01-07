@@ -1,11 +1,13 @@
 "use client";
-import { authApi } from "@/api/authApi";
 import { messageApiSelector } from "@/features/antd";
 import { authActions } from "@/features/auth";
-import { useUserRegisterMutation } from "@/graphql/generated/schema";
-import { User } from "@/models/auth";
+import {
+  UserLoginInput,
+  useUserLoginMutation,
+} from "@/graphql/generated/schema";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
-import { Button, Form, Input, message } from "antd";
+
+import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -16,18 +18,25 @@ const Login = (props: Props) => {
   // const [messageApi, contextHolder] = message.useMessage();
   const messageApi = useAppSelector(messageApiSelector);
   const dispatch = useAppDispatch();
+  const [userLogin] = useUserLoginMutation();
 
-  const onFinish = async (values: any) => {
-    const res = await authApi.login(values);
+  const onFinish = async (values: UserLoginInput) => {
+    const { data } = await userLogin({
+      variables: {
+        input: values,
+      },
+    });
 
-    if (res) {
+    if (data) {
       messageApi.open({
         type: "success",
         content: "Đăng nhập thành công!",
       });
-
-      dispatch(authActions.login(res.user as User));
-
+      dispatch(authActions.login(data?.userLogin?.data?.user));
+      const accessToken = data.userLogin?.data?.accessToken;
+      if (accessToken) {
+        localStorage.setItem("accessToken", accessToken);
+      }
       router.replace("/home");
     } else {
       messageApi.open({
@@ -73,7 +82,7 @@ const Login = (props: Props) => {
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
-            <Input.Password placeholder="Mật khẩu" />
+            <Input.Password autoComplete="on" placeholder="Mật khẩu" />
           </Form.Item>
 
           <Form.Item className="flex w-full justify-center mb-0">

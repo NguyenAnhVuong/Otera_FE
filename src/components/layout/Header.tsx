@@ -1,13 +1,16 @@
 "use client";
+import { authActions } from "@/features/auth";
 import { searchActions } from "@/features/search";
+import { useGetUserQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
+import { User } from "@/models/auth";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
 import { ERole } from "@/utils/enum";
 import { SearchOutlined } from "@ant-design/icons";
 import { Dropdown, Input, MenuProps } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 type Props = {};
 
@@ -16,10 +19,15 @@ const Header = ({}: Props) => {
   const dispatch = useAppDispatch();
   const handleLogout = useLogout();
   const [keyWord, setKeyWord] = useState("");
+  const { data } = useGetUserQuery();
 
   const items: MenuProps["items"] = [
     {
-      label: <span onClick={() => handleLogout(dispatch)}>Đăng xuất</span>,
+      label: (
+        <span onClick={async () => await handleLogout(dispatch)}>
+          Đăng xuất
+        </span>
+      ),
       key: "0",
     },
   ];
@@ -32,13 +40,21 @@ const Header = ({}: Props) => {
     return () => clearTimeout(setKeyWordState);
   }, [dispatch, keyWord]);
 
-  const [isClient, setIsClient] = useState(false);
-
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    if (data) {
+      const user = data.getUser.data;
+      const userLogin: User = {
+        id: user.id,
+        name: user.userDetail.name,
+        email: user.email,
+        avatar: user.userDetail.avatar,
+        role: user.role,
+      };
+      dispatch(authActions.login(userLogin));
+    }
+  }, [data, dispatch]);
 
-  return isClient ? (
+  return (
     <div className="flex justify-center h-14 shadow-xl bg-white fixed top-0 left-0 right-0 items-center px-2 z-10">
       <div className="max-w-[1200px] w-full flex justify-between">
         <Link
@@ -46,7 +62,7 @@ const Header = ({}: Props) => {
           className="flex items-center no-underline text-black"
         >
           <Image
-            src="/otera-logo.png"
+            src="/images/otera-logo.png"
             width={30}
             height={45}
             alt="otera-logo"
@@ -101,7 +117,7 @@ const Header = ({}: Props) => {
                     alt="avatar"
                     className="rounded-full"
                   />
-                  <span>{authUser.name}</span>
+                  <span className="text-black">{authUser.name}</span>
                 </div>
               </Dropdown>
             )}
@@ -109,7 +125,7 @@ const Header = ({}: Props) => {
         </div>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default Header;

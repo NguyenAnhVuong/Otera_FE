@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { message, notification } from "antd";
 import { MessageInstance } from "antd/es/message/interface";
 import { NotificationInstance } from "antd/es/notification/interface";
@@ -17,10 +17,13 @@ const antdSlice = createSlice({
   name: "antd",
   initialState,
   reducers: {
-    setMessageApi: (state, action) => {
+    setMessageApi: (state, action: PayloadAction<MessageInstance>) => {
       state.messageApi = action.payload;
     },
-    setNotificationApi: (state, action) => {
+    setNotificationApi: (
+      state,
+      action: PayloadAction<NotificationInstance>
+    ) => {
       state.notificationApi = action.payload;
     },
   },

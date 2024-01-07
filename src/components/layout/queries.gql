@@ -1,0 +1,21 @@
+query GetUser {
+  getUser {
+    data {
+      createdAt
+      email
+      familyId
+      id
+      password
+      refreshToken
+      role
+      userDetail {
+        avatar
+        name
+      }
+    }
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}
