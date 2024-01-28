@@ -8,6 +8,7 @@ mutation UserLogin($input: UserLoginInput!) {
         id
         email
         avatar
+        familyId
       }
     }
     errorCode

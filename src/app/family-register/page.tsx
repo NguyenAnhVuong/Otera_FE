@@ -1,5 +1,6 @@
 "use client";
 import { familyApi } from "@/api/familyApi";
+import TempleSelect from "@/components/Atom/TempleSelect";
 import { useGetTemplesQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
@@ -45,21 +46,6 @@ const FamilyRegister = (props: Props) => {
     setAvatarPreview(URL.createObjectURL(e.target.files[0]));
     setAvatar(e.target.files[0]);
   }
-
-  let timer: NodeJS.Timeout;
-
-  const onSearch = (value: string) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      setKeyword(value);
-    }, 500);
-  };
-
-  // Filter `option.label` match the user type `input`
-  const filterOption = (
-    input: string,
-    option?: { label: string; value: string }
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const onFinish = async (values: any) => {
     const newFamily = new FormData();
@@ -151,20 +137,7 @@ const FamilyRegister = (props: Props) => {
             )}
           </Form.Item>
 
-          <Form.Item
-            label="Chùa"
-            name="templeId"
-            rules={[{ required: true, message: "Please input your temple!" }]}
-          >
-            <Select
-              showSearch
-              // placeholder="Select a temple"
-              optionFilterProp="children"
-              onSearch={onSearch}
-              filterOption={filterOption}
-              options={options}
-            />
-          </Form.Item>
+          <TempleSelect />
 
           <Form.Item>
             <Button type="primary" htmlType="submit">

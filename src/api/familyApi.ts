@@ -1,4 +1,3 @@
-import { CreateFamily } from "@/models/family";
 import axiosJWT from "./axiosJWT";
 
 export const familyApi = {
