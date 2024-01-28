@@ -15,8 +15,8 @@ const Home = (props: Props) => {
   });
   const templesData = data?.getTemples?.data?.data || [];
   return (
-    <div className="bg-white min-h-screen flex justify-center mt-4">
-      <div className="grid grid-cols-3 h-fit gap-5">
+    <div className="bg-white flex justify-center mt-header">
+      <div className="grid grid-cols-3 gap-5">
         {templesData.map((temple: any) => {
           return (
             <Link

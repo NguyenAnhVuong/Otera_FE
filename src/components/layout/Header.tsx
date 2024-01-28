@@ -1,10 +1,7 @@
 "use client";
 import { authActions } from "@/features/auth";
 import { searchActions } from "@/features/search";
-import {
-  useGetTemplesQuery,
-  useGetUserQuery,
-} from "@/graphql/generated/schema";
+import { useGetUserQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
 import { User } from "@/models/auth";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
@@ -13,7 +10,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Dropdown, Input, MenuProps } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 type Props = {};
 
@@ -23,16 +21,70 @@ const Header = ({}: Props) => {
   const handleLogout = useLogout();
   const [keyword, setKeyword] = useState("");
   const { data } = useGetUserQuery();
-  const items: MenuProps["items"] = [
+  const router = useRouter();
+  let items: MenuProps["items"] = [
     {
       label: (
         <span onClick={async () => await handleLogout(dispatch)}>
           Đăng xuất
         </span>
       ),
-      key: "0",
+      key: "2",
     },
   ];
+
+  const publicUserItems: MenuProps["items"] = useMemo(
+    () => [
+      {
+        label: (
+          <span onClick={() => router.push("/family-register")}>
+            Đăng ký gia đình
+          </span>
+        ),
+        key: "0",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("/temple-register")}>
+            Đăng ký chùa
+          </span>
+        ),
+        key: "1",
+      },
+      {
+        label: (
+          <span onClick={async () => await handleLogout(dispatch)}>
+            Đăng xuất
+          </span>
+        ),
+        key: "2",
+      },
+    ],
+    [dispatch, handleLogout, router]
+  );
+
+  const familyAdminItems: MenuProps["items"] = useMemo(
+    () => [
+      {
+        label: (
+          <span onClick={async () => await handleLogout(dispatch)}>
+            Đăng xuất
+          </span>
+        ),
+        key: "2",
+      },
+    ],
+    [dispatch, handleLogout]
+  );
+
+  switch (authUser.role) {
+    case ERole.PUBLIC_USER:
+      items = [...publicUserItems];
+      break;
+    case ERole.FAMILY_ADMIN:
+      items = [...familyAdminItems];
+      break;
+  }
 
   useEffect(() => {
     const setKeywordState = setTimeout(() => {
@@ -54,7 +106,7 @@ const Header = ({}: Props) => {
       };
       dispatch(authActions.login(userLogin));
     }
-  }, [data, dispatch]);
+  }, [authUser.role, data, dispatch]);
 
   return (
     <div className="flex justify-center h-14 shadow-xl bg-white fixed top-0 left-0 right-0 items-center px-2 z-10">
@@ -82,31 +134,13 @@ const Header = ({}: Props) => {
           </div>
         </div>
         <div className="flex items-center">
-          {authUser.role === ERole.PUBLIC_USER && (
-            <ul className="flex list-none">
-              <li className="px-2">
-                <Link className="text-black no-underline" href="/home">
-                  Trang chủ
-                </Link>
-              </li>
-              <li className="px-2">
-                <Link
-                  className="text-black no-underline"
-                  href="/temple-register"
-                >
-                  Đăng ký chùa
-                </Link>
-              </li>
-              <li className="px-2">
-                <Link
-                  className="text-black no-underline"
-                  href="/family-register"
-                >
-                  Đăng ký gia đình
-                </Link>
-              </li>
-            </ul>
-          )}
+          <ul className="flex list-none">
+            <li className="px-2">
+              <Link className="text-black no-underline" href="/home">
+                Trang chủ
+              </Link>
+            </li>
+          </ul>
           <div className="ml-4 flex items-center ">
             {authUser.id === -1 ? (
               <Link className="text-black no-underline" href="/login">

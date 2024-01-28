@@ -1,55 +1,77 @@
 "use client";
-import { templeApi } from "@/api/templeApi";
+import { familyApi } from "@/api/familyApi";
+import { useGetTemplesQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
-import { useAppDispatch } from "@/rtk/hook";
-import { Button, Form, Input, message } from "antd";
+import { useAppDispatch, useAppSelector } from "@/rtk/hook";
+import { Button, Form, Input, Select } from "antd";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 const { TextArea } = Input;
 
 type Props = {};
 
 const FamilyRegister = (props: Props) => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const [keyword, setKeyword] = useState("");
+  const { messageApi } = useAppSelector((state) => state.antd);
   const [avatarPreview, setAvatarPreview] = useState<string>();
-  const [avatar, setAvatar] = useState<any>();
-  const [descriptionImagePreviews, setDescriptionImagePreviews] =
-    useState<string[]>();
-  const [descriptionImages, setDescriptionImages] = useState<any[]>();
+  const [avatar, setAvatar] = useState<File>();
   const handleLogout = useLogout();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { data: templesData } = useGetTemplesQuery({
+    variables: { keyword },
+  });
 
-  function handleUploadAvatar(e: any) {
+  const temples = templesData?.getTemples?.data?.data || [];
+
+  const options = temples.reduce(
+    (arr: { label: string; value: string }[], temple) => {
+      return temple
+        ? [
+            ...arr,
+            {
+              label: temple.name,
+              value: temple.id.toString(),
+            },
+          ]
+        : arr;
+    },
+    []
+  );
+
+  function handleUploadAvatar(e: ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
     setAvatarPreview(URL.createObjectURL(e.target.files[0]));
     setAvatar(e.target.files[0]);
   }
 
-  function handleUploadDescriptionImages(e: any) {
-    const files = e.target.files;
-    const newDescriptionImages = [];
-    const newDescriptionImagePreviews = [];
-    for (let i = 0; i < files.length; i++) {
-      newDescriptionImages.push(files[i]);
-      newDescriptionImagePreviews.push(URL.createObjectURL(files[i]));
-    }
-    setDescriptionImages(newDescriptionImages);
-    setDescriptionImagePreviews(newDescriptionImagePreviews);
-  }
+  let timer: NodeJS.Timeout;
+
+  const onSearch = (value: string) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      setKeyword(value);
+    }, 500);
+  };
+
+  // Filter `option.label` match the user type `input`
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string }
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const onFinish = async (values: any) => {
-    const newTemple = new FormData();
-    newTemple.append("images[]", avatar);
-    descriptionImages?.forEach((descriptionImage) => {
-      newTemple.append("images[]", descriptionImage);
-    });
+    const newFamily = new FormData();
+    if (avatar) {
+      newFamily.append("avatar", avatar);
+    }
     for (const key in values) {
-      if (key !== "images" && key !== "descriptionImages") {
-        newTemple.append(key, values[key]);
+      if (key !== "avatar") {
+        newFamily.append(key, values[key]);
       }
     }
-    const res = await templeApi.createTemple(newTemple);
+    const res = await familyApi.createFamily(newFamily);
     if (res) {
       messageApi.open({
         type: "success",
@@ -65,9 +87,8 @@ const FamilyRegister = (props: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center pt-header">
       <div className="bg-white flex justify-center px-12 py-4 pt-8 shadow-xl w-full max-w-[380px]">
-        {contextHolder}
         <Form
           name="basic"
           className="w-full text-center"
@@ -77,7 +98,7 @@ const FamilyRegister = (props: Props) => {
           layout="vertical"
         >
           <Form.Item
-            label="Tên chùa"
+            label="Tên gia đình"
             name="name"
             rules={[
               { required: true, message: "Please input your temple name!" },
@@ -113,56 +134,35 @@ const FamilyRegister = (props: Props) => {
           </Form.Item>
 
           <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                type: "email",
-                message: "Vui lòng nhập đúng định dạng email!",
-              },
-              { required: true, message: "Please input your email!" },
-            ]}
-          >
-            <Input placeholder="Email" />
-          </Form.Item>
-
-          <Form.Item label="Website" name="website">
-            <Input placeholder="Website" />
-          </Form.Item>
-
-          <Form.Item
             label="Avatar"
-            name="images"
+            name="avatar"
             rules={[{ required: true, message: "Please input your Avatar!" }]}
           >
             {avatarPreview ? (
               <img className="max-w-[80px]" src={avatarPreview} />
             ) : (
               <input
-                name="images"
+                name="avatar"
                 type="file"
-                onChange={(e) => handleUploadAvatar(e)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  handleUploadAvatar(e)
+                }
               />
             )}
           </Form.Item>
 
-          <Form.Item label="Ảnh mô tả" name="descriptionImages">
-            {descriptionImagePreviews &&
-              descriptionImagePreviews.length > 0 &&
-              descriptionImagePreviews?.map(
-                (descriptionImagePreview: any, index: number) => (
-                  <img
-                    key={index}
-                    className="max-w-[80px] p-1"
-                    src={descriptionImagePreview}
-                  />
-                )
-              )}
-            <input
-              name="descriptionImages"
-              type="file"
-              multiple
-              onChange={(e) => handleUploadDescriptionImages(e)}
+          <Form.Item
+            label="Chùa"
+            name="templeId"
+            rules={[{ required: true, message: "Please input your temple!" }]}
+          >
+            <Select
+              showSearch
+              // placeholder="Select a temple"
+              optionFilterProp="children"
+              onSearch={onSearch}
+              filterOption={filterOption}
+              options={options}
             />
           </Form.Item>
 

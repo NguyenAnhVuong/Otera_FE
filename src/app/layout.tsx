@@ -78,7 +78,7 @@ export default function RootLayout({
               <html lang="en">
                 <body className={inter.className}>
                   <Header />
-                  <div className="flex justify-center w-full">
+                  <div className="flex justify-center w-full py-header min-h-screen">
                     <div className="max-w-[1200px] w-full">{children}</div>
                   </div>
                 </body>

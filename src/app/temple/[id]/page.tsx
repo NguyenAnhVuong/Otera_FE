@@ -1,7 +1,8 @@
 "use client";
 import { templeApi } from "@/api/templeApi";
 import { useGetTempleByIdQuery } from "@/graphql/generated/schema";
-import { Carousel, Image } from "antd";
+import { Carousel, Image as ImageAntd } from "antd";
+import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
@@ -11,8 +12,8 @@ type Props = {
 const TempleDetail = ({ params }: Props) => {
   const [temple, setTemple] = useState<any>({});
   const [images, setImages] = useState<any>([]);
-  const [visible, setVisible] = useState(false);
-  const [currentImage, setCurrentImage] = useState(0);
+  // const [visible, setVisible] = useState(false);
+  // const [currentImage, setCurrentImage] = useState(0);
   const ref: any = useRef();
   const goToSlide = (index: Number) => {
     ref.current.goTo(index);
@@ -25,7 +26,6 @@ const TempleDetail = ({ params }: Props) => {
   useEffect(() => {
     if (data?.getTempleById?.data) {
       const templeData = data?.getTempleById?.data;
-      console.log("templeData: ", templeData);
       setTemple(templeData);
       setImages([
         templeData.avatar,
@@ -47,11 +47,12 @@ const TempleDetail = ({ params }: Props) => {
                   onClick={() => goToSlide(index)}
                   key={index}
                 >
-                  <img
+                  <Image
                     className="lg:absolute lg:rounded-lg lg:cursor-pointer lg:object-cover lg:h-full lg:w-full lg:top-0 lg:left-0 lg:right-0 lg:bottom-0"
                     src={image}
                     alt=""
                     key={index}
+                    fill
                   />
                 </div>
               );
@@ -67,12 +68,12 @@ const TempleDetail = ({ params }: Props) => {
               {images.map((image: string, index: number) => {
                 return (
                   <div className="max-h-[329.0625px]" key={index}>
-                    <Image
+                    <ImageAntd
                       className="lg:rounded-lg lg:overflow-hidden lg:object-cover"
-                      onClick={() => {
-                        setCurrentImage(index);
-                        setVisible(true);
-                      }}
+                      // onClick={() => {
+                      //   setCurrentImage(index);
+                      //   setVisible(true);
+                      // }}
                       src={image}
                       key={index}
                       width={"100%"}

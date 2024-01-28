@@ -16,8 +16,9 @@ module.exports = {
       colors: {
         primary: "#FEDB39",
       },
-      padding: {
-        "header": "56px"
+      spacing: {
+        "header": "56px",
+        "2header": "112px",
       }
     },
   },
