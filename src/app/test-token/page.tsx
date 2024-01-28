@@ -5,7 +5,7 @@ type Props = {};
 
 const TestToken = (props: Props) => {
   const { data } = useTest123Query();
-  return <div>TestToken</div>;
+  return <div className="p-2 w-[100px] h-5">TestToken</div>;
 };
 
 export default TestToken;

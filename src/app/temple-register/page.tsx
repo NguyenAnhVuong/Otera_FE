@@ -65,7 +65,7 @@ const TempleRegister = (props: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen py-header">
+    <div className="flex justify-center items-center h-screen py-header mt-header">
       <div className="bg-white flex justify-center px-12 py-4 pt-8 shadow-xl w-full max-w-[380px]">
         <Form
           name="basic"
