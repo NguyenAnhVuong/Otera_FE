@@ -1,7 +1,7 @@
 "use client";
 import { templeApi } from "@/api/templeApi";
 import { useLogout } from "@/hooks/useLogout";
-import { useAppDispatch, useAppSelector } from "@/rtk/hook";
+import { useAppDispatch } from "@/rtk/hook";
 import { Button, Form, Input, message } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -10,8 +10,8 @@ const { TextArea } = Input;
 
 type Props = {};
 
-const TempleRegister = (props: Props) => {
-  const { messageApi } = useAppSelector((state) => state.antd);
+const FamilyRegister = (props: Props) => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [avatarPreview, setAvatarPreview] = useState<string>();
   const [avatar, setAvatar] = useState<any>();
   const [descriptionImagePreviews, setDescriptionImagePreviews] =
@@ -65,8 +65,9 @@ const TempleRegister = (props: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen py-header">
+    <div className="flex justify-center items-center h-screen">
       <div className="bg-white flex justify-center px-12 py-4 pt-8 shadow-xl w-full max-w-[380px]">
+        {contextHolder}
         <Form
           name="basic"
           className="w-full text-center"
@@ -154,7 +155,6 @@ const TempleRegister = (props: Props) => {
                     key={index}
                     className="max-w-[80px] p-1"
                     src={descriptionImagePreview}
-                    alt="temple-description-image"
                   />
                 )
               )}
@@ -177,4 +177,4 @@ const TempleRegister = (props: Props) => {
   );
 };
 
-export default TempleRegister;
+export default FamilyRegister;

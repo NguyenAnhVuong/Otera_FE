@@ -1,0 +1,35 @@
+query getTempleById($id: Int) {
+  getTempleById(query: { id: $id }) {
+    errorCode
+    errorMessage
+    statusCode
+    timestamp
+    data {
+      address
+      adminId
+      avatar
+      createdAt
+      description
+      email
+      id
+      images {
+        createdAt
+        deceasedId
+        eventId
+        id
+        updatedAt
+        templeId
+        image
+      }
+      website
+      updatedAt
+      status
+      priorityExpired
+      priority
+      planExpired
+      plan
+      phone
+      name
+    }
+  }
+}

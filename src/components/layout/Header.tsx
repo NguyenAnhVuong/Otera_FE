@@ -1,7 +1,10 @@
 "use client";
 import { authActions } from "@/features/auth";
 import { searchActions } from "@/features/search";
-import { useGetUserQuery } from "@/graphql/generated/schema";
+import {
+  useGetTemplesQuery,
+  useGetUserQuery,
+} from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
 import { User } from "@/models/auth";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
@@ -18,9 +21,8 @@ const Header = ({}: Props) => {
   const authUser = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const handleLogout = useLogout();
-  const [keyWord, setKeyWord] = useState("");
+  const [keyword, setKeyword] = useState("");
   const { data } = useGetUserQuery();
-
   const items: MenuProps["items"] = [
     {
       label: (
@@ -33,12 +35,12 @@ const Header = ({}: Props) => {
   ];
 
   useEffect(() => {
-    const setKeyWordState = setTimeout(() => {
-      dispatch(searchActions.search(keyWord));
+    const setKeywordState = setTimeout(() => {
+      dispatch(searchActions.search(keyword));
     }, 500);
 
-    return () => clearTimeout(setKeyWordState);
-  }, [dispatch, keyWord]);
+    return () => clearTimeout(setKeywordState);
+  }, [dispatch, keyword]);
 
   useEffect(() => {
     if (data) {
@@ -75,7 +77,7 @@ const Header = ({}: Props) => {
               className="w-96"
               placeholder="Tìm kiếm"
               prefix={<SearchOutlined />}
-              onChange={(e) => setKeyWord(e.target.value)}
+              onChange={(e) => setKeyword(e.target.value)}
             />
           </div>
         </div>
@@ -96,7 +98,10 @@ const Header = ({}: Props) => {
                 </Link>
               </li>
               <li className="px-2">
-                <Link className="text-black no-underline" href="/home">
+                <Link
+                  className="text-black no-underline"
+                  href="/family-register"
+                >
                   Đăng ký gia đình
                 </Link>
               </li>
