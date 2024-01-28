@@ -15,4 +15,5 @@ export interface User {
   email: string;
   avatar: string;
   role: string;
+  familyId?: number | null;
 }

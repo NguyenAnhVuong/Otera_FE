@@ -67,6 +67,20 @@ const Header = ({}: Props) => {
     () => [
       {
         label: (
+          <span onClick={() => router.push("deceased")}>
+            Thành viên an nghỉ
+          </span>
+        ),
+        key: "1",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("deceased/declare")}>Báo tử</span>
+        ),
+        key: "1",
+      },
+      {
+        label: (
           <span onClick={async () => await handleLogout(dispatch)}>
             Đăng xuất
           </span>
@@ -74,7 +88,7 @@ const Header = ({}: Props) => {
         key: "2",
       },
     ],
-    [dispatch, handleLogout]
+    [dispatch, handleLogout, router]
   );
 
   switch (authUser.role) {
@@ -103,6 +117,7 @@ const Header = ({}: Props) => {
         email: user.email,
         avatar: user.userDetail.avatar,
         role: user.role,
+        familyId: user.familyId,
       };
       dispatch(authActions.login(userLogin));
     }

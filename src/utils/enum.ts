@@ -5,3 +5,9 @@ export enum ERole {
   TEMPLE_ADMIN = "TEMPLE_ADMIN",
   PUBLIC_USER = "PUBLIC_USER",
 }
+
+export enum EGender {
+  MALE = 0,
+  FEMALE = 1,
+  OTHER = 2,
+}

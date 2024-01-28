@@ -1,0 +1,18 @@
+query getTempleList($keyword: String, $familyId: Int) {
+  getTemples(query: { keyword: $keyword, familyId: $familyId }) {
+    errorCode
+    errorMessage
+    statusCode
+    timestamp
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        name
+      }
+    }
+  }
+}
