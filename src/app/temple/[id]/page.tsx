@@ -1,5 +1,6 @@
 "use client";
 import { templeApi } from "@/api/templeApi";
+import { useGetTempleByIdQuery } from "@/graphql/generated/schema";
 import { Carousel, Image } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -16,14 +17,24 @@ const TempleDetail = ({ params }: Props) => {
   const goToSlide = (index: Number) => {
     ref.current.goTo(index);
   };
+  const { data } = useGetTempleByIdQuery({
+    variables: {
+      id: Number(params.id),
+    },
+  });
   useEffect(() => {
-    const callApi = async () => {
-      const res = await templeApi.getTempleById(params.id);
-      setTemple(res);
-      setImages([res.avatar, ...res.images.map((image: any) => image.image)]);
-    };
-    callApi();
-  }, [params.id]);
+    if (data?.getTempleById?.data) {
+      const templeData = data?.getTempleById?.data;
+      console.log("templeData: ", templeData);
+      setTemple(templeData);
+      setImages([
+        templeData.avatar,
+        ...(templeData.images
+          ? templeData.images.map((image: any) => image.image)
+          : []),
+      ]);
+    }
+  }, [params.id, data]);
   return (
     <div className="lg:flex lg:justify-center lg:mt-10 lg:p-4">
       <div className="lg:w-[1200px] lg:grid lg:grid-cols-10">
@@ -57,7 +68,7 @@ const TempleDetail = ({ params }: Props) => {
                 return (
                   <div className="max-h-[329.0625px]" key={index}>
                     <Image
-                      className="lg:rounded-lg lg:overflow-hidden"
+                      className="lg:rounded-lg lg:overflow-hidden lg:object-cover"
                       onClick={() => {
                         setCurrentImage(index);
                         setVisible(true);
@@ -65,6 +76,8 @@ const TempleDetail = ({ params }: Props) => {
                       src={image}
                       key={index}
                       width={"100%"}
+                      alt={`temple-image${index}`}
+                      style={{ objectFit: "cover" }}
                     />
                   </div>
                 );
@@ -73,7 +86,7 @@ const TempleDetail = ({ params }: Props) => {
           </div>
         </div>
 
-        <div className="lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
+        <div className="text-black lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
           <div>
             <h2 className="text-2xl font-bold uppercase">{temple?.name}</h2>
             <p>Địa chỉ: {temple?.address}</p>

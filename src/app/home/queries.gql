@@ -1,0 +1,32 @@
+query getTemples($keyword: String) {
+  getTemples(query: { keyword: $keyword }) {
+    errorCode
+    errorMessage
+    statusCode
+    timestamp
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        address
+        adminId
+        avatar
+        createdAt
+        description
+        email
+        id
+        name
+        phone
+        plan
+        planExpired
+        priority
+        priorityExpired
+        status
+        updatedAt
+        website
+      }
+    }
+  }
+}

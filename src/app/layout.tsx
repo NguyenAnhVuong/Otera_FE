@@ -1,4 +1,5 @@
 "use client";
+import { authApi } from "@/api/authApi";
 import Header from "@/components/layout/Header";
 import AntdProvider from "@/lib/AntdProvider";
 import { store } from "@/rtk/store";
@@ -11,11 +12,10 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ConfigProvider } from "antd";
-import axios from "axios";
 import { Inter } from "next/font/google";
 import { Provider } from "react-redux";
 import "./globals.css";
-import { authApi } from "@/api/authApi";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -64,27 +64,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ApolloProvider client={client}>
-      <Provider store={store}>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#FEDB39",
-            },
-          }}
-        >
-          <AntdProvider>
-            <html lang="en">
-              <body className={inter.className}>
-                <Header />
-                <div className="flex justify-center w-full">
-                  <div className="max-w-[1200px] w-full">{children}</div>
-                </div>
-              </body>
-            </html>
-          </AntdProvider>
-        </ConfigProvider>
-      </Provider>
-    </ApolloProvider>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <AntdRegistry>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#FEDB39",
+              },
+            }}
+          >
+            <AntdProvider>
+              <html lang="en">
+                <body className={inter.className}>
+                  <Header />
+                  <div className="flex justify-center w-full">
+                    <div className="max-w-[1200px] w-full">{children}</div>
+                  </div>
+                </body>
+              </html>
+            </AntdProvider>
+          </ConfigProvider>
+        </AntdRegistry>
+      </ApolloProvider>
+    </Provider>
   );
 }

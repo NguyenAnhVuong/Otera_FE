@@ -16,6 +16,9 @@ module.exports = {
       colors: {
         primary: "#FEDB39",
       },
+      padding: {
+        "header": "56px"
+      }
     },
   },
   plugins: [],
