@@ -1,16 +1,17 @@
 "use client";
 import { deceasedApi } from "@/api/deceasedApi";
 import TempleSelect from "@/components/Atom/TempleSelect";
-import { useLogout } from "@/hooks/useLogout";
-import { useAppDispatch, useAppSelector } from "@/rtk/hook";
+import { useAppSelector } from "@/rtk/hook";
 import { EGender } from "@/utils/enum";
 import { Button, DatePicker, Form, Input, Radio } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 type Props = {};
 
 const DeceasedDeclare = (props: Props) => {
+  const router = useRouter();
   const { familyId } = useAppSelector((state) => state.auth);
   const { messageApi } = useAppSelector((state) => state.antd);
   const [avatarPreview, setAvatarPreview] = useState<string>();
@@ -62,7 +63,7 @@ const DeceasedDeclare = (props: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen py-header mt-header">
+    <div className="flex justify-center items-center mt-header">
       <div className="bg-white flex justify-center px-12 py-4 pt-8 shadow-xl w-full max-w-[380px]">
         <Form
           name="basic"
@@ -83,14 +84,6 @@ const DeceasedDeclare = (props: Props) => {
           </Form.Item>
 
           <Form.Item
-            label="Địa chỉ"
-            name="address"
-            rules={[{ required: true, message: "Please input your address!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
             className="text-left"
             label="Giới tính"
             name="gender"
@@ -104,12 +97,20 @@ const DeceasedDeclare = (props: Props) => {
           </Form.Item>
 
           <Form.Item
+            label="Địa chỉ"
+            name="address"
+            rules={[{ required: true, message: "Please input your address!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
             className="text-left"
             label="Ngày sinh"
             name="birthday"
             rules={[{ required: true, message: "Please " }]}
           >
-            <DatePicker />
+            <DatePicker className="w-full" />
           </Form.Item>
 
           <Form.Item
@@ -118,7 +119,7 @@ const DeceasedDeclare = (props: Props) => {
             name="dateOfDeath"
             rules={[{ required: true, message: "Please " }]}
           >
-            <DatePicker />
+            <DatePicker className="w-full" />
           </Form.Item>
 
           <Form.Item
@@ -127,6 +128,16 @@ const DeceasedDeclare = (props: Props) => {
             name="citizenNumber"
           >
             <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Mô tả"
+            name="description"
+            rules={[
+              { required: true, message: "Please input your description!" },
+            ]}
+          >
+            <TextArea rows={4} />
           </Form.Item>
 
           <Form.Item

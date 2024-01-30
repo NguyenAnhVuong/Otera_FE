@@ -1,16 +1,21 @@
 "use client";
-import { templeApi } from "@/api/templeApi";
-import { useGetTempleByIdQuery } from "@/graphql/generated/schema";
+import {
+  Deceased,
+  useGetDeceasedQuery,
+  useGetTempleByIdQuery,
+} from "@/graphql/generated/schema";
+import { getGenderText } from "@/utils/helper";
+import { DeepOmit, DeepPartial } from "@apollo/client/utilities";
 import { Carousel, Image as ImageAntd } from "antd";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   params: { id: string };
 };
 
-const TempleDetail = ({ params }: Props) => {
-  const [temple, setTemple] = useState<any>({});
+const DeceasedDetail = ({ params }: Props) => {
+  const [deceased, setDeceased] = useState<DeepPartial<Deceased>>();
   const [images, setImages] = useState<any>([]);
   // const [visible, setVisible] = useState(false);
   // const [currentImage, setCurrentImage] = useState(0);
@@ -18,19 +23,19 @@ const TempleDetail = ({ params }: Props) => {
   const goToSlide = (index: Number) => {
     ref.current.goTo(index);
   };
-  const { data } = useGetTempleByIdQuery({
+  const { data } = useGetDeceasedQuery({
     variables: {
       id: Number(params.id),
     },
   });
   useEffect(() => {
-    if (data?.getTempleById?.data) {
-      const templeData = data?.getTempleById?.data;
-      setTemple(templeData);
+    if (data?.getDeceased?.data) {
+      const deceasedData = data?.getDeceased?.data;
+      setDeceased(deceasedData);
       setImages([
-        templeData.avatar,
-        ...(templeData.images
-          ? templeData.images.map((image: any) => image.image)
+        deceasedData.userDetail.avatar,
+        ...(deceasedData.images
+          ? deceasedData.images.map((image: any) => image.image)
           : []),
       ]);
     }
@@ -77,8 +82,7 @@ const TempleDetail = ({ params }: Props) => {
                       src={image}
                       key={index}
                       width={"100%"}
-                      alt={`temple-image${index}`}
-                      style={{ objectFit: "cover" }}
+                      alt={`deceased-image${index}`}
                     />
                   </div>
                 );
@@ -89,11 +93,13 @@ const TempleDetail = ({ params }: Props) => {
 
         <div className="text-black lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
           <div>
-            <h2 className="text-2xl font-bold uppercase">{temple?.name}</h2>
-            <p>Địa chỉ: {temple?.address}</p>
-            <p>Số điện thoại: {temple?.phone}</p>
-            <p className="min-h-[128px]">{temple?.description}</p>
-            <p className="mt-8">Website: {temple?.website}</p>
+            <h2 className="text-2xl font-bold uppercase">
+              {deceased?.userDetail?.name}
+            </h2>
+            <p>Giới tính: {getGenderText(deceased?.userDetail?.gender)}</p>
+            <p>Ngày sinh: {deceased?.userDetail?.birthday} </p>
+            <p>Ngày mất: {deceased?.dateOfDeath} </p>
+            <p className="min-h-[128px]">{deceased?.description}</p>
           </div>
         </div>
       </div>
@@ -101,4 +107,4 @@ const TempleDetail = ({ params }: Props) => {
   );
 };
 
-export default TempleDetail;
+export default DeceasedDetail;
