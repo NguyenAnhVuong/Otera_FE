@@ -32,7 +32,6 @@ const httpLink = createHttpLink({
 const authLink = setContext(async (_, { headers }) => {
   // get the authentication token from local storage if it exists
   let token = localStorage.getItem("accessToken");
-
   if (token) {
     const verifyToken = validateJwtToken(token);
     if (!verifyToken) {

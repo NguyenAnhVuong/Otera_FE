@@ -67,7 +67,7 @@ const Header = ({}: Props) => {
     () => [
       {
         label: (
-          <span onClick={() => router.push("deceased")}>
+          <span onClick={() => router.push("/deceased")}>
             Thành viên an nghỉ
           </span>
         ),
@@ -75,7 +75,7 @@ const Header = ({}: Props) => {
       },
       {
         label: (
-          <span onClick={() => router.push("deceased/declare")}>Báo tử</span>
+          <span onClick={() => router.push("/deceased/declare")}>Báo tử</span>
         ),
         key: "1",
       },
@@ -171,7 +171,7 @@ const Header = ({}: Props) => {
                     alt="avatar"
                     className="rounded-full"
                   />
-                  <span className="text-black">{authUser.name}</span>
+                  <span className="text-black"> {authUser.name}</span>
                 </div>
               </Dropdown>
             )}

@@ -11,7 +11,7 @@ import { ChangeEvent, useState } from "react";
 type Props = {};
 
 const DeceasedDeclare = (props: Props) => {
-  const router = useRouter();
+  const [form] = Form.useForm();
   const { familyId } = useAppSelector((state) => state.auth);
   const { messageApi } = useAppSelector((state) => state.antd);
   const [avatarPreview, setAvatarPreview] = useState<string>();
@@ -72,6 +72,7 @@ const DeceasedDeclare = (props: Props) => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           layout="vertical"
+          form={form}
         >
           <Form.Item
             label="Họ và tên"
@@ -119,7 +120,7 @@ const DeceasedDeclare = (props: Props) => {
             name="dateOfDeath"
             rules={[{ required: true, message: "Please " }]}
           >
-            <DatePicker className="w-full" />
+            <DatePicker className="w-full" picker="date" />
           </Form.Item>
 
           <Form.Item
