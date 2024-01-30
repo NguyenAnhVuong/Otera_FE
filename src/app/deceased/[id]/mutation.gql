@@ -1,0 +1,9 @@
+mutation createDeathAnniversary(
+  $createDeathAnniversaryInput: CreateDeathAnniversaryInput!
+) {
+  createDeathAnniversary(
+    createDeathAnniversaryInput: $createDeathAnniversaryInput
+  ) {
+    errorCode
+  }
+}
