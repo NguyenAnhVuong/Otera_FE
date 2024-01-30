@@ -1,0 +1,20 @@
+query getDeceased($id: Int!) {
+  getDeceased(id: $id) {
+    data {
+      images {
+        id
+        image
+      }
+      dateOfDeath
+      description
+      userDetail {
+        avatar
+        birthday
+        citizenNumber
+        address
+        name
+        gender
+      }
+    }
+  }
+}

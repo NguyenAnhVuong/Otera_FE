@@ -37,7 +37,7 @@ const Login = (props: Props) => {
       if (accessToken) {
         localStorage.setItem("accessToken", accessToken);
       }
-      router.replace("/home");
+      router.push("/home");
     } else {
       messageApi.open({
         type: "error",
@@ -52,7 +52,7 @@ const Login = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-white shadow-xl p-12 flex items-center flex-col w-full max-w-[240px]">
+      <div className="bg-white shadow-xl p-6 flex items-center flex-col w-full max-w-[320px]">
         <h3 className="text-black">Đăng nhập</h3>
         <Form
           className="w-full"

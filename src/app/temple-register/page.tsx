@@ -56,7 +56,7 @@ const TempleRegister = (props: Props) => {
         content: "Đăng ký thành công!",
       });
       handleLogout(dispatch);
-      router.replace("/login");
+      router.push("/login");
     }
   };
 

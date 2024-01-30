@@ -5,7 +5,8 @@ import {
   useUserRegisterMutation,
 } from "@/graphql/generated/schema";
 import { useAppSelector } from "@/rtk/hook";
-import { Button, DatePicker, Form, Input } from "antd";
+import { EGender } from "@/utils/enum";
+import { Button, DatePicker, Form, Input, Radio } from "antd";
 import { useRouter } from "next/navigation";
 type Props = {};
 
@@ -45,7 +46,7 @@ const Register = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-screen w-full">
-      <div className="bg-white shadow-xl p-12 flex items-center flex-col w-full max-w-[320px]">
+      <div className="bg-white shadow-xl p-6 flex items-center flex-col w-full max-w-[360px]">
         <h3>Đăng ký</h3>
         <Form
           className="w-full"
@@ -65,11 +66,25 @@ const Register = (props: Props) => {
           </Form.Item>
 
           <Form.Item
+            className="text-left"
+            label="Giới tính"
+            name="gender"
+            rules={[{ required: true, message: "Please input your gender!" }]}
+          >
+            <Radio.Group>
+              <Radio value={EGender.MALE}>Nam</Radio>
+              <Radio value={EGender.FEMALE}>Nữ</Radio>
+              <Radio value={EGender.OTHER}>Khác</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+            // className="w-full"
             label="Ngày sinh"
             name="birthday"
             rules={[{ required: true, message: "Please input your username!" }]}
           >
-            <DatePicker placeholder="Ngày sinh" />
+            <DatePicker className="w-full" placeholder="Ngày sinh" />
           </Form.Item>
 
           <Form.Item

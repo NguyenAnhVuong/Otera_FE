@@ -7,7 +7,7 @@ export enum ERole {
 }
 
 export enum EGender {
-  MALE = 0,
-  FEMALE = 1,
-  OTHER = 2,
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
 }

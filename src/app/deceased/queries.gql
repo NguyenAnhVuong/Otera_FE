@@ -1,0 +1,27 @@
+query getListDeceased($familyId: Int!) {
+  getListDeceased(familyId: $familyId) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      creatorId
+      dateOfDeath
+      familyId
+      id
+      templeId
+      userDetail {
+        address
+        avatar
+        birthday
+        citizenNumber
+        gender
+        name
+      }
+      images {
+        id
+        image
+      }
+    }
+  }
+}
