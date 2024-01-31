@@ -1,21 +1,32 @@
 "use client";
 import { useGetTemplesQuery } from "@/graphql/generated/schema";
 import { useAppSelector } from "@/rtk/hook";
-import { Card } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Card, Input } from "antd";
 import Meta from "antd/es/card/Meta";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 type Props = {};
 
 const Home = (props: Props) => {
-  const keyword = useAppSelector((state) => state.search.keyword);
+  const [keyword, setKeyword] = useState("");
   const { data } = useGetTemplesQuery({
     variables: { keyword },
   });
   const templesData = data?.getTemples?.data?.data || [];
   return (
-    <div className="bg-white flex justify-center mt-header">
+    <div className="bg-white flex flex-col items-center mt-4">
+      <div className="mb-4">
+        <Input
+          className="w-96"
+          placeholder="Tìm kiếm"
+          prefix={<SearchOutlined />}
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+      </div>
+
       <div className="grid grid-cols-3 gap-5">
         {templesData.map((temple: any) => {
           return (

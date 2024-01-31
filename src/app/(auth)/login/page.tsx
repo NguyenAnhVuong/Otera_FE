@@ -32,6 +32,7 @@ const Login = (props: Props) => {
         type: "success",
         content: "Đăng nhập thành công!",
       });
+      console.log("data?.userLogin?.data?.user: ", data?.userLogin?.data?.user);
       dispatch(authActions.login(data?.userLogin?.data?.user));
       const accessToken = data.userLogin?.data?.accessToken;
       if (accessToken) {

@@ -1,0 +1,25 @@
+query getDeathAnniversaries(
+  $getDeathAnniversariesInput: GetDeathAnniversariesInput!
+) {
+  getDeathAnniversaries(
+    getDeathAnniversariesInput: $getDeathAnniversariesInput
+  ) {
+    data {
+      deceased {
+        userDetail {
+          avatar
+          name
+        }
+      }
+      desiredStartTime
+      desiredEndTime
+      actualStartTime
+      actualEndTime
+      linkLiveStream
+      isLiveStream
+      note
+      status
+      id
+    }
+  }
+}

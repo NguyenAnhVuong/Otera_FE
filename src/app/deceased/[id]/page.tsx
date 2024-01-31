@@ -2,6 +2,7 @@
 import {
   Deceased,
   useCreateDeathAnniversaryMutation,
+  useGetDeathAnniversariesQuery,
   useGetDeceasedQuery,
 } from "@/graphql/generated/schema";
 import { useAppSelector } from "@/rtk/hook";
@@ -64,6 +65,14 @@ const DeceasedDetail = ({ params }: Props) => {
   });
   const [createDeathAnniversary] = useCreateDeathAnniversaryMutation();
 
+  const { refetch } = useGetDeathAnniversariesQuery({
+    variables: {
+      getDeathAnniversariesInput: {
+        // isPending: true,
+      },
+    },
+  });
+
   const onFinish = async (values: any) => {
     const createDeathAnniversaryInput = {
       deceasedId: Number(params.id),
@@ -94,6 +103,7 @@ const DeceasedDetail = ({ params }: Props) => {
         type: "success",
         content: "Đăng ký thành công!",
       });
+      refetch();
     }
   };
 
@@ -215,7 +225,11 @@ const DeceasedDetail = ({ params }: Props) => {
               { required: true, message: "Please input your desiredTime!" },
             ]}
           >
-            <RangePicker picker="time" format="HH:mm" />
+            <RangePicker
+              picker="time"
+              format="HH:mm"
+              placeholder={["Bắt đầu", "Kết thúc"]}
+            />
           </Form.Item>
           <Form.Item label="Ghi chú" name="note">
             <TextArea rows={4} className="w-[320px]" />
@@ -226,7 +240,7 @@ const DeceasedDetail = ({ params }: Props) => {
             rules={[
               { required: true, message: "Please input your isLivestream!" },
             ]}
-            initialValue={false}
+            // initialValue={false}
           >
             <Radio.Group>
               <Radio value={true}>Có</Radio>

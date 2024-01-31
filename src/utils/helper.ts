@@ -1,4 +1,4 @@
-import { EGender } from "@/graphql/generated/schema";
+import { EGender, EStatus } from "@/graphql/generated/schema";
 
 export const getGenderText = (gender?: EGender) => {
   switch (gender) {
@@ -8,5 +8,16 @@ export const getGenderText = (gender?: EGender) => {
       return "Nữ";
     default:
       return "Khác";
+  }
+};
+
+export const getStatusText = (status?: EStatus) => {
+  switch (status) {
+    case EStatus.Rejected:
+      return "Từ chối";
+    case EStatus.Approved:
+      return "Chấp nhận";
+    default:
+      return "Đang chờ";
   }
 };
