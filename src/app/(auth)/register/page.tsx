@@ -29,7 +29,7 @@ const Register = (props: Props) => {
     if (!errors) {
       messageApi.open({
         type: "success",
-        content: "Register success!",
+        content: "Đăng ký thành công!",
       });
       router.push("/login");
     } else {

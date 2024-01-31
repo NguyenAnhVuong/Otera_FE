@@ -5,6 +5,7 @@ query getListDeceased($familyId: Int!) {
     errorMessage
     errorCode
     data {
+      description
       creatorId
       dateOfDeath
       familyId

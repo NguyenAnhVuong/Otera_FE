@@ -20,7 +20,7 @@ const Home = (props: Props) => {
         <h3 className="text-2xl">Danh sách thành viên an nghỉ</h3>
       </div>
       <div className="grid grid-cols-3 gap-5">
-        {listDeceasedData.map((deceased: any) => {
+        {listDeceasedData.map((deceased) => {
           return (
             <Link
               className="no-underline h-[400px] shadow-lg rounded-lg"
@@ -42,7 +42,9 @@ const Home = (props: Props) => {
               >
                 <Meta
                   title={deceased.userDetail.name}
-                  description={deceased.userDetail.address}
+                  description={
+                    deceased.userDetail.birthday + "-" + deceased.dateOfDeath
+                  }
                 />
               </Card>
             </Link>

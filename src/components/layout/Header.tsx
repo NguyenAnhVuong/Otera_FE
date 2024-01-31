@@ -67,17 +67,47 @@ const Header = ({}: Props) => {
     () => [
       {
         label: (
-          <span onClick={() => router.push("/deceased")}>
-            Thành viên an nghỉ
+          <span onClick={() => router.push("/death-anniversary")}>
+            Yêu cầu tổ chức lễ giỗ
           </span>
         ),
         key: "0",
       },
       {
         label: (
-          <span onClick={() => router.push("/deceased/declare")}>Báo tử</span>
+          <span onClick={() => router.push("/deceased")}>
+            Thành viên an nghỉ
+          </span>
         ),
         key: "1",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("/deceased/declare")}>Báo tử</span>
+        ),
+        key: "2",
+      },
+      {
+        label: (
+          <span onClick={async () => await handleLogout(dispatch)}>
+            Đăng xuất
+          </span>
+        ),
+        key: "3",
+      },
+    ],
+    [dispatch, handleLogout, router]
+  );
+
+  const templeAdminItems: MenuProps["items"] = useMemo(
+    () => [
+      {
+        label: (
+          <span onClick={() => router.push("/death-anniversary")}>
+            Yêu cầu tổ chức lễ giỗ
+          </span>
+        ),
+        key: "0",
       },
       {
         label: (
@@ -97,6 +127,9 @@ const Header = ({}: Props) => {
       break;
     case ERole.FAMILY_ADMIN:
       items = [...familyAdminItems];
+      break;
+    case ERole.TEMPLE_ADMIN:
+      items = [...templeAdminItems];
       break;
   }
 
@@ -138,16 +171,7 @@ const Header = ({}: Props) => {
           />
           <span className="ml-2 text-xl font-semibold">Otera</span>
         </Link>
-        <div className="flex items-center">
-          <div>
-            <Input
-              className="w-96"
-              placeholder="Tìm kiếm"
-              prefix={<SearchOutlined />}
-              onChange={(e) => setKeyword(e.target.value)}
-            />
-          </div>
-        </div>
+
         <div className="flex items-center">
           <ul className="flex list-none">
             <li className="px-2">

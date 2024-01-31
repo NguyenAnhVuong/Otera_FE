@@ -93,7 +93,9 @@ const TempleDetail = ({ params }: Props) => {
             <p>Địa chỉ: {temple?.address}</p>
             <p>Số điện thoại: {temple?.phone}</p>
             <p className="min-h-[128px]">{temple?.description}</p>
-            <p className="mt-8">Website: {temple?.website}</p>
+            {temple?.website && (
+              <p className="mt-8">Website: {temple?.website}</p>
+            )}
           </div>
         </div>
       </div>

@@ -1,16 +1,17 @@
 "use client";
 import { deceasedApi } from "@/api/deceasedApi";
 import TempleSelect from "@/components/Atom/TempleSelect";
+import { useGetListDeceasedQuery } from "@/graphql/generated/schema";
 import { useAppSelector } from "@/rtk/hook";
 import { EGender } from "@/utils/enum";
 import { Button, DatePicker, Form, Input, Radio } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 type Props = {};
 
 const DeceasedDeclare = (props: Props) => {
+  const auth = useAppSelector((state) => state.auth);
   const [form] = Form.useForm();
   const { familyId } = useAppSelector((state) => state.auth);
   const { messageApi } = useAppSelector((state) => state.antd);
@@ -38,6 +39,10 @@ const DeceasedDeclare = (props: Props) => {
     setDescriptionImagePreviews(newDescriptionImagePreviews);
   }
 
+  const { refetch } = useGetListDeceasedQuery({
+    variables: { familyId: auth.familyId as number },
+  });
+
   const onFinish = async (values: any) => {
     const newDeceased = new FormData();
     newDeceased.append("images[]", avatar);
@@ -55,6 +60,10 @@ const DeceasedDeclare = (props: Props) => {
         type: "success",
         content: "Khai báo thành công!",
       });
+      form.resetFields();
+      setAvatarPreview("");
+      setDescriptionImagePreviews([]);
+      refetch();
     }
   };
 
@@ -98,7 +107,7 @@ const DeceasedDeclare = (props: Props) => {
           </Form.Item>
 
           <Form.Item
-            label="Địa chỉ"
+            label="Quê quán"
             name="address"
             rules={[{ required: true, message: "Please input your address!" }]}
           >
@@ -142,7 +151,7 @@ const DeceasedDeclare = (props: Props) => {
           </Form.Item>
 
           <Form.Item
-            label="Avatar"
+            label="Ảnh đại diện"
             name="avatar"
             rules={[{ required: true, message: "Please input your Avatar!" }]}
           >

@@ -1,0 +1,9 @@
+mutation updateStatusDeathAnniversary(
+  $updateStatusDeathAnniversaryInput: UpdateStatusDeathAnniversaryInput!
+) {
+  updateStatusDeathAnniversary(
+    updateStatusDeathAnniversaryInput: $updateStatusDeathAnniversaryInput
+  ) {
+    errorCode
+  }
+}

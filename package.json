@@ -10,6 +10,7 @@
     "codegen": "graphql-codegen --require dotenv/config --config codegen.ts"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@ant-design/nextjs-registry": "^1.0.0",
     "@apollo/client": "^3.8.8",
     "@graphql-codegen/typescript-operations": "^4.0.1",

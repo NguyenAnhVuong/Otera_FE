@@ -1,5 +1,6 @@
 "use client";
 import { templeApi } from "@/api/templeApi";
+import { useGetTemplesQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
 import { Button, Form, Input, message } from "antd";
@@ -38,6 +39,8 @@ const TempleRegister = (props: Props) => {
     setDescriptionImagePreviews(newDescriptionImagePreviews);
   }
 
+  const { refetch } = useGetTemplesQuery({ variables: { keyword: "" } });
+
   const onFinish = async (values: any) => {
     const newTemple = new FormData();
     newTemple.append("images[]", avatar);
@@ -50,7 +53,9 @@ const TempleRegister = (props: Props) => {
       }
     }
     const res = await templeApi.createTemple(newTemple);
+
     if (res) {
+      refetch();
       messageApi.open({
         type: "success",
         content: "Đăng ký thành công!",
@@ -65,7 +70,7 @@ const TempleRegister = (props: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen py-header mt-header">
+    <div className="flex justify-center items-center py-header ">
       <div className="bg-white flex justify-center px-12 py-4 pt-8 shadow-xl w-full max-w-[380px]">
         <Form
           name="basic"
