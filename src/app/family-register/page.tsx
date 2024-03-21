@@ -1,10 +1,10 @@
 "use client";
 import { familyApi } from "@/api/familyApi";
-import TempleSelect from "@/components/Atom/TempleSelect";
+import TempleSelect from "@/components/Atoms/TempleSelect";
 import { useGetTemplesQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 

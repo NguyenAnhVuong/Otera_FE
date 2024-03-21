@@ -1,25 +1,38 @@
 "use client";
+import RejectDeathAnniversaryModal from "@/components/Atoms/RejectDeathAnniversaryModal";
+import DeathAnniversaryInforModal from "@/components/Molecules/DeathAnniversaryInforModal";
+import RejectInforModal from "@/components/Molecules/RejectInforModal";
 import {
   ERole,
   EStatus,
   GetDeathAnniversariesDocument,
+  useCancelDeathAnniversaryMutation,
+  useFamilyUpdateDeathAnniversaryMutation,
   useGetDeathAnniversariesQuery,
-  useUpdateStatusDeathAnniversaryMutation,
+  useTempleUpdateDeathAnniversaryMutation,
 } from "@/graphql/generated/schema";
+import useGetStatusText from "@/hooks/useGetStatusText";
+import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
-import { getStatusText } from "@/utils/helper";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import {
   DatePicker,
   Form,
   Input,
   Modal,
+  Popconfirm,
   Table,
   TableProps,
   Tooltip,
 } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface DataType {
@@ -34,6 +47,8 @@ interface DataType {
   isLiveStream: boolean;
   linkLiveStream?: string | null;
   status: EStatus;
+  rejectReason?: string | null;
+  enableUpdate: boolean;
 }
 
 type Props = {};
@@ -43,9 +58,15 @@ const { RangePicker } = DatePicker;
 const DeathAnniversary = (props: Props) => {
   const { messageApi } = useAppSelector((state) => state.antd);
   const authUser = useAppSelector((state) => state.auth);
+  const { localeText } = useTrans();
+  const getStatusText = useGetStatusText();
 
   const [deathAnniversary, setDeathAnniversary] = useState<DataType>();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [rejectDeathAnniversaryId, setRejectDeathAnniversaryId] = useState<
+    number | null
+  >(null);
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   const [form] = Form.useForm();
   const { data } = useGetDeathAnniversariesQuery({
@@ -55,9 +76,88 @@ const DeathAnniversary = (props: Props) => {
       },
     },
   });
+  const [templeUpdateDeathAnniversary] =
+    useTempleUpdateDeathAnniversaryMutation();
 
-  const [udpateStatusDeathAnniversary] =
-    useUpdateStatusDeathAnniversaryMutation();
+  const [familyUpdateDeathAnniversary] =
+    useFamilyUpdateDeathAnniversaryMutation();
+
+  const [cancelDeathAnniversary] = useCancelDeathAnniversaryMutation();
+
+  const handleEditDeathAnniversary = async (values: any) => {
+    if (!deathAnniversary) return;
+    const updateDeathAnniversaryInput = {
+      id: deathAnniversary.key,
+      desiredStartTime: new Date(deathAnniversary.desiredStartTime).setHours(
+        values.desiredTime[0].$H,
+        values.desiredTime[0].$m
+      ),
+      desiredEndTime: new Date(deathAnniversary.desiredEndTime).setHours(
+        values.desiredTime[1].$H,
+        values.desiredTime[1].$m
+      ),
+      note: values.note,
+    };
+
+    const { data } = await familyUpdateDeathAnniversary({
+      variables: {
+        updateDeathAnniversaryInput,
+      },
+      refetchQueries: [
+        {
+          query: GetDeathAnniversariesDocument,
+          variables: {
+            getDeathAnniversariesInput: {
+              // isPending: true,
+            },
+          },
+        },
+      ],
+    });
+
+    if (data && !data.familyUpdateDeathAnniversary.errorCode) {
+      setIsApproveModalOpen(false);
+      form.resetFields();
+      messageApi.open({
+        type: "success",
+        content:
+          localeText.deathAnniversary.updateDeathAnniversarySuccessMessage,
+      });
+    }
+  };
+
+  const handleCancelDeathAnniversary = async (id: number) => {
+    const { data } = await cancelDeathAnniversary({
+      variables: {
+        cancelDeathAnniversaryInput: {
+          id,
+        },
+      },
+      refetchQueries: [
+        {
+          query: GetDeathAnniversariesDocument,
+          variables: {
+            getDeathAnniversariesInput: {
+              // isPending: true,
+            },
+          },
+        },
+      ],
+    });
+
+    if (data && !data.cancelDeathAnniversary.errorCode) {
+      messageApi.open({
+        type: "success",
+        content:
+          localeText.deathAnniversary.cancelDeathAnniversarySuccessMessage,
+      });
+    } else {
+      messageApi.open({
+        type: "error",
+        content: localeText.deathAnniversary.cancelDeathAnniversaryFailMessage,
+      });
+    }
+  };
 
   const columns: TableProps<DataType>["columns"] = [
     {
@@ -135,25 +235,35 @@ const DeathAnniversary = (props: Props) => {
       ],
     },
     {
-      title: "Livestream",
+      title: "LiveStream",
       key: "isLiveStream",
       dataIndex: "isLiveStream",
       align: "center",
       render: (isLiveStream) => <span>{isLiveStream ? "Có" : "Không"}</span>,
     },
     {
-      title: "Link livestream",
+      title: localeText.deathAnniversary.watchLiveStream,
       key: "linkLiveStream",
       dataIndex: "linkLiveStream",
       align: "center",
-      render: (linkLiveStream) => <span>{linkLiveStream}</span>,
+      render: (linkLiveStream) =>
+        linkLiveStream && (
+          <Link href={linkLiveStream} target="_blank">
+            {localeText.deathAnniversary.watchLiveStream}
+          </Link>
+        ),
     },
     {
       title: "Trạng thái",
       key: "status",
       dataIndex: "status",
       align: "center",
-      render: (status) => <span>{getStatusText(status)}</span>,
+      render: (status, record) =>
+        status === EStatus.Rejected && record.rejectReason ? (
+          <RejectInforModal infor={record.rejectReason} />
+        ) : (
+          <span>{getStatusText(status)}</span>
+        ),
     },
     {
       title: "Hành động",
@@ -161,7 +271,7 @@ const DeathAnniversary = (props: Props) => {
       key: "action",
       align: "center",
       render: (status, record) =>
-        status === EStatus.Pending ? (
+        status === EStatus.Pending && authUser.role === ERole.TempleAdmin ? (
           <div className="min-w-[40px] flex justify-between">
             <Tooltip placement="top" title={"Đồng ý"}>
               <CheckOutlined
@@ -183,8 +293,65 @@ const DeathAnniversary = (props: Props) => {
               <CloseOutlined
                 className="text-red-500 text-xl cursor-pointer"
                 disabled={status !== EStatus.Pending}
-                onClick={() => handleRejectDeathAnniversary(record.key)}
+                onClick={() => setRejectDeathAnniversaryId(record.key)}
               />
+            </Tooltip>
+          </div>
+        ) : (authUser.role === ERole.FamilyAdmin ||
+            authUser.role === ERole.FamilyMember) &&
+          record.enableUpdate &&
+          status !== EStatus.Approved ? (
+          <div className="min-w-[40px] flex justify-between">
+            <DeathAnniversaryInforModal
+              title={localeText.deathAnniversary.updateDeathAnniversary}
+              isModalOpen={isEditModalOpen}
+              setIsModalOpen={setIsEditModalOpen}
+              handleSubmitForm={handleEditDeathAnniversary}
+              data={{
+                desiredStartTime: record.desiredStartTime,
+                desiredEndTime: record.desiredEndTime,
+                note: record.note,
+                isLiveStream: record.isLiveStream,
+              }}
+              openButton={
+                <Tooltip
+                  placement="top"
+                  title={localeText.deathAnniversary.editInfo}
+                >
+                  <EditOutlined
+                    className="text-green-400 text-xl cursor-pointer"
+                    onClick={() => {
+                      setDeathAnniversary(record);
+                      setIsEditModalOpen(true);
+                    }}
+                    disabled={status !== EStatus.Pending}
+                  />
+                </Tooltip>
+              }
+            />
+
+            <Tooltip
+              placement="top"
+              title={localeText.deathAnniversary.cancelRegister}
+            >
+              <Popconfirm
+                title={
+                  localeText.deathAnniversary.cancelDeathAnniversaryPopConfirm
+                    .title
+                }
+                description={
+                  localeText.deathAnniversary.cancelDeathAnniversaryPopConfirm
+                    .description
+                }
+                onConfirm={() => handleCancelDeathAnniversary(record.key)}
+                okText={localeText.OK}
+                cancelText={localeText.cancel}
+              >
+                <DeleteOutlined
+                  className="text-red-500 text-xl cursor-pointer"
+                  disabled={status !== EStatus.Pending}
+                />
+              </Popconfirm>
             </Tooltip>
           </div>
         ) : (
@@ -194,7 +361,7 @@ const DeathAnniversary = (props: Props) => {
   ];
 
   const showModal = () => {
-    setIsModalOpen(true);
+    setIsApproveModalOpen(true);
   };
 
   const handleOk = () => {
@@ -202,12 +369,12 @@ const DeathAnniversary = (props: Props) => {
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setIsApproveModalOpen(false);
   };
 
   const onFinish = async (values: any) => {
     if (!deathAnniversary) return;
-    const updateStatusDeathAnniversaryInput = {
+    const templeUpdateDeathAnniversaryInput = {
       id: deathAnniversary.key,
       actualStartTime: new Date(deathAnniversary.desiredStartTime).setHours(
         values.actualTime[0].$H,
@@ -221,9 +388,9 @@ const DeathAnniversary = (props: Props) => {
       linkLiveStream: values.linkLiveStream,
     };
 
-    const { data } = await udpateStatusDeathAnniversary({
+    const { data } = await templeUpdateDeathAnniversary({
       variables: {
-        updateStatusDeathAnniversaryInput,
+        templeUpdateDeathAnniversaryInput,
       },
       refetchQueries: [
         {
@@ -237,8 +404,8 @@ const DeathAnniversary = (props: Props) => {
       ],
     });
 
-    if (data && !data.updateStatusDeathAnniversary.errorCode) {
-      setIsModalOpen(false);
+    if (data && !data.templeUpdateDeathAnniversary.errorCode) {
+      setIsApproveModalOpen(false);
       form.resetFields();
       messageApi.open({
         type: "success",
@@ -249,36 +416,6 @@ const DeathAnniversary = (props: Props) => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
-  };
-
-  const handleRejectDeathAnniversary = async (id: number) => {
-    const updateStatusDeathAnniversaryInput = {
-      id,
-      status: EStatus.Rejected,
-    };
-
-    const { data } = await udpateStatusDeathAnniversary({
-      variables: {
-        updateStatusDeathAnniversaryInput,
-      },
-      refetchQueries: [
-        {
-          query: GetDeathAnniversariesDocument,
-          variables: {
-            getDeathAnniversariesInput: {
-              // isPending: true,
-            },
-          },
-        },
-      ],
-    });
-
-    if (data && !data.updateStatusDeathAnniversary.errorCode) {
-      messageApi.open({
-        type: "success",
-        content: "Từ chối thành công!",
-      });
-    }
   };
 
   useEffect(() => {
@@ -301,6 +438,8 @@ const DeathAnniversary = (props: Props) => {
           isLiveStream: deathAnniversary.isLiveStream,
           linkLiveStream: deathAnniversary.linkLiveStream,
           status: deathAnniversary.status,
+          rejectReason: deathAnniversary.rejectReason,
+          enableUpdate: deathAnniversary.enableUpdate,
         }))
       );
     }
@@ -308,18 +447,11 @@ const DeathAnniversary = (props: Props) => {
 
   return (
     <div className="py-header">
-      <Table
-        columns={columns.filter(
-          (column) =>
-            (column.key === "action" && authUser.role === ERole.TempleAdmin) ||
-            column.key !== "action"
-        )}
-        dataSource={dataSource}
-      />
+      <Table columns={columns} dataSource={dataSource} />
       <Modal
         className=""
         title="Thời gian có thể tổ chức thực tế"
-        open={isModalOpen}
+        open={isApproveModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         cancelText="Hủy"
@@ -357,6 +489,10 @@ const DeathAnniversary = (props: Props) => {
           )}
         </Form>
       </Modal>
+      <RejectDeathAnniversaryModal
+        rejectDeathAnniversaryId={rejectDeathAnniversaryId}
+        handleCloseModal={() => setRejectDeathAnniversaryId(null)}
+      />
     </div>
   );
 };

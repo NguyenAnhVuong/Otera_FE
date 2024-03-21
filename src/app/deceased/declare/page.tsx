@@ -1,6 +1,6 @@
 "use client";
 import { deceasedApi } from "@/api/deceasedApi";
-import TempleSelect from "@/components/Atom/TempleSelect";
+import TempleSelect from "@/components/Atoms/TempleSelect";
 import { useGetListDeceasedQuery } from "@/graphql/generated/schema";
 import { useAppSelector } from "@/rtk/hook";
 import { EGender } from "@/utils/enum";

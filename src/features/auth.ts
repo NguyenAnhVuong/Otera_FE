@@ -2,6 +2,7 @@ import { User } from "@/models/auth";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: User = {
+  // -1 means not logged in
   id: -1,
   name: "",
   email: "",

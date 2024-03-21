@@ -1,9 +1,27 @@
-mutation updateStatusDeathAnniversary(
-  $updateStatusDeathAnniversaryInput: UpdateStatusDeathAnniversaryInput!
+mutation templeUpdateDeathAnniversary(
+  $templeUpdateDeathAnniversaryInput: TempleUpdateDeathAnniversaryInput!
 ) {
-  updateStatusDeathAnniversary(
-    updateStatusDeathAnniversaryInput: $updateStatusDeathAnniversaryInput
+  templeUpdateDeathAnniversary(
+    templeUpdateDeathAnniversaryInput: $templeUpdateDeathAnniversaryInput
   ) {
+    errorCode
+  }
+}
+
+mutation familyUpdateDeathAnniversary(
+  $updateDeathAnniversaryInput: UpdateDeathAnniversaryInput!
+) {
+  familyUpdateDeathAnniversary(
+    updateDeathAnniversaryInput: $updateDeathAnniversaryInput
+  ) {
+    errorCode
+  }
+}
+
+mutation cancelDeathAnniversary(
+  $cancelDeathAnniversaryInput: CancelDeathAnniversaryInput!
+) {
+  cancelDeathAnniversary(cancelDeathAnniversaryInput: $cancelDeathAnniversaryInput) {
     errorCode
   }
 }
