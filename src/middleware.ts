@@ -1,4 +1,4 @@
-import type { NextRequest } from "next/server";
+import type { NextFetchEvent, NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { match } from "path-to-regexp";
 import {
@@ -8,11 +8,15 @@ import {
 } from "./config/middleware/config";
 import { validateJwtToken } from "./utils/jwt";
 
-export default function middleware(req: NextRequest) {
+export default async function middleware(
+  req: NextRequest,
+  event: NextFetchEvent
+) {
   const path = req.nextUrl.pathname;
   const config = authorizer.find((config) => match(config.path)(path));
   if (config) {
     const token = req.cookies.get("refreshToken")?.value;
+
     try {
       const validToken = token && validateJwtToken(token);
       if ((!validToken || !canAccess(validToken, config.role)) && config.auth) {
@@ -23,6 +27,27 @@ export default function middleware(req: NextRequest) {
         const absoluteURL = new URL(redirectRouters.home, req.nextUrl.origin);
         return NextResponse.redirect(absoluteURL.toString());
       }
+      // if (validToken) {
+      //   // const accessToken = JWTManager.getToken();
+      //   const accessToken = sessionStorage.getItem("accessToken");
+      //   console.log("accessToken: ", accessToken);
+      //   if (!accessToken) {
+      //     const response = await fetch(
+      //       "http://localhost:3008/api/user/refresh-token",
+      //       {
+      //         method: "POST",
+      //         credentials: "include",
+      //         headers: {
+      //           Cookie: "refreshToken=" + token,
+      //         },
+      //       }
+      //     );
+      //     const data = await response.json();
+      //     if (data) {
+      //       JWTManager.setToken(data.accessToken);
+      //     }
+      //   }
+      // }
     } catch (error) {
       console.error(error);
     }

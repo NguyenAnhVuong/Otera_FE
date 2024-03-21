@@ -6,6 +6,7 @@ import {
   useUserLoginMutation,
 } from "@/graphql/generated/schema";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
+import JWTManager from "@/utils/jwt";
 
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
@@ -32,11 +33,12 @@ const Login = (props: Props) => {
         type: "success",
         content: "Đăng nhập thành công!",
       });
-      console.log("data?.userLogin?.data?.user: ", data?.userLogin?.data?.user);
+
       dispatch(authActions.login(data?.userLogin?.data?.user));
       const accessToken = data.userLogin?.data?.accessToken;
       if (accessToken) {
         localStorage.setItem("accessToken", accessToken);
+        // JWTManager.setToken(accessToken);
       }
       router.push("/home");
     } else {

@@ -10,6 +10,7 @@ export const useLogout = () => {
     const { data } = await userLogout();
     if (data && data.userLogout?.data) {
       localStorage.removeItem("accessToken");
+      // JWTManager.deleteToken();
       dispatch(authActions.logout());
       router.push("/login");
     }

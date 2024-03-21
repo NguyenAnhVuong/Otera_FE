@@ -10,14 +10,3 @@ export const getGenderText = (gender?: EGender) => {
       return "Khác";
   }
 };
-
-export const getStatusText = (status?: EStatus) => {
-  switch (status) {
-    case EStatus.Rejected:
-      return "Từ chối";
-    case EStatus.Approved:
-      return "Chấp nhận";
-    default:
-      return "Đang chờ";
-  }
-};

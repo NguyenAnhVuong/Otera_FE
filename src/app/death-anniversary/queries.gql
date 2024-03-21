@@ -20,6 +20,8 @@ query getDeathAnniversaries(
       note
       status
       id
+      rejectReason
+      enableUpdate
     }
   }
 }

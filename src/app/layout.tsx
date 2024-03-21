@@ -1,9 +1,9 @@
 "use client";
-import { authApi } from "@/api/authApi";
 import Header from "@/components/layout/Header";
 import AntdProvider from "@/lib/AntdProvider";
 import { store } from "@/rtk/store";
-import { validateJwtToken } from "@/utils/jwt";
+import JWTManager, { validateJwtToken } from "@/utils/jwt";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import {
   ApolloClient,
   ApolloProvider,
@@ -13,9 +13,10 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { ConfigProvider } from "antd";
 import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import "./globals.css";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { authApi } from "@/api/authApi";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   // get the authentication token from local storage if it exists
+  // const token = JWTManager.getToken();
   let token = localStorage.getItem("accessToken");
   if (token) {
     const verifyToken = validateJwtToken(token);
@@ -62,6 +64,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // const [refresh, setRefresh] = useState(true);
+
+  // useEffect(() => {
+  //   const refreshToken = async () => {
+  //     const accessToken = JWTManager.getToken();
+  //     if (!accessToken || !validateJwtToken(accessToken)) {
+  //       await JWTManager.getRefreshToken();
+  //     }
+  //     setRefresh((refresh) => !refresh);
+  //   };
+  //   refreshToken();
+  // }, []);
+
   return (
     <Provider store={store}>
       <ApolloProvider client={client}>
