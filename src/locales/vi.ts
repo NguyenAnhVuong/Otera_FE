@@ -36,6 +36,7 @@ const vi = {
     registerDeathAnniversary: "Đăng ký tổ chức lễ giỗ",
   },
   event: {
+    events: "Sự kiện",
     organizeEvent: "Tổ chức sự kiện",
     name: "Tên sự kiện",
     description: "Mô tả",
@@ -46,11 +47,14 @@ const vi = {
     address: "Địa chỉ",
     phone: "Số điện thoại",
     email: "Email",
-    maxParticipant: "Số lượng người tham gia tối đa",
+    maxParticipant: (max: number) => `Tối đa: ${max}`,
     avatar: "Ảnh đại diện",
     participants: "Đối tượng tham gia",
     organizeEventSuccessMessage: "Tổ chức sự kiện thành công!",
     organizeEventFailMessage: "Tổ chức sự kiện thất bại!",
+    time: "Thời gian",
+    registration: "Đăng ký",
+    eventTimeFormat: "mm:HH DD/MM/YYYY",
   },
 };
 

@@ -112,8 +112,8 @@ const Header = ({}: Props) => {
       },
       {
         label: (
-          <span onClick={() => router.push("/event/organize")}>
-            {localeText.event.organizeEvent}
+          <span onClick={() => router.push("/event")}>
+            {localeText.event.events}
           </span>
         ),
         key: "1",

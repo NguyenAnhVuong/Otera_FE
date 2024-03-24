@@ -1,0 +1,30 @@
+query GetEventById($id: Int!) {
+  getEventById(id: $id) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      id
+      name
+      address
+      avatar
+      createdAt
+      creatorId
+      description
+      email
+      endDateBooking
+      endDateEvent
+      maxParticipant
+      phone
+      priority
+      priorityExpired
+      startDateBooking
+      startDateEvent
+      images {
+        id
+        image
+      }
+    }
+  }
+}
