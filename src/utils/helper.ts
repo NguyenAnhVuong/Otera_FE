@@ -1,4 +1,4 @@
-import { EGender, EStatus } from "@/graphql/generated/schema";
+import { EGender, ERole } from "@/graphql/generated/schema";
 
 export const getGenderText = (gender?: EGender) => {
   switch (gender) {

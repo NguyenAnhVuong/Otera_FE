@@ -3,6 +3,7 @@ import { authActions } from "@/features/auth";
 import { searchActions } from "@/features/search";
 import { useGetUserLazyQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
+import useTrans from "@/hooks/useTrans";
 import { User } from "@/models/auth";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
 import { ERole } from "@/utils/enum";
@@ -20,6 +21,7 @@ const Header = ({}: Props) => {
   const handleLogout = useLogout();
   const [keyword, setKeyword] = useState("");
   const [getUser] = useGetUserLazyQuery();
+  const { localeText } = useTrans();
   const router = useRouter();
   let items: MenuProps["items"] = [
     {
@@ -110,6 +112,14 @@ const Header = ({}: Props) => {
       },
       {
         label: (
+          <span onClick={() => router.push("/event/organize")}>
+            {localeText.event.organizeEvent}
+          </span>
+        ),
+        key: "1",
+      },
+      {
+        label: (
           <span onClick={async () => await handleLogout(dispatch)}>
             Đăng xuất
           </span>
@@ -117,7 +127,7 @@ const Header = ({}: Props) => {
         key: "2",
       },
     ],
-    [dispatch, handleLogout, router]
+    [dispatch, handleLogout, localeText, router]
   );
 
   switch (authUser.role) {

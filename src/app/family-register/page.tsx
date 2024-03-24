@@ -13,33 +13,12 @@ const { TextArea } = Input;
 type Props = {};
 
 const FamilyRegister = (props: Props) => {
-  const [keyword, setKeyword] = useState("");
   const { messageApi } = useAppSelector((state) => state.antd);
   const [avatarPreview, setAvatarPreview] = useState<string>();
   const [avatar, setAvatar] = useState<File>();
   const handleLogout = useLogout();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { data: templesData } = useGetTemplesQuery({
-    variables: { keyword },
-  });
-
-  const temples = templesData?.getTemples?.data?.data || [];
-
-  const options = temples.reduce(
-    (arr: { label: string; value: string }[], temple) => {
-      return temple
-        ? [
-            ...arr,
-            {
-              label: temple.name,
-              value: temple.id.toString(),
-            },
-          ]
-        : arr;
-    },
-    []
-  );
 
   function handleUploadAvatar(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;

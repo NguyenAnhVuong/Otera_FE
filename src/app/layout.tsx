@@ -1,8 +1,9 @@
 "use client";
-import Header from "@/components/layout/Header";
+import { authApi } from "@/api/authApi";
+import Header from "@/components/Molecules/Header";
 import AntdProvider from "@/lib/AntdProvider";
 import { store } from "@/rtk/store";
-import JWTManager, { validateJwtToken } from "@/utils/jwt";
+import { validateJwtToken } from "@/utils/jwt";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import {
   ApolloClient,
@@ -13,10 +14,8 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { ConfigProvider } from "antd";
 import { Inter } from "next/font/google";
-import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import "./globals.css";
-import { authApi } from "@/api/authApi";
 
 const inter = Inter({ subsets: ["latin"] });
 
