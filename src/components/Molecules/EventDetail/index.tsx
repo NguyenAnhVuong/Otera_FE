@@ -1,39 +1,42 @@
 "use client";
-import { useGetTempleByIdQuery } from "@/graphql/generated/schema";
+
+import TimeInterval from "@/components/Atoms/TimeInterval";
+import { useGetEventByIdQuery } from "@/graphql/generated/schema";
+import useTrans from "@/hooks/useTrans";
 import { Carousel, Image as ImageAntd } from "antd";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 type Props = {
-  params: { id: string };
+  id: number;
 };
 
-const TempleDetail = ({ params }: Props) => {
-  const [temple, setTemple] = useState<any>({});
+const EventDetail = ({ id }: Props) => {
+  const [event, setEvent] = useState<any>({});
   const [images, setImages] = useState<any>([]);
-  // const [visible, setVisible] = useState(false);
-  // const [currentImage, setCurrentImage] = useState(0);
+  const { localeText } = useTrans();
   const ref: any = useRef();
   const goToSlide = (index: Number) => {
     ref.current.goTo(index);
   };
-  const { data } = useGetTempleByIdQuery({
+
+  const { data } = useGetEventByIdQuery({
     variables: {
-      id: Number(params.id),
+      id,
     },
   });
   useEffect(() => {
-    if (data?.getTempleById?.data) {
-      const templeData = data?.getTempleById?.data;
-      setTemple(templeData);
+    if (data?.getEventById?.data) {
+      const eventData = data?.getEventById?.data;
+      setEvent(eventData);
       setImages([
-        templeData.avatar,
-        ...(templeData.images
-          ? templeData.images.map((image: any) => image.image)
+        eventData.avatar,
+        ...(eventData.images
+          ? eventData.images.map((image: any) => image.image)
           : []),
       ]);
     }
-  }, [params.id, data]);
+  }, [id, data]);
   return (
     <div className="lg:flex lg:justify-center lg:mt-10 lg:p-4">
       <div className="lg:w-[1200px] lg:grid lg:grid-cols-10">
@@ -69,10 +72,6 @@ const TempleDetail = ({ params }: Props) => {
                   <div className="max-h-[329.0625px]" key={index}>
                     <ImageAntd
                       className="lg:rounded-lg lg:overflow-hidden lg:object-cover max-h-[329.0625px]"
-                      // onClick={() => {
-                      //   setCurrentImage(index);
-                      //   setVisible(true);
-                      // }}
                       src={image}
                       key={index}
                       width={"100%"}
@@ -88,13 +87,46 @@ const TempleDetail = ({ params }: Props) => {
 
         <div className="text-black lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
           <div>
-            <h2 className="text-2xl font-bold uppercase">{temple?.name}</h2>
-            <p>Địa chỉ: {temple?.address}</p>
-            <p>Số điện thoại: {temple?.phone}</p>
-            <p className="min-h-[128px]">{temple?.description}</p>
-            {temple?.website && (
-              <p className="mt-8">Website: {temple?.website}</p>
+            <h2 className="text-2xl font-bold uppercase">{event.name}</h2>
+            <p>
+              {localeText.event.address}: {event.address}
+            </p>
+            <TimeInterval
+              title={localeText.event.time}
+              startTime={event.startDateEvent}
+              endTime={event.endDateEvent}
+              format={localeText.event.eventTimeFormat}
+            />
+
+            <div className="mt-3">
+              <TimeInterval
+                title={localeText.event.registration}
+                startTime={event.startDateBooking}
+                endTime={event.endDateBooking}
+                format={localeText.event.eventTimeFormat}
+              />
+            </div>
+
+            <div className="mt-3">
+              {event.maxParticipant && (
+                <span>
+                  {localeText.event.maxParticipant(event.maxParticipant)}
+                </span>
+              )}
+            </div>
+
+            {event.phone && (
+              <p>
+                {localeText.event.phone}: {event.phone}
+              </p>
             )}
+
+            {event.email && (
+              <p>
+                {localeText.event.email}: {event.email}
+              </p>
+            )}
+            <p className="min-h-[128px]">{event.description}</p>
           </div>
         </div>
       </div>
@@ -102,4 +134,4 @@ const TempleDetail = ({ params }: Props) => {
   );
 };
 
-export default TempleDetail;
+export default EventDetail;

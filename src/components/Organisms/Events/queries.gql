@@ -1,0 +1,20 @@
+query templeGetEvents($ended: Boolean, $page: Int, $priority: Boolean, $skip: Int, $take: Int, $upcoming: Boolean) {
+  templeGetEvents(ended: $ended, page: $page, priority: $priority, skip: $skip, take: $take, upcoming: $upcoming) {
+    data {
+      totalItems
+      take
+      page
+      totalPages
+      data {
+        id
+        name
+        avatar
+        startDateBooking
+        startDateEvent
+        endDateEvent
+        endDateBooking
+        maxParticipant
+      }
+    }
+  }
+}
