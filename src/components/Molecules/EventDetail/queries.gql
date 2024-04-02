@@ -25,6 +25,9 @@ query GetEventById($id: Int!) {
         id
         image
       }
+      eventParticipantTypes {
+        role
+      }
     }
   }
 }

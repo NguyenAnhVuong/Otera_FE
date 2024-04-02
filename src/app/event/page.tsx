@@ -5,11 +5,7 @@ import React from "react";
 type Props = {};
 
 const Page = (props: Props) => {
-  return (
-    <div>
-      <Events />
-    </div>
-  );
+  return <Events />;
 };
 
 export default Page;

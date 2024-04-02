@@ -63,19 +63,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const [refresh, setRefresh] = useState(true);
-
-  // useEffect(() => {
-  //   const refreshToken = async () => {
-  //     const accessToken = JWTManager.getToken();
-  //     if (!accessToken || !validateJwtToken(accessToken)) {
-  //       await JWTManager.getRefreshToken();
-  //     }
-  //     setRefresh((refresh) => !refresh);
-  //   };
-  //   refreshToken();
-  // }, []);
-
   return (
     <Provider store={store}>
       <ApolloProvider client={client}>

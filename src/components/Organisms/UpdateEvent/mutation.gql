@@ -1,0 +1,11 @@
+mutation UpdateEvent($updateEventInput: VUpdateEventInput!) {
+  updateEvent(updateEventInput: $updateEventInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      affected
+    }
+  }
+}

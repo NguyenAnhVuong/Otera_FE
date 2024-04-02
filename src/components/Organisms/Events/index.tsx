@@ -1,4 +1,4 @@
-import CreateEventButton from "@/components/Atoms/CreateEventButton";
+import Loading from "@/components/Atoms/Loading";
 import Event from "@/components/Molecules/Event";
 import { useTempleGetEventsQuery } from "@/graphql/generated/schema";
 import { Pagination } from "antd";
@@ -12,7 +12,10 @@ const Events = (props: Props) => {
 
   return (
     <div className="mt-8">
-      <CreateEventButton />
+      {loading && <Loading />}
+      {/* <div className="text-right">
+        <CreateEventButton />
+      </div> */}
       <div className="mt-4 grid grid-cols-2 gap-4">
         {data?.templeGetEvents.data.data.map((event) => (
           <Event
@@ -30,7 +33,7 @@ const Events = (props: Props) => {
       </div>
       {data && (
         <Pagination
-          className="mt-4 text-right"
+          className="mt-4 text-center"
           defaultCurrent={1}
           total={data.templeGetEvents.data.totalItems}
         />

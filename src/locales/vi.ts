@@ -1,9 +1,17 @@
 const vi = {
   OK: "OK",
   cancel: "Hủy",
-  family: "Gia đình",
-  temple: "Chùa",
+  family: "Hộ gia đình",
+  temple: "Nhà Chùa",
   publicUser: "Khách vãng lai",
+  save: "Lưu",
+  register: "Đăng ký",
+  validateMessages: {
+    required: (label: string) => `Vui lòng nhập ${label}!`,
+    types: {
+      email: "Không đúng định dạng email!",
+    },
+  },
   deathAnniversary: {
     reject: "Từ chối",
     approve: "Chấp nhận",
@@ -37,6 +45,7 @@ const vi = {
   },
   event: {
     events: "Sự kiện",
+    templeEvents: "Sự kiện của chùa",
     organizeEvent: "Tổ chức sự kiện",
     name: "Tên sự kiện",
     description: "Mô tả",
@@ -47,14 +56,23 @@ const vi = {
     address: "Địa chỉ",
     phone: "Số điện thoại",
     email: "Email",
+    maxParticipantLabel: "Số lượng người tham gia tối đa",
     maxParticipant: (max: number) => `Tối đa: ${max}`,
     avatar: "Ảnh đại diện",
     participants: "Đối tượng tham gia",
     organizeEventSuccessMessage: "Tổ chức sự kiện thành công!",
     organizeEventFailMessage: "Tổ chức sự kiện thất bại!",
+    updateEventSuccessMessage: "Cập nhật thông tin sự kiện thành công!",
+    updateEventFailMessage: "Cập nhật thông tin sự kiện thất bại!",
+    cancelEventSuccessMessage: "Hủy sự kiện thành công!",
+    cancelEventFailMessage: "Hủy sự kiện thất bại!",
     time: "Thời gian",
     registration: "Đăng ký",
     eventTimeFormat: "mm:HH DD/MM/YYYY",
+    updateEvent: "Cập nhật thông tin sự kiện",
+    cancelEvent: "Hủy sự kiện",
+    cancelConfirmTitle: "Hủy sự kiện",
+    cancelConfirmDescription: "Bạn có chắc chắn muốn hủy sự kiện?",
   },
 };
 

@@ -112,11 +112,19 @@ const Header = ({}: Props) => {
       },
       {
         label: (
-          <span onClick={() => router.push("/event")}>
-            {localeText.event.events}
+          <span onClick={() => router.push("/event/organize")}>
+            {localeText.event.organizeEvent}
           </span>
         ),
         key: "1",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("/event")}>
+            {localeText.event.templeEvents}
+          </span>
+        ),
+        key: "2",
       },
       {
         label: (
@@ -124,7 +132,7 @@ const Header = ({}: Props) => {
             Đăng xuất
           </span>
         ),
-        key: "2",
+        key: "3",
       },
     ],
     [dispatch, handleLogout, localeText, router]

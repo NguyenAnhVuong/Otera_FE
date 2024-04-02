@@ -1,20 +1,31 @@
 "use client";
 import axiosJWT from "@/api/axiosJWT";
 import FormLayout from "@/components/Atoms/FormLayout";
-import { ERole, useCreateEventMutation } from "@/graphql/generated/schema";
+import Loading from "@/components/Atoms/Loading";
+import {
+  ERole,
+  GetEventByIdDocument,
+  useGetEventByIdQuery,
+  useUpdateEventMutation,
+} from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { participantTypeOptions } from "@/utils/constants";
+import { getParticipants } from "@/utils/helper";
 import { Button, Checkbox, DatePicker, Form, Input } from "antd";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
-type Props = {};
+type UpdateEventProps = {
+  id: number;
+};
 
-const EventOrganize = (props: Props) => {
+const UpdateEvent: React.FC<UpdateEventProps> = ({ id }) => {
+  const router = useRouter();
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
   const [avatarPreview, setAvatarPreview] = useState<string>();
@@ -24,7 +35,37 @@ const EventOrganize = (props: Props) => {
   const [descriptionImages, setDescriptionImages] = useState<any[]>();
   const [form] = Form.useForm();
   const eventTime = Form.useWatch("eventTime", form);
-  const [createEvent] = useCreateEventMutation();
+
+  const [updateEvent] = useUpdateEventMutation();
+  const { loading } = useGetEventByIdQuery({
+    variables: { id },
+    onCompleted(data) {
+      setAvatarPreview(data?.getEventById?.data?.avatar);
+      setDescriptionImagePreviews(
+        data?.getEventById?.data?.images.map((image) => image.image)
+      );
+      form.setFieldsValue({
+        name: data.getEventById?.data?.name,
+        address: data?.getEventById?.data?.address,
+        phone: data?.getEventById?.data?.phone,
+        email: data?.getEventById?.data?.email,
+        description: data?.getEventById?.data?.description,
+        eventTime: [
+          dayjs(data?.getEventById?.data?.startDateEvent),
+          dayjs(data?.getEventById?.data?.endDateEvent),
+        ],
+        bookingTime: [
+          dayjs(data?.getEventById?.data?.startDateBooking),
+          dayjs(data?.getEventById?.data?.endDateBooking),
+        ],
+        maxParticipant: data?.getEventById?.data?.maxParticipant,
+        participants: getParticipants(
+          data?.getEventById?.data?.eventParticipantTypes ?? [],
+          localeText
+        ),
+      });
+    },
+  });
 
   function handleUploadAvatar(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
@@ -85,11 +126,13 @@ const EventOrganize = (props: Props) => {
       });
 
       const newEvent = {
+        id,
         name: values.name,
         ...(eventAvatar && { avatar: eventAvatar }),
-        ...(eventImages.length > 0 && {
-          images: eventImages,
-        }),
+        ...(eventImages &&
+          eventImages.length > 0 && {
+            images: eventImages,
+          }),
         description: values.description,
         startDateEvent: values.eventTime[0],
         endDateEvent: values.eventTime[1],
@@ -102,16 +145,16 @@ const EventOrganize = (props: Props) => {
         roles,
       };
 
-      const { data } = await createEvent({
+      await updateEvent({
         variables: {
-          createEventInput: newEvent,
+          updateEventInput: newEvent,
         },
         onCompleted() {
           messageApi.open({
             type: "success",
-            content: localeText.event.organizeEventSuccessMessage,
+            content: localeText.event.updateEventSuccessMessage,
           });
-          form.resetFields();
+          router.back();
           setAvatarPreview("");
           setDescriptionImagePreviews([]);
           setAvatar(undefined);
@@ -120,9 +163,10 @@ const EventOrganize = (props: Props) => {
         onError() {
           messageApi.open({
             type: "error",
-            content: localeText.event.organizeEventFailMessage,
+            content: localeText.event.updateEventFailMessage,
           });
         },
+        refetchQueries: [GetEventByIdDocument],
       });
     } catch (error) {
       console.log("error", error);
@@ -134,7 +178,8 @@ const EventOrganize = (props: Props) => {
   };
 
   return (
-    <FormLayout title={localeText.event.organizeEvent}>
+    <FormLayout title={localeText.event.updateEvent}>
+      {loading && <Loading />}
       <Form
         form={form}
         className="w-full text-center"
@@ -231,7 +276,14 @@ const EventOrganize = (props: Props) => {
           className="w-full"
           label={localeText.event.participants}
           name="participants"
-          rules={[{ required: true, message: "Please input your username!" }]}
+          rules={[
+            {
+              required: true,
+              message: localeText.validateMessages.required(
+                localeText.event.participants
+              ),
+            },
+          ]}
           initialValue={participantTypeOptions(localeText).map(
             (item) => item.value
           )}
@@ -245,7 +297,14 @@ const EventOrganize = (props: Props) => {
         <Form.Item
           label={localeText.event.maxParticipantLabel}
           name="maxParticipant"
-          rules={[{ required: true, message: "Please input your username!" }]}
+          rules={[
+            {
+              required: true,
+              message: localeText.validateMessages.required(
+                localeText.event.maxParticipantLabel
+              ),
+            },
+          ]}
           className="flex justify-start"
         >
           <Input type="number" className="w-full" />
@@ -261,7 +320,7 @@ const EventOrganize = (props: Props) => {
           rules={[
             {
               type: "email",
-              message: "Vui lòng nhập đúng định dạng email!",
+              message: localeText.validateMessages.types.email,
             },
           ]}
         >
@@ -307,7 +366,7 @@ const EventOrganize = (props: Props) => {
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            {localeText.register}
+            {localeText.save}
           </Button>
         </Form.Item>
       </Form>
@@ -315,4 +374,4 @@ const EventOrganize = (props: Props) => {
   );
 };
 
-export default EventOrganize;
+export default UpdateEvent;
