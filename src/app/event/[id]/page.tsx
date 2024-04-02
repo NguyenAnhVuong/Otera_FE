@@ -5,11 +5,7 @@ type Props = {
 };
 
 const Page = ({ params }: Props) => {
-  return (
-    <div>
-      <EventDetail id={Number(params.id)} />
-    </div>
-  );
+  return <EventDetail id={Number(params.id)} />;
 };
 
 export default Page;
