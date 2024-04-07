@@ -2,6 +2,7 @@
 import { deceasedApi } from "@/api/deceasedApi";
 import TempleSelect from "@/components/Atoms/TempleSelect";
 import { useGetListDeceasedQuery } from "@/graphql/generated/schema";
+import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { EGender } from "@/utils/enum";
 import { Button, DatePicker, Form, Input, Radio } from "antd";
@@ -20,6 +21,7 @@ const DeceasedDeclare = (props: Props) => {
   const [descriptionImagePreviews, setDescriptionImagePreviews] =
     useState<string[]>();
   const [descriptionImages, setDescriptionImages] = useState<any[]>();
+  const { localeText } = useTrans();
 
   function handleUploadAvatar(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;

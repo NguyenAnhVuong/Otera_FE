@@ -1,5 +1,5 @@
-query GetEvents($page: Int, $take: Int, $upcoming: Boolean, $ended: Boolean, $templeId: Int) {
-  getEvents(page: $page, take: $take, upcoming: $upcoming, ended: $ended, templeId: $templeId) {
+query templeGetEvents($ended: Boolean, $page: Int, $priority: Boolean, $skip: Int, $take: Int, $upcoming: Boolean) {
+  templeGetEvents(ended: $ended, page: $page, priority: $priority, skip: $skip, take: $take, upcoming: $upcoming) {
     data {
       totalItems
       take
@@ -18,4 +18,3 @@ query GetEvents($page: Int, $take: Int, $upcoming: Boolean, $ended: Boolean, $te
     }
   }
 }
-

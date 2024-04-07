@@ -1,8 +1,8 @@
 "use client";
 import Loading from "@/components/Atoms/Loading";
-import TempleSelect from "@/components/Atoms/TempleSelect";
+import NoData from "@/components/Atoms/NoData";
 import Event from "@/components/Molecules/Event";
-import { useGetEventsQuery } from "@/graphql/generated/schema";
+import { useTempleGetEventsQuery } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { PAGE, TAKE } from "@/utils/constants";
 import { Form, Pagination, Select } from "antd";
@@ -10,25 +10,25 @@ import { useState } from "react";
 
 type Props = {};
 
-const Events = (props: Props) => {
-  const [page, setPage] = useState(PAGE);
+const TempleEvents = (props: Props) => {
   const [form] = Form.useForm();
+  const [page, setPage] = useState(PAGE);
   const { localeText } = useTrans();
-  const templeId = Form.useWatch("templeId", form);
   const filter = Form.useWatch("filter", form);
   const getFilter = () => {
     switch (filter) {
       case "upcoming":
         return { upcoming: true };
+      case "ended":
+        return { ended: true };
       default:
         return {};
     }
   };
-  const { data, loading, error } = useGetEventsQuery({
+  const { data, loading, error } = useTempleGetEventsQuery({
     variables: {
       page: page,
       take: TAKE,
-      templeId: Number(templeId),
       ...(filter && getFilter()),
     },
   });
@@ -36,15 +36,11 @@ const Events = (props: Props) => {
   return (
     <div className="mt-8">
       {loading && <Loading />}
-      {/* <div className="text-right">
-        <CreateEventButton />
-      </div> */}
       <div className="flex items-center justify-between">
         <div className="mb-6">
-          <h3 className="text-black m-0">{localeText.event.listEvents}</h3>
+          <h3 className="text-black m-0">{localeText.event.templeEvents}</h3>
         </div>
         <Form form={form} className="flex justify-end items-center gap-2">
-          <TempleSelect required={false} displayLabel={false} />
           <Form.Item name="filter" initialValue={"all"}>
             <Select
               style={{ width: 120 }}
@@ -52,13 +48,14 @@ const Events = (props: Props) => {
               options={[
                 { value: "all", label: localeText.all },
                 { value: "upcoming", label: localeText.event.upcoming },
+                { value: "ended", label: localeText.event.ended },
               ]}
             />
           </Form.Item>
         </Form>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {data?.getEvents.data.data.map((event) => (
+        {data?.templeGetEvents.data.data.map((event) => (
           <Event
             key={event.id}
             id={event.id}
@@ -72,17 +69,19 @@ const Events = (props: Props) => {
           />
         ))}
       </div>
-      {data && (
+      {data && data.templeGetEvents.data.totalItems ? (
         <Pagination
           className="mt-4 text-center"
-          defaultCurrent={PAGE}
-          total={data.getEvents.data.totalItems}
+          current={page}
+          total={data.templeGetEvents.data.totalItems}
           onChange={(page) => setPage(page)}
           pageSize={TAKE}
         />
+      ) : (
+        <NoData />
       )}
     </div>
   );
 };
 
-export default Events;
+export default TempleEvents;

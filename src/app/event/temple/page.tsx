@@ -1,10 +1,10 @@
-import Events from "@/components/Organisms/Events";
+import TempleEvents from "@/components/Organisms/TempleEvents";
 import React from "react";
 
 type Props = {};
 
 const Page = (props: Props) => {
-  return <Events />;
+  return <TempleEvents />;
 };
 
 export default Page;

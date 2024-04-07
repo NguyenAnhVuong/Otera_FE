@@ -31,7 +31,7 @@ const Event = ({
     <Link
       href={`/event/${id}`}
       key={id}
-      className="flex items-center border border-gray-300 hover:shadow-md border-solid p-2 cursor-pointer text-black no-underline"
+      className="flex items-center border border-gray-300 hover:shadow-md border-solid p-2 cursor-pointer text-black no-underline rounded-lg "
     >
       <Image
         className="object-cover"
