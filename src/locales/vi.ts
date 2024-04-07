@@ -3,9 +3,14 @@ const vi = {
   cancel: "Hủy",
   family: "Hộ gia đình",
   temple: "Nhà Chùa",
+  selectTemple: "Chọn nhà chùa",
   publicUser: "Khách vãng lai",
   save: "Lưu",
   register: "Đăng ký",
+  declareDeceased: "Khai báo thành viên an nghỉ",
+  filter: "Lọc",
+  all: "Tất cả",
+  noData: "Không có dữ liệu",
   validateMessages: {
     required: (label: string) => `Vui lòng nhập ${label}!`,
     types: {
@@ -44,6 +49,7 @@ const vi = {
     registerDeathAnniversary: "Đăng ký tổ chức lễ giỗ",
   },
   event: {
+    listEvents: "Danh sách sự kiện",
     events: "Sự kiện",
     templeEvents: "Sự kiện của chùa",
     organizeEvent: "Tổ chức sự kiện",
@@ -73,6 +79,8 @@ const vi = {
     cancelEvent: "Hủy sự kiện",
     cancelConfirmTitle: "Hủy sự kiện",
     cancelConfirmDescription: "Bạn có chắc chắn muốn hủy sự kiện?",
+    upcoming: "Sắp diễn ra",
+    ended: "Đã kết thúc",
   },
 };
 

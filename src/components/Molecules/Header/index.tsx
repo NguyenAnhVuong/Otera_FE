@@ -19,7 +19,6 @@ const Header = ({}: Props) => {
   const authUser = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const handleLogout = useLogout();
-  const [keyword, setKeyword] = useState("");
   const [getUser] = useGetUserLazyQuery();
   const { localeText } = useTrans();
   const router = useRouter();
@@ -76,17 +75,27 @@ const Header = ({}: Props) => {
       },
       {
         label: (
-          <span onClick={() => router.push("/deceased")}>
-            Thành viên an nghỉ
+          <span onClick={() => router.push("/event")}>
+            {localeText.event.events}
           </span>
         ),
         key: "1",
       },
       {
         label: (
-          <span onClick={() => router.push("/deceased/declare")}>Báo tử</span>
+          <span onClick={() => router.push("/deceased")}>
+            Thành viên an nghỉ
+          </span>
         ),
         key: "2",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("/deceased/declare")}>
+            {localeText.declareDeceased}
+          </span>
+        ),
+        key: "3",
       },
       {
         label: (
@@ -94,10 +103,10 @@ const Header = ({}: Props) => {
             Đăng xuất
           </span>
         ),
-        key: "3",
+        key: "4",
       },
     ],
-    [dispatch, handleLogout, router]
+    [dispatch, handleLogout, localeText.declareDeceased, router]
   );
 
   const templeAdminItems: MenuProps["items"] = useMemo(
@@ -120,7 +129,7 @@ const Header = ({}: Props) => {
       },
       {
         label: (
-          <span onClick={() => router.push("/event")}>
+          <span onClick={() => router.push("/event/temple")}>
             {localeText.event.templeEvents}
           </span>
         ),
@@ -128,11 +137,19 @@ const Header = ({}: Props) => {
       },
       {
         label: (
+          <span onClick={() => router.push("/event")}>
+            {localeText.event.events}
+          </span>
+        ),
+        key: "3",
+      },
+      {
+        label: (
           <span onClick={async () => await handleLogout(dispatch)}>
             Đăng xuất
           </span>
         ),
-        key: "3",
+        key: "4",
       },
     ],
     [dispatch, handleLogout, localeText, router]
@@ -149,14 +166,6 @@ const Header = ({}: Props) => {
       items = [...templeAdminItems];
       break;
   }
-
-  useEffect(() => {
-    const setKeywordState = setTimeout(() => {
-      dispatch(searchActions.search(keyword));
-    }, 500);
-
-    return () => clearTimeout(setKeywordState);
-  }, [dispatch, keyword]);
 
   useEffect(() => {
     const getUserData = async () => {

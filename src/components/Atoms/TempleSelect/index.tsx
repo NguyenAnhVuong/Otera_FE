@@ -1,16 +1,25 @@
 import { useGetTempleListQuery } from "@/graphql/generated/schema";
+import useTrans from "@/hooks/useTrans";
 import { Form, Select } from "antd";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 
-type Props = {
+type TempleSelectProps = {
   familyId?: number | null;
+  required?: boolean;
+  displayLabel?: boolean;
 };
 
-const TempleSelect = ({ familyId }: Props) => {
+const TempleSelect: React.FC<TempleSelectProps> = ({
+  familyId,
+  required = true,
+  displayLabel = true,
+}) => {
   const [keyword, setKeyword] = useState("");
   const { data: templesData } = useGetTempleListQuery({
     variables: { keyword, ...(familyId && { familyId }) },
   });
+
+  const { localeText } = useTrans();
 
   const temples = templesData?.getTemples?.data?.data || [];
 
@@ -45,13 +54,20 @@ const TempleSelect = ({ familyId }: Props) => {
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <Form.Item
-      label="Chùa"
+      label={displayLabel ? localeText.temple : ""}
       name="templeId"
-      rules={[{ required: true, message: "Please input your temple!" }]}
+      rules={[
+        {
+          required: required,
+          message: localeText.validateMessages.required(localeText.temple),
+        },
+      ]}
     >
       <Select
+        className="w-44"
         showSearch
         optionFilterProp="children"
+        placeholder={localeText.selectTemple}
         onSearch={onSearch}
         filterOption={filterOption}
         options={options}

@@ -12,3 +12,6 @@ export const participantTypeOptions = (localeText: any) => [
     value: localeText.publicUser,
   },
 ];
+
+export const PAGE = 1;
+export const TAKE = 1;
