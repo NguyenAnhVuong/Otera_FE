@@ -51,7 +51,7 @@ const Events = (props: Props) => {
               placeholder={localeText.filter}
               options={[
                 { value: "all", label: localeText.all },
-                { value: "upcoming", label: localeText.event.upcoming },
+                // { value: "upcoming", label: localeText.event.upcoming },
               ]}
             />
           </Form.Item>
@@ -64,6 +64,7 @@ const Events = (props: Props) => {
             id={event.id}
             avatar={event.avatar}
             name={event.name}
+            address={event.address}
             startDateEvent={event.startDateEvent}
             endDateEvent={event.endDateEvent}
             startDateBooking={event.startDateBooking}

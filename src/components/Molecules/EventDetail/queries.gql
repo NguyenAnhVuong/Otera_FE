@@ -21,6 +21,8 @@ query GetEventById($id: Int!) {
       priorityExpired
       startDateBooking
       startDateEvent
+      currentParticipant
+      isBooked
       images {
         id
         image

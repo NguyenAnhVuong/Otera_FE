@@ -1,0 +1,9 @@
+mutation BookingEvent($bookingEventInput: VBookingEventInput!) {
+  bookingEvent(bookingEventInput: $bookingEventInput) {
+    data
+    errorCode
+    errorMessage
+    statusCode
+    timestamp
+  }
+}

@@ -8,6 +8,7 @@ type Props = {
   id: number;
   avatar: string;
   name: string;
+  address: string;
   startDateEvent: string;
   endDateEvent: string;
   startDateBooking: string;
@@ -19,6 +20,7 @@ const Event = ({
   id,
   avatar,
   name,
+  address,
   startDateEvent,
   endDateEvent,
   startDateBooking,
@@ -42,6 +44,10 @@ const Event = ({
       />
       <div className="px-2">
         <span className="font-semibold text-lg">{name}</span>
+        <div>
+          <span>{localeText.event.address}: </span>
+          <span>{address}</span>
+        </div>
         <div className="flex flex-col gap-2 mt-2">
           <TimeInterval
             title={localeText.event.time}
@@ -56,11 +62,11 @@ const Event = ({
               endTime={endDateBooking}
               format={localeText.event.eventTimeFormat}
             />
-            <div>
+            {/* <div>
               {maxParticipant && (
                 <span>({localeText.event.maxParticipant(maxParticipant)})</span>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
