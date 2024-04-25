@@ -8,7 +8,7 @@ import Link from "next/link";
 
 type Props = {};
 
-const Home = (props: Props) => {
+const Page = (props: Props) => {
   const auth = useAppSelector((state) => state.auth);
   const { data } = useGetListDeceasedQuery({
     variables: { familyId: auth.familyId as number },
@@ -55,4 +55,4 @@ const Home = (props: Props) => {
   );
 };
 
-export default Home;
+export default Page;

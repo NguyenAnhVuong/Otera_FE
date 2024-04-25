@@ -2,8 +2,8 @@ import { User } from "@/models/auth";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: User = {
-  // -1 means not logged in
-  id: -1,
+  // 0 means not logged in
+  id: 0,
   name: "",
   email: "",
   avatar: "",
@@ -24,7 +24,7 @@ const authSlice = createSlice({
       state.familyId = action.payload.familyId;
     },
     logout: (state) => {
-      state.id = -1;
+      state.id = 0;
       state.name = "";
       state.email = "";
       state.avatar = "";

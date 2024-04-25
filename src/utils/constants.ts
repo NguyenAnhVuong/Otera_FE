@@ -14,4 +14,4 @@ export const participantTypeOptions = (localeText: any) => [
 ];
 
 export const PAGE = 1;
-export const TAKE = 1;
+export const TAKE = 10;

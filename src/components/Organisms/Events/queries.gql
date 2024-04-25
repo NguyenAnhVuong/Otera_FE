@@ -1,5 +1,5 @@
-query GetEvents($page: Int, $take: Int, $upcoming: Boolean, $ended: Boolean, $templeId: Int) {
-  getEvents(page: $page, take: $take, upcoming: $upcoming, ended: $ended, templeId: $templeId) {
+query GetEvents($page: Int, $take: Int, $templeId: Int) {
+  getEvents(page: $page, take: $take, templeId: $templeId) {
     data {
       totalItems
       take
@@ -14,6 +14,7 @@ query GetEvents($page: Int, $take: Int, $upcoming: Boolean, $ended: Boolean, $te
         endDateEvent
         endDateBooking
         maxParticipant
+        address
       }
     }
   }

@@ -1,6 +1,5 @@
 "use client";
 import { authActions } from "@/features/auth";
-import { searchActions } from "@/features/search";
 import { useGetUserLazyQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
 import useTrans from "@/hooks/useTrans";
@@ -11,7 +10,7 @@ import { Dropdown, MenuProps } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 type Props = {};
 
@@ -171,7 +170,7 @@ const Header = ({}: Props) => {
     const getUserData = async () => {
       const token = localStorage.getItem("accessToken");
 
-      if (token && authUser.id === -1) {
+      if (token && !authUser.id) {
         const { data } = await getUser();
         if (data) {
           const user = data.getUser.data;
@@ -215,7 +214,7 @@ const Header = ({}: Props) => {
             </li>
           </ul>
           <div className="ml-4 flex items-center ">
-            {authUser.id === -1 ? (
+            {!authUser.id ? (
               <Link className="text-black no-underline" href="/login">
                 Đăng nhập
               </Link>

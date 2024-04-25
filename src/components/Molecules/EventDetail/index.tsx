@@ -6,26 +6,27 @@ import Loading from "@/components/Atoms/Loading";
 import TimeInterval from "@/components/Atoms/TimeInterval";
 import {
   ERole,
+  useBookingEventMutation,
   useGetEventByIdQuery,
   useUpdateEventMutation,
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { getParticipants } from "@/utils/helper";
-import { Carousel, Image as ImageAntd } from "antd";
+import { Button, Carousel, Image as ImageAntd } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 type Props = {
   id: number;
 };
 
 const EventDetail = ({ id }: Props) => {
+  const { id: userId } = useAppSelector((state) => state.auth);
   const { messageApi } = useAppSelector((state) => state.antd);
   const { role } = useAppSelector((state) => state.auth);
-  const [event, setEvent] = useState<any>({});
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [participants, setParticipants] = useState<string[]>([]);
   const { localeText } = useTrans();
   const router = useRouter();
@@ -45,10 +46,22 @@ const EventDetail = ({ id }: Props) => {
           localeText
         )
       );
+      if (data?.getEventById?.data) {
+        const eventData = data?.getEventById?.data;
+        setImages([
+          eventData.avatar,
+          ...(eventData.images
+            ? eventData.images.map((image) => image.image)
+            : []),
+        ]);
+      }
     },
   });
 
+  let event = data?.getEventById?.data;
+
   const [updateEvent] = useUpdateEventMutation();
+  const [bookingEvent] = useBookingEventMutation();
 
   const handleCancelEvent = async () => {
     await updateEvent({
@@ -68,18 +81,38 @@ const EventDetail = ({ id }: Props) => {
     });
   };
 
-  useEffect(() => {
-    if (data?.getEventById?.data) {
-      const eventData = data?.getEventById?.data;
-      setEvent(eventData);
-      setImages([
-        eventData.avatar,
-        ...(eventData.images
-          ? eventData.images.map((image: any) => image.image)
-          : []),
-      ]);
+  const handleBookingEvent = async () => {
+    if (userId) {
+      await bookingEvent({
+        variables: {
+          bookingEventInput: {
+            eventId: id,
+          },
+        },
+        onCompleted: () => {
+          messageApi.success(localeText.event.bookingEventSuccessMessage);
+        },
+        onError: () => {
+          messageApi.error(localeText.event.bookingEventFailMessage);
+        },
+      });
+    } else {
+      router.push("/login");
     }
-  }, [id, data]);
+  };
+
+  const getBookingStatus = () => {
+    if (event?.isBooked) {
+      return localeText.event.isBooked;
+    } else if (
+      event?.currentParticipant &&
+      event?.maxParticipant &&
+      event.currentParticipant >= event.maxParticipant
+    ) {
+      return localeText.event.isFull;
+    }
+    return localeText.event.bookingEvent;
+  };
 
   return (
     <div className="lg:flex lg:justify-center lg:mt-10 lg:p-4">
@@ -133,8 +166,8 @@ const EventDetail = ({ id }: Props) => {
         <div className="text-black lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
           <div>
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold uppercase">{event.name}</h2>
-              {(role === ERole.TempleAdmin || role === ERole.TempleMember) && (
+              <h2 className="text-2xl font-bold uppercase">{event?.name}</h2>
+              {role === ERole.TempleAdmin || role === ERole.TempleMember ? (
                 <div className="flex items-center gap-3">
                   <EditButton
                     title={localeText.event.updateEvent}
@@ -151,53 +184,76 @@ const EventDetail = ({ id }: Props) => {
                     popConfirmOnConfirm={handleCancelEvent}
                   />
                 </div>
+              ) : (
+                <Button
+                  type="primary"
+                  onClick={handleBookingEvent}
+                  disabled={
+                    !(
+                      new Date(event?.startDateBooking) < new Date() &&
+                      new Date() < new Date(event?.endDateBooking)
+                    ) ||
+                    (event?.currentParticipant &&
+                      event?.maxParticipant &&
+                      event.currentParticipant >= event.maxParticipant) ||
+                    event?.isBooked
+                  }
+                >
+                  {getBookingStatus()}
+                </Button>
               )}
             </div>
             <p>
-              {localeText.event.address}: {event.address}
+              {localeText.event.address}: {event?.address}
             </p>
             <TimeInterval
               title={localeText.event.time}
-              startTime={event.startDateEvent}
-              endTime={event.endDateEvent}
+              startTime={event?.startDateEvent}
+              endTime={event?.endDateEvent}
               format={localeText.event.eventTimeFormat}
             />
             <div className="mt-3">
               <TimeInterval
                 title={localeText.event.registration}
-                startTime={event.startDateBooking}
-                endTime={event.endDateBooking}
+                startTime={event?.startDateBooking}
+                endTime={event?.endDateBooking}
                 format={localeText.event.eventTimeFormat}
               />
             </div>
             <div className="mt-3">
-              {event.maxParticipant && (
-                <span className="mr-2">
-                  {localeText.event.maxParticipant(event.maxParticipant)}
-                </span>
-              )}
-              (
+              <span>{localeText.event.participants}: </span>
               {participants &&
-                participants.length &&
+                !!participants.length &&
                 participants.map((participant, index) => (
                   <span key={index}>
                     {participant}
                     {index < participants.length - 1 && ", "}
                   </span>
                 ))}
-              )
             </div>
-            {event.phone && (
+            <div className="mt-3">
+              {event?.maxParticipant && (
+                <span className="mr-2">
+                  {localeText.event.maxParticipant(event.maxParticipant)}
+                </span>
+              )}
+            </div>
+            <div className="mt-3">
+              <span>{localeText.event.currentParticipant}: </span>
+              <span>{event?.currentParticipant}</span>
+            </div>
+
+            {event?.phone && (
               <p>
                 {localeText.event.phone}: {event.phone}
               </p>
             )}
-            {event.email && (
+            {event?.email && (
               <p>
                 {localeText.event.email}: {event.email}
               </p>
             )}
-            <p className="min-h-[128px]">{event.description}</p>
+            <p className="min-h-[128px]">{event?.description}</p>
           </div>
         </div>
       </div>

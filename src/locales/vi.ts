@@ -81,6 +81,12 @@ const vi = {
     cancelConfirmDescription: "Bạn có chắc chắn muốn hủy sự kiện?",
     upcoming: "Sắp diễn ra",
     ended: "Đã kết thúc",
+    bookingEvent: "Đăng ký tham gia",
+    bookingEventSuccessMessage: "Đăng ký tham gia sự kiện thành công!",
+    bookingEventFailMessage: "Đăng ký tham gia sự kiện thất bại!",
+    currentParticipant: "Số lượng người đã đăng ký",
+    isBooked: "Đã đăng ký",
+    isFull: "Đã đủ người tham gia",
   },
 };
 
