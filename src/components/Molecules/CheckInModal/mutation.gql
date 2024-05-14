@@ -1,0 +1,8 @@
+mutation eventParticipantCheckIn($eventParticipantCheckInInput: VEventParticipantCheckInInput!) {
+  eventParticipantCheckIn(eventParticipantCheckInInput: $eventParticipantCheckInInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

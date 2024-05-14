@@ -1,0 +1,8 @@
+mutation updateEventParticipant($bookingEventInput: UpdateEventParticipantInput!) {
+  updateEventParticipant(bookingEventInput: $bookingEventInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

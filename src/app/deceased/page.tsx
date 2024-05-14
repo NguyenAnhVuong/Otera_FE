@@ -1,5 +1,7 @@
 "use client";
+import PageTitle from "@/components/Atoms/PageTitle";
 import { useGetListDeceasedQuery } from "@/graphql/generated/schema";
+import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { Card } from "antd";
 import Meta from "antd/es/card/Meta";
@@ -7,8 +9,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 type Props = {};
-
+// TODO Pagination
 const Page = (props: Props) => {
+  const { localeText } = useTrans();
   const auth = useAppSelector((state) => state.auth);
   const { data } = useGetListDeceasedQuery({
     variables: { familyId: auth.familyId as number },
@@ -16,9 +19,7 @@ const Page = (props: Props) => {
   const listDeceasedData = data?.getListDeceased?.data || [];
   return (
     <div className="bg-white flex flex-col items-center">
-      <div>
-        <h3 className="text-2xl">Danh sách thành viên an nghỉ</h3>
-      </div>
+      <PageTitle title={localeText.deceased.deceasedList} />
       <div className="grid grid-cols-3 gap-5">
         {listDeceasedData.map((deceased) => {
           return (

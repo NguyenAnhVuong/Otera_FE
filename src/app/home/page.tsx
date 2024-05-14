@@ -10,6 +10,7 @@ import { useState } from "react";
 
 type Props = {};
 
+// TODO Pagination
 const Home = (props: Props) => {
   const [keyword, setKeyword] = useState("");
   const { data } = useGetTemplesQuery({

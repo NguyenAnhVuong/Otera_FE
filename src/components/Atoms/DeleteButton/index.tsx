@@ -33,6 +33,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
         <DeleteOutlined
           className="text-red-500 text-xl cursor-pointer"
           disabled={disabled}
+          size={20}
         />
       </Popconfirm>
     </Tooltip>

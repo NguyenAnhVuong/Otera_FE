@@ -1,10 +1,10 @@
-import TempleEvents from "@/components/Organisms/TempleEvents";
+import EventManagements from "@/components/Organisms/EventManagements";
 import React from "react";
 
 type Props = {};
 
 const Page = (props: Props) => {
-  return <TempleEvents />;
+  return <EventManagements />;
 };
 
 export default Page;

@@ -1,0 +1,36 @@
+query getBookingEvents($page: Int, $take: Int, $bookingStatus: EBookingStatus, $name: String,
+$address: String, $orderBy: [OrderBy!]) {
+  getBookingEvents(page: $page, take: $take, bookingStatus: $bookingStatus, name: $name, address: $address, orderBy: $orderBy) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        avatar
+        name
+        startDateEvent
+        endDateEvent
+        address
+        eventParticipants {
+          bookingStatus
+          code
+          checkInAt
+          updatedAt
+          rejectReason
+          approver {
+            id
+            userDetail {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}

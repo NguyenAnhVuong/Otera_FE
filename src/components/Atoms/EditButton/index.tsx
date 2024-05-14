@@ -19,6 +19,7 @@ const EditButton: React.FC<EditButtonProps> = ({
         className="text-green-400 text-xl cursor-pointer"
         onClick={onClick}
         disabled={disabled}
+        size={20}
       />
     </Tooltip>
   );

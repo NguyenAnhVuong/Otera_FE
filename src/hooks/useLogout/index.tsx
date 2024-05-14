@@ -4,9 +4,10 @@ import { AppDispatch } from "@/rtk/store";
 import { useRouter } from "next/navigation";
 
 export const useLogout = () => {
-  const [userLogout] = useUserLogoutMutation();
+  const [userLogout, { client }] = useUserLogoutMutation();
   const router = useRouter();
   const handleLogout = async (dispatch: AppDispatch) => {
+    client.clearStore();
     const { data } = await userLogout();
     if (data && data.userLogout?.data) {
       localStorage.removeItem("accessToken");

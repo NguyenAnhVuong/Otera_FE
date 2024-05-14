@@ -16,6 +16,7 @@ import { ConfigProvider } from "antd";
 import { Inter } from "next/font/google";
 import { Provider } from "react-redux";
 import "./globals.css";
+import NoData from "@/components/Atoms/NoData";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,10 +38,16 @@ const authLink = setContext(async (_, { headers }) => {
     const verifyToken = validateJwtToken(token);
     if (!verifyToken) {
       const { data } = await authApi.refreshToken();
+
       if (data) {
         const { accessToken } = data;
         localStorage.setItem("accessToken", accessToken);
         token = accessToken;
+      } else {
+        localStorage.removeItem("accessToken");
+        // remove cookie
+        document.cookie =
+          "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       }
     }
   }
@@ -73,6 +80,7 @@ export default function RootLayout({
                 colorPrimary: "#FEDB39",
               },
             }}
+            renderEmpty={() => <NoData />}
           >
             <AntdProvider>
               <html lang="en">

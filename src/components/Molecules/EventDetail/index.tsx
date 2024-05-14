@@ -6,6 +6,7 @@ import Loading from "@/components/Atoms/Loading";
 import TimeInterval from "@/components/Atoms/TimeInterval";
 import {
   ERole,
+  GetEventByIdDocument,
   useBookingEventMutation,
   useGetEventByIdQuery,
   useUpdateEventMutation,
@@ -18,11 +19,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-type Props = {
+type EventDetailProps = {
   id: number;
 };
 
-const EventDetail = ({ id }: Props) => {
+const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
   const { id: userId } = useAppSelector((state) => state.auth);
   const { messageApi } = useAppSelector((state) => state.antd);
   const { role } = useAppSelector((state) => state.auth);
@@ -56,12 +57,15 @@ const EventDetail = ({ id }: Props) => {
         ]);
       }
     },
+    fetchPolicy: "no-cache",
   });
 
   let event = data?.getEventById?.data;
 
   const [updateEvent] = useUpdateEventMutation();
-  const [bookingEvent] = useBookingEventMutation();
+  const [bookingEvent] = useBookingEventMutation({
+    refetchQueries: [GetEventByIdDocument],
+  });
 
   const handleCancelEvent = async () => {
     await updateEvent({

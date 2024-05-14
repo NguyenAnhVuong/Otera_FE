@@ -1,0 +1,62 @@
+query getEventParticipants(
+  $eventId: Int!
+  $bookingStatus: EBookingStatus!
+  $page: Int
+  $take: Int
+  $name: String
+  $email: String
+  $address: String
+  $familyName: String
+  $isBelongToTemple: Boolean
+  $orderBy: [OrderBy!]
+) {
+  getEventParticipants(
+    eventId: $eventId
+    bookingStatus: $bookingStatus
+    page: $page
+    take: $take
+    name: $name
+    email: $email
+    address: $address
+    familyName: $familyName
+    isBelongToTemple: $isBelongToTemple
+    orderBy: $orderBy
+  ) {
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        rejectReason
+        checkInAt
+        familyName
+        isBelongToTemple
+        user {
+          id
+          email
+          userDetail {
+            avatar
+            address
+            name
+          }
+        }
+        approver {
+          id
+          userDetail {
+            name
+          }
+        }
+        event{
+          endDateBooking
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+}

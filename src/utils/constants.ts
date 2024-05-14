@@ -15,3 +15,9 @@ export const participantTypeOptions = (localeText: any) => [
 
 export const PAGE = 1;
 export const TAKE = 10;
+
+export const formatDate = {
+  YYYY_MM_DD_HH_MM: "YYYY-MM-DD HH:mm",
+};
+
+export const CHECK_IN_BEFORE = 3 * 60 * 60 * 1000; // 3 hours
