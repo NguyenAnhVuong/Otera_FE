@@ -16,7 +16,6 @@ export default async function middleware(
   const config = authorizer.find((config) => match(config.path)(path));
   if (config) {
     const token = req.cookies.get("refreshToken")?.value;
-
     try {
       const validToken = token && validateJwtToken(token);
       if ((!validToken || !canAccess(validToken, config.role)) && config.auth) {

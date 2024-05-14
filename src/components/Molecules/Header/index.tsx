@@ -52,14 +52,30 @@ const Header = ({}: Props) => {
       },
       {
         label: (
-          <span onClick={async () => await handleLogout(dispatch)}>
-            Đăng xuất
+          <span onClick={() => router.push("/event")}>
+            {localeText.event.events}
           </span>
         ),
         key: "2",
       },
+      {
+        label: (
+          <span onClick={async () => router.push("/event/user")}>
+            {localeText.event.bookingEvents}
+          </span>
+        ),
+        key: "3",
+      },
+      {
+        label: (
+          <span onClick={async () => await handleLogout(dispatch)}>
+            Đăng xuất
+          </span>
+        ),
+        key: "4",
+      },
     ],
-    [dispatch, handleLogout, router]
+    [dispatch, handleLogout, localeText, router]
   );
 
   const familyAdminItems: MenuProps["items"] = useMemo(
@@ -82,11 +98,19 @@ const Header = ({}: Props) => {
       },
       {
         label: (
+          <span onClick={async () => router.push("/event/user")}>
+            {localeText.event.bookingEvents}
+          </span>
+        ),
+        key: "2",
+      },
+      {
+        label: (
           <span onClick={() => router.push("/deceased")}>
             Thành viên an nghỉ
           </span>
         ),
-        key: "2",
+        key: "3",
       },
       {
         label: (
@@ -94,7 +118,7 @@ const Header = ({}: Props) => {
             {localeText.declareDeceased}
           </span>
         ),
-        key: "3",
+        key: "4",
       },
       {
         label: (
@@ -102,10 +126,10 @@ const Header = ({}: Props) => {
             Đăng xuất
           </span>
         ),
-        key: "4",
+        key: "5",
       },
     ],
-    [dispatch, handleLogout, localeText.declareDeceased, router]
+    [dispatch, handleLogout, localeText, router]
   );
 
   const templeAdminItems: MenuProps["items"] = useMemo(
@@ -129,7 +153,7 @@ const Header = ({}: Props) => {
       {
         label: (
           <span onClick={() => router.push("/event/temple")}>
-            {localeText.event.templeEvents}
+            {localeText.event.eventManagements}
           </span>
         ),
         key: "2",

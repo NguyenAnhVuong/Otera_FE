@@ -8,6 +8,7 @@ import {
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
+import { formatDate } from "@/utils/constants";
 import { getGenderText } from "@/utils/helper";
 import { DeepPartial } from "@apollo/client/utilities";
 import { Button, Carousel, Image as ImageAntd } from "antd";
@@ -89,14 +90,14 @@ const DeceasedDetail = ({ params }: Props) => {
         ).setFullYear(
           currentDate > deathAnniversary ? currentYear + 1 : currentYear
         )
-      ).format("YYYY-MM-DD HH:mm"),
+      ).format(formatDate.YYYY_MM_DD_HH_MM),
       desiredEndTime: dayjs(
         new Date(
           `${deceased?.dateOfDeath} ${values.desiredTime[1].format("HH:mm")}`
         ).setFullYear(
           currentDate > deathAnniversary ? currentYear + 1 : currentYear
         )
-      ).format("YYYY-MM-DD HH:mm"),
+      ).format(formatDate.YYYY_MM_DD_HH_MM),
       note: values.note,
       isLiveStream: values.isLiveStream,
     };

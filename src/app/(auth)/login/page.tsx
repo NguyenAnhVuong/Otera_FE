@@ -22,31 +22,30 @@ const Login = (props: Props) => {
   const [userLogin] = useUserLoginMutation();
 
   const onFinish = async (values: UserLoginInput) => {
-    const { data } = await userLogin({
+    await userLogin({
       variables: {
         input: values,
       },
+      onCompleted: (data) => {
+        messageApi.open({
+          type: "success",
+          content: "Đăng nhập thành công!",
+        });
+
+        dispatch(authActions.login(data?.userLogin?.data?.user));
+        const accessToken = data.userLogin?.data?.accessToken;
+        if (accessToken) {
+          localStorage.setItem("accessToken", accessToken);
+        }
+        router.push("/home");
+      },
+      onError: () => {
+        messageApi.open({
+          type: "error",
+          content: "Sai tài khoản hoặc mật khẩu!",
+        });
+      },
     });
-
-    if (data) {
-      messageApi.open({
-        type: "success",
-        content: "Đăng nhập thành công!",
-      });
-
-      dispatch(authActions.login(data?.userLogin?.data?.user));
-      const accessToken = data.userLogin?.data?.accessToken;
-      if (accessToken) {
-        localStorage.setItem("accessToken", accessToken);
-        // JWTManager.setToken(accessToken);
-      }
-      router.push("/home");
-    } else {
-      messageApi.open({
-        type: "error",
-        content: "Sai tài khoản hoặc mật khẩu!",
-      });
-    }
   };
 
   const onFinishFailed = (errorInfo: any) => {

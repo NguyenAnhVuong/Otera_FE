@@ -10,7 +10,7 @@ import {
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
-import { participantTypeOptions } from "@/utils/constants";
+import { formatDate, participantTypeOptions } from "@/utils/constants";
 import { getParticipants } from "@/utils/helper";
 import { Button, Checkbox, DatePicker, Form, Input } from "antd";
 import dayjs from "dayjs";
@@ -236,7 +236,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ id }) => {
         >
           <RangePicker
             showTime
-            format={"YYYY-MM-DD HH:mm"}
+            format={formatDate.YYYY_MM_DD_HH_MM}
             className="w-full"
             placeholder={[localeText.event.startTime, localeText.event.endTime]}
             disabledDate={(current) => {
@@ -260,7 +260,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ id }) => {
         >
           <RangePicker
             disabled={!eventTime || eventTime.length === 0}
-            format={"YYYY-MM-DD HH:mm"}
+            format={formatDate.YYYY_MM_DD_HH_MM}
             showTime
             className="w-full"
             placeholder={[localeText.event.startTime, localeText.event.endTime]}

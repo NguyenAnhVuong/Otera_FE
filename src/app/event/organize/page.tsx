@@ -1,12 +1,17 @@
 "use client";
 import axiosJWT from "@/api/axiosJWT";
 import FormLayout from "@/components/Atoms/FormLayout";
-import { ERole, useCreateEventMutation } from "@/graphql/generated/schema";
+import {
+  ERole,
+  TempleGetEventsDocument,
+  useCreateEventMutation,
+} from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
-import { participantTypeOptions } from "@/utils/constants";
+import { formatDate, participantTypeOptions } from "@/utils/constants";
 import { Button, Checkbox, DatePicker, Form, Input } from "antd";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 const { TextArea } = Input;
@@ -25,6 +30,7 @@ const EventOrganize = (props: Props) => {
   const [form] = Form.useForm();
   const eventTime = Form.useWatch("eventTime", form);
   const [createEvent] = useCreateEventMutation();
+  const router = useRouter();
 
   function handleUploadAvatar(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
@@ -102,7 +108,7 @@ const EventOrganize = (props: Props) => {
         roles,
       };
 
-      const { data } = await createEvent({
+      await createEvent({
         variables: {
           createEventInput: newEvent,
         },
@@ -116,6 +122,7 @@ const EventOrganize = (props: Props) => {
           setDescriptionImagePreviews([]);
           setAvatar(undefined);
           setDescriptionImages([]);
+          router.push("/event/temple");
         },
         onError() {
           messageApi.open({
@@ -123,6 +130,7 @@ const EventOrganize = (props: Props) => {
             content: localeText.event.organizeEventFailMessage,
           });
         },
+        refetchQueries: [TempleGetEventsDocument],
       });
     } catch (error) {
       console.log("error", error);
@@ -191,7 +199,7 @@ const EventOrganize = (props: Props) => {
         >
           <RangePicker
             showTime
-            format={"YYYY-MM-DD HH:mm"}
+            format={formatDate.YYYY_MM_DD_HH_MM}
             className="w-full"
             placeholder={[localeText.event.startTime, localeText.event.endTime]}
             disabledDate={(current) => {
@@ -215,7 +223,7 @@ const EventOrganize = (props: Props) => {
         >
           <RangePicker
             disabled={!eventTime || eventTime.length === 0}
-            format={"YYYY-MM-DD HH:mm"}
+            format={formatDate.YYYY_MM_DD_HH_MM}
             showTime
             className="w-full"
             placeholder={[localeText.event.startTime, localeText.event.endTime]}
@@ -245,7 +253,6 @@ const EventOrganize = (props: Props) => {
         <Form.Item
           label={localeText.event.maxParticipantLabel}
           name="maxParticipant"
-          rules={[{ required: true, message: "Please input your username!" }]}
           className="flex justify-start"
         >
           <Input type="number" className="w-full" />

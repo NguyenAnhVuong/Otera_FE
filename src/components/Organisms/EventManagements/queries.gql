@@ -1,0 +1,28 @@
+query templeGetEvents($upcoming: Boolean , $onGoing: Boolean,$ended: Boolean, $page: Int, $skip: Int, $take: Int, $name: String, $orderBy: [OrderBy!]) {
+  templeGetEvents(upcoming: $upcoming,onGoing: $onGoing,ended: $ended, page: $page, skip: $skip, take: $take, name: $name, orderBy: $orderBy) {
+    data {
+      totalItems
+      take
+      page
+      totalPages
+      data {
+        id
+        name
+        avatar
+        startDateBooking
+        startDateEvent
+        endDateEvent
+        endDateBooking
+        maxParticipant
+        address
+        currentParticipant
+        bookingParticipant
+        checkInParticipant
+        createdAt
+        eventParticipantTypes {
+          role
+        }
+      }
+    }
+  }
+}

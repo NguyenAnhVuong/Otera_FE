@@ -1,4 +1,6 @@
 "use client";
+import CopyBox from "@/components/Atoms/CopyBox";
+import DeathAnniversaryStatus from "@/components/Atoms/DeathAnniversaryStatus";
 import RejectDeathAnniversaryModal from "@/components/Atoms/RejectDeathAnniversaryModal";
 import DeathAnniversaryInforModal from "@/components/Molecules/DeathAnniversaryInforModal";
 import RejectInforModal from "@/components/Molecules/RejectInforModal";
@@ -11,9 +13,9 @@ import {
   useGetDeathAnniversariesQuery,
   useTempleUpdateDeathAnniversaryMutation,
 } from "@/graphql/generated/schema";
-import useGetStatusText from "@/hooks/useGetStatusText";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
+import { formatDate } from "@/utils/constants";
 import {
   CheckOutlined,
   CloseOutlined,
@@ -59,7 +61,6 @@ const DeathAnniversary = (props: Props) => {
   const { messageApi } = useAppSelector((state) => state.antd);
   const authUser = useAppSelector((state) => state.auth);
   const { localeText } = useTrans();
-  const getStatusText = useGetStatusText();
 
   const [deathAnniversary, setDeathAnniversary] = useState<DataType>();
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
@@ -69,6 +70,7 @@ const DeathAnniversary = (props: Props) => {
   >(null);
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   const [form] = Form.useForm();
+  // TODO Pagination, filter
   const { data } = useGetDeathAnniversariesQuery({
     variables: {
       getDeathAnniversariesInput: {
@@ -195,8 +197,11 @@ const DeathAnniversary = (props: Props) => {
           dataIndex: "desiredStartTime",
           align: "center",
           render: (desiredStartTime) => (
-            <span>{dayjs(desiredStartTime).format("YYYY-MM-DD HH:mm")}</span>
+            <span>
+              {dayjs(desiredStartTime).format(formatDate.YYYY_MM_DD_HH_MM)}
+            </span>
           ),
+          width: 116,
         },
         {
           title: "Kết thúc",
@@ -204,8 +209,11 @@ const DeathAnniversary = (props: Props) => {
           dataIndex: "desiredEndTime",
           align: "center",
           render: (desiredEndTime) => (
-            <span>{dayjs(desiredEndTime).format("YYYY-MM-DD HH:mm")}</span>
+            <span>
+              {dayjs(desiredEndTime).format(formatDate.YYYY_MM_DD_HH_MM)}
+            </span>
           ),
+          width: 116,
         },
       ],
     },
@@ -219,8 +227,11 @@ const DeathAnniversary = (props: Props) => {
           align: "center",
           render: (actualStartTime) =>
             actualStartTime && (
-              <span>{dayjs(actualStartTime).format("YYYY-MM-DD HH:mm")}</span>
+              <span>
+                {dayjs(actualStartTime).format(formatDate.YYYY_MM_DD_HH_MM)}
+              </span>
             ),
+          width: 116,
         },
         {
           title: "Kết thúc",
@@ -229,8 +240,11 @@ const DeathAnniversary = (props: Props) => {
           align: "center",
           render: (actualEndTime) =>
             actualEndTime && (
-              <span>{dayjs(actualEndTime).format("YYYY-MM-DD HH:mm")}</span>
+              <span>
+                {dayjs(actualEndTime).format(formatDate.YYYY_MM_DD_HH_MM)}
+              </span>
             ),
+          width: 116,
         },
       ],
     },
@@ -248,9 +262,15 @@ const DeathAnniversary = (props: Props) => {
       align: "center",
       render: (linkLiveStream) =>
         linkLiveStream && (
-          <Link href={linkLiveStream} target="_blank">
-            {localeText.deathAnniversary.watchLiveStream}
-          </Link>
+          <div className="flex flex-col items-center">
+            <Link href={linkLiveStream} target="_blank">
+              {localeText.deathAnniversary.watchLiveStream}
+            </Link>
+            <CopyBox
+              text={linkLiveStream}
+              tooltip={localeText.event.copyLinkEvent}
+            />
+          </div>
         ),
     },
     {
@@ -262,7 +282,7 @@ const DeathAnniversary = (props: Props) => {
         status === EStatus.Rejected && record.rejectReason ? (
           <RejectInforModal infor={record.rejectReason} />
         ) : (
-          <span>{getStatusText(status)}</span>
+          <DeathAnniversaryStatus status={status} />
         ),
     },
     {
@@ -325,6 +345,7 @@ const DeathAnniversary = (props: Props) => {
                       setIsEditModalOpen(true);
                     }}
                     disabled={status !== EStatus.Pending}
+                    size={20}
                   />
                 </Tooltip>
               }
@@ -348,7 +369,7 @@ const DeathAnniversary = (props: Props) => {
                 cancelText={localeText.cancel}
               >
                 <DeleteOutlined
-                  className="text-red-500 text-xl cursor-pointer"
+                  className="text-red-500 text-xl h-fit cursor-pointer"
                   disabled={status !== EStatus.Pending}
                 />
               </Popconfirm>

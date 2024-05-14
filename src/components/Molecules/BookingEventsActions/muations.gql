@@ -1,0 +1,5 @@
+mutation cancelBookingEvent($eventId: Int!) {
+  cancelBookingEvent(eventId: $eventId) {
+    errorCode
+  }
+}

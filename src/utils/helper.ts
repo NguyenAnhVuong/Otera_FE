@@ -1,4 +1,11 @@
-import { EGender, ERole } from "@/graphql/generated/schema";
+import {
+  EBookingStatus,
+  EGender,
+  ERole,
+  ESortOrder,
+  OrderBy,
+} from "@/graphql/generated/schema";
+import { SortOrder } from "antd/es/table/interface";
 
 export const getGenderText = (gender?: EGender) => {
   switch (gender) {
@@ -41,4 +48,30 @@ export const getParticipants = (
     }
   });
   return participants;
+};
+
+// convert order from antd to typeorm
+export const convertOrder = (order?: SortOrder) => {
+  return order === "ascend" ? ESortOrder.Asc : ESortOrder.Desc;
+};
+
+export const handleSortByColumn = (
+  orderBy: OrderBy[],
+  setOrderBy: (orderby: OrderBy[]) => void,
+  column: string,
+  sortOrder?: SortOrder
+) => {
+  const newSorter = [...orderBy].filter((item) => item.column !== column);
+  if (!sortOrder) {
+    setOrderBy(newSorter);
+  } else {
+    setOrderBy([
+      ...newSorter,
+      {
+        column,
+        sortOrder: convertOrder(sortOrder),
+      },
+    ]);
+  }
+  return 0;
 };

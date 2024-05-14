@@ -8,9 +8,7 @@ export const authApi = {
         withCredentials: true,
       });
       return res.data;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
     return 0;
   },
 };
