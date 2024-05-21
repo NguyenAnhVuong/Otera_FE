@@ -1,0 +1,9 @@
+mutation InviteToFamily($inviteFamilyInput: InviteFamilyInput!) {
+  inviteToFamily(inviteFamilyInput: $inviteFamilyInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data
+  }
+}

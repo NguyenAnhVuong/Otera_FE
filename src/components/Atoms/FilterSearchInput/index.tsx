@@ -1,6 +1,6 @@
 import useTrans from "@/hooks/useTrans";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input } from "antd";
+import { Button, Divider, Input } from "antd";
 import { FilterDropdownProps } from "antd/es/table/interface";
 import React from "react";
 
@@ -30,7 +30,7 @@ const FilterSearchInput: React.FC<FilterSearchInputProps> = ({
         value={selectedKeys[0]}
         prefix={<SearchOutlined />}
       />
-      <div className="flex gap-2 mt-2 justify-center">
+      <div className="flex gap-2 mt-2 justify-center pt-2 border-t border-0 border-solid border-[#f0f0f0]">
         <Button
           onClick={() => {
             setKeyword("");

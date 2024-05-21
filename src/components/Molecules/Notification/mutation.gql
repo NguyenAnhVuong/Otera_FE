@@ -1,0 +1,10 @@
+mutation ResponseFamilyInvitation($responseInviteFamilyInput: ResponseInviteFamilyInput!) {
+  responseFamilyInvitation(
+    responseInviteFamilyInput: $responseInviteFamilyInput
+  ) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

@@ -109,11 +109,11 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ id }) => {
       const roles: ERole[] = [];
       values.participants.forEach((participant: string) => {
         switch (participant) {
-          case localeText.temple:
+          case localeText.temple.title:
             roles.push(ERole.TempleAdmin);
             roles.push(ERole.TempleMember);
             break;
-          case localeText.family:
+          case localeText.family.title:
             roles.push(ERole.FamilyAdmin);
             roles.push(ERole.FamilyMember);
             break;

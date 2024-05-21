@@ -53,11 +53,9 @@ interface DataType {
   enableUpdate: boolean;
 }
 
-type Props = {};
-
 const { RangePicker } = DatePicker;
 
-const DeathAnniversary = (props: Props) => {
+const DeathAnniversary = () => {
   const { messageApi } = useAppSelector((state) => state.antd);
   const authUser = useAppSelector((state) => state.auth);
   const { localeText } = useTrans();
