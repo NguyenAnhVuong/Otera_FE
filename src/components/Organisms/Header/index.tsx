@@ -1,4 +1,5 @@
 "use client";
+import Notifications from "@/components/Molecules/Notifications";
 import { authActions } from "@/features/auth";
 import { useGetUserLazyQuery } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
@@ -12,13 +13,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 
-type Props = {};
-
-const Header = ({}: Props) => {
+const Header = () => {
   const authUser = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const handleLogout = useLogout();
   const [getUser] = useGetUserLazyQuery();
+
   const { localeText } = useTrans();
   const router = useRouter();
   let items: MenuProps["items"] = [
@@ -36,11 +36,19 @@ const Header = ({}: Props) => {
     () => [
       {
         label: (
+          <span onClick={() => router.push("/temple")}>
+            {localeText.temple.temples}
+          </span>
+        ),
+        key: "temple",
+      },
+      {
+        label: (
           <span onClick={() => router.push("/family-register")}>
             Đăng ký gia đình
           </span>
         ),
-        key: "0",
+        key: "family-register",
       },
       {
         label: (
@@ -48,7 +56,7 @@ const Header = ({}: Props) => {
             Đăng ký chùa
           </span>
         ),
-        key: "1",
+        key: "temple-register",
       },
       {
         label: (
@@ -56,7 +64,7 @@ const Header = ({}: Props) => {
             {localeText.event.events}
           </span>
         ),
-        key: "2",
+        key: "event",
       },
       {
         label: (
@@ -64,7 +72,7 @@ const Header = ({}: Props) => {
             {localeText.event.bookingEvents}
           </span>
         ),
-        key: "3",
+        key: "/event/user",
       },
       {
         label: (
@@ -72,7 +80,7 @@ const Header = ({}: Props) => {
             Đăng xuất
           </span>
         ),
-        key: "4",
+        key: "logout",
       },
     ],
     [dispatch, handleLogout, localeText, router]
@@ -82,11 +90,19 @@ const Header = ({}: Props) => {
     () => [
       {
         label: (
+          <span onClick={() => router.push("/temple")}>
+            {localeText.temple.temples}
+          </span>
+        ),
+        key: "temple",
+      },
+      {
+        label: (
           <span onClick={() => router.push("/death-anniversary")}>
             Yêu cầu tổ chức lễ giỗ
           </span>
         ),
-        key: "0",
+        key: "death-anniversary",
       },
       {
         label: (
@@ -94,7 +110,7 @@ const Header = ({}: Props) => {
             {localeText.event.events}
           </span>
         ),
-        key: "1",
+        key: "event",
       },
       {
         label: (
@@ -102,15 +118,15 @@ const Header = ({}: Props) => {
             {localeText.event.bookingEvents}
           </span>
         ),
-        key: "2",
+        key: "event/user",
       },
       {
         label: (
           <span onClick={() => router.push("/deceased")}>
-            Thành viên an nghỉ
+            {localeText.deceased.deceasedList}
           </span>
         ),
-        key: "3",
+        key: "deceased",
       },
       {
         label: (
@@ -118,7 +134,15 @@ const Header = ({}: Props) => {
             {localeText.declareDeceased}
           </span>
         ),
-        key: "4",
+        key: "deceased/declare",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("/family")}>
+            {localeText.family.members}
+          </span>
+        ),
+        key: "family",
       },
       {
         label: (
@@ -126,7 +150,7 @@ const Header = ({}: Props) => {
             Đăng xuất
           </span>
         ),
-        key: "5",
+        key: "logout",
       },
     ],
     [dispatch, handleLogout, localeText, router]
@@ -136,11 +160,19 @@ const Header = ({}: Props) => {
     () => [
       {
         label: (
+          <span onClick={() => router.push("/temple")}>
+            {localeText.temple.temples}
+          </span>
+        ),
+        key: "temple",
+      },
+      {
+        label: (
           <span onClick={() => router.push("/death-anniversary")}>
             Yêu cầu tổ chức lễ giỗ
           </span>
         ),
-        key: "0",
+        key: "death-anniversary",
       },
       {
         label: (
@@ -148,7 +180,7 @@ const Header = ({}: Props) => {
             {localeText.event.organizeEvent}
           </span>
         ),
-        key: "1",
+        key: "event/organize",
       },
       {
         label: (
@@ -156,7 +188,7 @@ const Header = ({}: Props) => {
             {localeText.event.eventManagements}
           </span>
         ),
-        key: "2",
+        key: "event/temple",
       },
       {
         label: (
@@ -164,7 +196,7 @@ const Header = ({}: Props) => {
             {localeText.event.events}
           </span>
         ),
-        key: "3",
+        key: "event",
       },
       {
         label: (
@@ -172,7 +204,7 @@ const Header = ({}: Props) => {
             Đăng xuất
           </span>
         ),
-        key: "4",
+        key: "logout",
       },
     ],
     [dispatch, handleLogout, localeText, router]
@@ -193,7 +225,6 @@ const Header = ({}: Props) => {
   useEffect(() => {
     const getUserData = async () => {
       const token = localStorage.getItem("accessToken");
-
       if (token && !authUser.id) {
         const { data } = await getUser();
         if (data) {
@@ -217,7 +248,7 @@ const Header = ({}: Props) => {
     <div className="flex justify-center h-14 shadow-xl bg-white fixed top-0 left-0 right-0 items-center px-2 z-10">
       <div className="max-w-[1200px] w-full flex justify-between">
         <Link
-          href="/home"
+          href="/temple"
           className="flex items-center no-underline text-black"
         >
           <Image
@@ -230,31 +261,28 @@ const Header = ({}: Props) => {
         </Link>
 
         <div className="flex items-center">
-          <ul className="flex list-none">
-            <li className="px-2">
-              <Link className="text-black no-underline" href="/home">
-                Trang chủ
-              </Link>
-            </li>
-          </ul>
           <div className="ml-4 flex items-center ">
             {!authUser.id ? (
               <Link className="text-black no-underline" href="/login">
                 Đăng nhập
               </Link>
             ) : (
-              <Dropdown menu={{ items }} trigger={["click"]}>
-                <div className="flex items-center cursor-pointer">
-                  <Image
-                    src={authUser.avatar}
-                    width={40}
-                    height={40}
-                    alt="avatar"
-                    className="rounded-full"
-                  />
-                  <span className="text-black"> {authUser.name}</span>
-                </div>
-              </Dropdown>
+              <div className="flex items-center">
+                <Notifications />
+
+                <Dropdown menu={{ items }} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    <Image
+                      src={authUser.avatar}
+                      width={40}
+                      height={40}
+                      alt="avatar"
+                      className="rounded-full"
+                    />
+                    <span className="text-black"> {authUser.name}</span>
+                  </div>
+                </Dropdown>
+              </div>
             )}
           </div>
         </div>

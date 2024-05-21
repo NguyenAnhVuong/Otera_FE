@@ -1,0 +1,19 @@
+subscription Notifications($userId: Int!, $limit: Int!, $offset: Int!) {
+  notifications(
+    where: { userId: { _eq: $userId }, isDeleted: { _eq: false } }
+    order_by: { createdAt: desc }
+    limit: $limit
+    offset: $offset
+  ) {
+    userId
+    updatedAt
+    type
+    title
+    redirectTo
+    isRead
+    inviteFamilyId
+    id
+    description
+    createdAt
+  }
+}

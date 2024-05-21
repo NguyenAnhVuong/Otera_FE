@@ -1,0 +1,57 @@
+query GetFamily($id: Int!) {
+  getFamily(id: $id) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      id
+      familyCode
+      name
+      adminId
+    }
+  }
+}
+
+query getFamilyMembers(
+  $id: Int!
+  $email: String
+  $phone: String
+  $address: String
+  $name: String
+  $page: Int
+  $take: Int
+  $roleFilter: [ERole!]
+  $orderBy: [OrderBy!]
+) {
+  getFamilyMembers(
+    id: $id
+    email: $email
+    phone: $phone
+    address: $address
+    name: $name
+    page: $page
+    take: $take
+    roleFilter: $roleFilter
+    orderBy: $orderBy
+  ) {
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        role
+        email
+        userDetail {
+          address
+          avatar
+          birthday
+          name
+          phone
+        }
+      }
+    }
+  }
+}

@@ -18,7 +18,7 @@ interface PageAuthorizeConfig {
 }
 
 const authRequireRouters =
-  "/((?!api|_next/static|_next/image|favicon.ico|images|login|register|home).*)";
+  "/((?!api|_next/static|_next/image|favicon.ico|images|login|register|temple).*)";
 
 export const authorizer: PageAuthorizeConfig[] = [
   {
@@ -30,7 +30,7 @@ export const authorizer: PageAuthorizeConfig[] = [
     auth: false,
   },
   {
-    path: "/home",
+    path: "/temple",
     auth: false,
   },
   //   {
@@ -47,5 +47,5 @@ export const authorizer: PageAuthorizeConfig[] = [
 export const redirectRouters = {
   login: "/login",
   register: "/register",
-  home: "/home",
+  temple: "/temple",
 };

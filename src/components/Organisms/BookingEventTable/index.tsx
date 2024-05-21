@@ -2,7 +2,6 @@ import BookingStatus from "@/components/Atoms/BookingStatus";
 import CopyBox from "@/components/Atoms/CopyBox";
 import FilterSearchInput from "@/components/Atoms/FilterSearchInput";
 import Loading from "@/components/Atoms/Loading";
-import SearchInput from "@/components/Atoms/SearchInput";
 import BookingEventsActions from "@/components/Molecules/BookingEventsActions";
 import {
   EBookingStatus,
@@ -10,7 +9,6 @@ import {
   useGetBookingEventsQuery,
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
-import { useAppSelector } from "@/rtk/hook";
 import { PAGE, TAKE, formatDate } from "@/utils/constants";
 import { handleSortByColumn } from "@/utils/helper";
 import { Table, TableProps } from "antd";
@@ -41,7 +39,6 @@ interface DataType {
 const BookingEventTable: React.FC<BookingEventTableProps> = ({
   bookingStatus,
 }) => {
-  const { messageApi } = useAppSelector((state) => state.antd);
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   const { localeText } = useTrans();
   const [totalItems, setTotalItems] = useState(0);

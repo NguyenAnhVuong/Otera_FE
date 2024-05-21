@@ -1,0 +1,15 @@
+subscription NewNotificationCount($userId: Int!) {
+  notifications_aggregate(where: {isRead: {_eq: false}, userId: {_eq: $userId}, isDeleted: {_eq: false}}) {
+    aggregate {
+      count
+    }
+  }
+}
+
+subscription NotificationCount($userId: Int!) {
+  notifications_aggregate(where: { userId: {_eq: $userId}, isDeleted: {_eq: false}}) {
+    aggregate {
+      count
+    }
+  }
+}

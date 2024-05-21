@@ -14,9 +14,9 @@ import { useRouter } from "next/navigation";
 
 type Props = {};
 
+// TODO fix text
 const Login = (props: Props) => {
   const router = useRouter();
-  // const [messageApi, contextHolder] = message.useMessage();
   const messageApi = useAppSelector(messageApiSelector);
   const dispatch = useAppDispatch();
   const [userLogin] = useUserLoginMutation();
@@ -37,7 +37,7 @@ const Login = (props: Props) => {
         if (accessToken) {
           localStorage.setItem("accessToken", accessToken);
         }
-        router.push("/home");
+        router.push("/temple");
       },
       onError: () => {
         messageApi.open({

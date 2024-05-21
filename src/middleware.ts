@@ -23,7 +23,7 @@ export default async function middleware(
         return NextResponse.redirect(absoluteURL.toString());
       }
       if (validToken && match(config.path)(redirectRouters.login)) {
-        const absoluteURL = new URL(redirectRouters.home, req.nextUrl.origin);
+        const absoluteURL = new URL(redirectRouters.temple, req.nextUrl.origin);
         return NextResponse.redirect(absoluteURL.toString());
       }
       // if (validToken) {
@@ -64,8 +64,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - register
-     * - home
+     * - temple
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|images|register|home).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|images|register|temple).*)",
   ],
 };

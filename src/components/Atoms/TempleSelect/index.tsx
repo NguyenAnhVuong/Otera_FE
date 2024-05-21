@@ -54,12 +54,14 @@ const TempleSelect: React.FC<TempleSelectProps> = ({
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <Form.Item
-      label={displayLabel ? localeText.temple : ""}
+      label={displayLabel ? localeText.temple.title : ""}
       name="templeId"
       rules={[
         {
           required: required,
-          message: localeText.validateMessages.required(localeText.temple),
+          message: localeText.validateMessages.required(
+            localeText.temple.title
+          ),
         },
       ]}
     >

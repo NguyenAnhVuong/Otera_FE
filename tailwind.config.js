@@ -15,11 +15,12 @@ module.exports = {
       },
       colors: {
         primary: "#FEDB39",
+        divider: "#F0F0F0",
       },
       spacing: {
-        "header": "56px",
+        header: "56px",
         "2header": "112px",
-      }
+      },
     },
   },
   plugins: [],

@@ -1,4 +1,13 @@
 const vi = {
+  seeMore: "Xem thêm",
+  noNotification: "Hiện tại chưa có thông báo nào",
+  email: "Email",
+  send: "Gửi",
+  action: "Hành động",
+  admin: "Quản trị viên",
+  member: "Thành viên",
+  role: "Vai trò",
+  avatar: "Ảnh đại diện",
   copied: "Đã sao chép",
   copy: "Sao chép",
   expired: "Hết hạn",
@@ -6,10 +15,14 @@ const vi = {
   status: "Trạng thái",
   search: "Tìm kiếm",
   detail: "Chi tiết",
+  notification: "Thông báo",
   OK: "OK",
   cancel: "Hủy",
-  family: "Hộ gia đình",
-  temple: "Nhà Chùa",
+  close: "Đóng",
+  temple: {
+    title: "Nhà chùa",
+    temples: "Danh sách nhà chùa",
+  },
   selectTemple: "Chọn nhà chùa",
   publicUser: "Khách vãng lai",
   save: "Lưu",
@@ -21,7 +34,7 @@ const vi = {
   validateMessages: {
     required: (label: string) => `Vui lòng nhập ${label}!`,
     types: {
-      email: "Không đúng định dạng email!",
+      email: "Vui lòng nhập đúng định dạng email!",
     },
   },
   deathAnniversary: {
@@ -54,9 +67,38 @@ const vi = {
   },
   deceased: {
     deceasedList: "Danh sách thành viên an nghỉ",
+    title: "Thành viên an nghỉ",
   },
   deceasedDetail: {
     registerDeathAnniversary: "Đăng ký tổ chức lễ giỗ",
+  },
+  family: {
+    title: "Hộ gia đình",
+    members: "Danh sách thành viên",
+    familyMember: {
+      reject: "Từ chối",
+      approve: "Chấp nhận",
+      approveSuccessMessage:
+        "Tham gia gia đình thành công! Vui lòng đăng nhập lại!",
+      rejectSuccessMessage: "Từ chối thành công!",
+      approveFailMessage: "Chấp nhận thất bại! Lời mời đã hết hạn!",
+      rejectFailMessage: "Từ chối thất bại! Lời mời đã hết hạn!",
+      add: "Thêm thành viên",
+      addMessage: "Gửi lời mời đến",
+      name: "Họ và tên",
+      birthday: "Ngày sinh",
+      address: "Địa chỉ",
+      email: "Email",
+      phone: "Số điện thoại",
+      deleteMember: "Xóa thành viên",
+      deleteMemberPopConfirm: {
+        title: "Xóa thành viên",
+        description: "Bạn có chắc chắn muốn xóa thành viên?",
+      },
+      inviteSuccessMessage: "Gửi lời mời thành công!",
+      inviteFailedMessage:
+        "Tài khoản này không tồn tại hoặc đã tham gia vào một gia đình khác!",
+    },
   },
   event: {
     copyLinkEvent: "Sao chép link sự kiện",

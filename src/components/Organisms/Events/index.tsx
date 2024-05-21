@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/components/Atoms/Loading";
+import PageTitleWithActions from "@/components/Atoms/PageTitleWithActions";
 import TempleSelect from "@/components/Atoms/TempleSelect";
 import Event from "@/components/Molecules/Event";
 import { useGetEventsQuery } from "@/graphql/generated/schema";
@@ -34,15 +35,9 @@ const Events = (props: Props) => {
   });
 
   return (
-    <div className="mt-8">
+    <div className="">
       {loading && <Loading />}
-      {/* <div className="text-right">
-        <CreateEventButton />
-      </div> */}
-      <div className="flex items-center justify-between">
-        <div className="mb-6">
-          <h3 className="text-black m-0">{localeText.event.listEvents}</h3>
-        </div>
+      <PageTitleWithActions title={localeText.event.listEvents}>
         <Form form={form} className="flex justify-end items-center gap-2">
           <TempleSelect required={false} displayLabel={false} />
           <Form.Item name="filter" initialValue={"all"}>
@@ -56,7 +51,7 @@ const Events = (props: Props) => {
             />
           </Form.Item>
         </Form>
-      </div>
+      </PageTitleWithActions>
       <div className="grid grid-cols-2 gap-4">
         {data?.getEvents.data.data.map((event) => (
           <Event
