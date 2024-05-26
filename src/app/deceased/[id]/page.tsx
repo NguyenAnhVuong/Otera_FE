@@ -1,10 +1,15 @@
 "use client";
+import DeleteButton from "@/components/Atoms/DeleteButton";
 import EditButton from "@/components/Atoms/EditButton";
 import Loading from "@/components/Atoms/Loading";
 import DeathAnniversaryInforModal from "@/components/Molecules/DeathAnniversaryInforModal";
 import {
   Deceased,
+  ERole,
+  GetDeathAnniversariesDocument,
+  GetListDeceasedDocument,
   useCreateDeathAnniversaryMutation,
+  useDeleteDeceasedMutation,
   useGetDeathAnniversariesQuery,
   useGetDeceasedQuery,
 } from "@/graphql/generated/schema";
@@ -24,6 +29,7 @@ type Props = {
 };
 
 const DeceasedDetail = ({ params }: Props) => {
+  const { role } = useAppSelector((state) => state.auth);
   const { messageApi } = useAppSelector((state) => state.antd);
   const [deceased, setDeceased] = useState<DeepPartial<Deceased>>();
   const [images, setImages] = useState<any>([]);
@@ -74,15 +80,30 @@ const DeceasedDetail = ({ params }: Props) => {
       }
     },
   });
-  const [createDeathAnniversary] = useCreateDeathAnniversaryMutation();
-
-  const { refetch } = useGetDeathAnniversariesQuery({
-    variables: {
-      getDeathAnniversariesInput: {
-        // isPending: true,
-      },
+  const [createDeathAnniversary] = useCreateDeathAnniversaryMutation({
+    refetchQueries: [GetDeathAnniversariesDocument],
+    onCompleted: () => {
+      messageApi.open({
+        type: "success",
+        content: "Đăng ký thành công!",
+      });
     },
   });
+
+  const [deleteDeceased, { loading: deleteLoading }] =
+    useDeleteDeceasedMutation({
+      onCompleted: () => {
+        messageApi.open({
+          type: "success",
+          content: localeText.deceased.deleteDeceasedSuccessMessage,
+        });
+        router.push("/deceased");
+      },
+      onError: () => {
+        messageApi.error(localeText.deceased.deleteDeceasedFailMessage);
+      },
+      refetchQueries: [GetDeathAnniversariesDocument, GetListDeceasedDocument],
+    });
 
   const handleRegisterDeathAnniversary = async (values: any) => {
     if (!deceased?.dateOfDeath) return;
@@ -106,19 +127,11 @@ const DeceasedDetail = ({ params }: Props) => {
       isLiveStream: values.isLiveStream,
     };
 
-    const { data } = await createDeathAnniversary({
+    await createDeathAnniversary({
       variables: {
         createDeathAnniversaryInput,
       },
     });
-
-    if (data && !data.createDeathAnniversary.errorCode) {
-      messageApi.open({
-        type: "success",
-        content: "Đăng ký thành công!",
-      });
-      refetch();
-    }
   };
 
   return (
@@ -205,19 +218,46 @@ const DeceasedDetail = ({ params }: Props) => {
                 {localeText.deceased.gender}:{" "}
                 {getGenderText(deceased?.userDetail?.gender)}
               </p>
+              {/* TODO Assign admin can update and delete, and members can only upload images */}
+              {(role === ERole.FamilyAdmin || role === ERole.FamilyMember) && (
+                <div className="flex gap-2 items-center">
+                  <EditButton
+                    title={localeText.deceased.update}
+                    onClick={() => router.push(`/deceased/${params.id}/update`)}
+                  />
 
-              <EditButton
-                title={localeText.deceased.update}
-                onClick={() => router.push(`/deceased/${params.id}/update`)}
-              />
+                  {role === ERole.FamilyAdmin && (
+                    <DeleteButton
+                      okText={localeText.OK}
+                      cancelText={localeText.cancel}
+                      tooltipTitle={localeText.deceased.delete}
+                      popConfirmTitle={
+                        localeText.deceased.deleteDeceasedPopConfirm.title
+                      }
+                      popConfirmDescription={
+                        localeText.deceased.deleteDeceasedPopConfirm.description
+                      }
+                      popConfirmOnConfirm={async () =>
+                        await deleteDeceased({
+                          variables: {
+                            id: +params.id,
+                          },
+                        })
+                      }
+                    />
+                  )}
+                </div>
+              )}
             </div>
             <p>
               {localeText.deceased.birthday}:{" "}
-              {dayjs(deceased?.userDetail?.birthday).format("DD-MM-YYYY")}{" "}
+              {dayjs(deceased?.userDetail?.birthday).format(
+                formatDate.YYYY_MM_DD
+              )}{" "}
             </p>
             <p>
               {localeText.deceased.dateOfDeath}:{" "}
-              {dayjs(deceased?.dateOfDeath).format("DD-MM-YYYY")}
+              {dayjs(deceased?.dateOfDeath).format(formatDate.YYYY_MM_DD)}
             </p>
             {deceased?.dateOfDeath && (
               <p>
@@ -228,13 +268,13 @@ const DeceasedDetail = ({ params }: Props) => {
                       ? currentYear + 1
                       : currentYear
                   )
-                ).format("DD-MM-YYYY")}
+                ).format(formatDate.YYYY_MM_DD)}
               </p>
             )}
 
             <p>
               {localeText.deceased.deathAnniversaryRegisterExpired}:{" "}
-              {dayjs(registerExpiredDate).format("DD-MM-YYYY")}
+              {dayjs(registerExpiredDate).format(formatDate.YYYY_MM_DD)}
             </p>
             <p className="min-h-[128px]">{deceased?.description}</p>
             <div>
