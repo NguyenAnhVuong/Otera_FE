@@ -98,6 +98,13 @@ const vi = {
     registerDeathAnniversary: "Đăng ký tổ chức lễ giỗ",
     deathAnniversaryRegisterExpired: "Hạn đăng ký tổ chức lễ giỗ",
     updateBy: "Cập nhật lần cuối bởi",
+    delete: "Xoá thành viên an nghỉ",
+    deleteDeceasedPopConfirm: {
+      title: "Xoá thành viên an nghỉ",
+      description: "Bạn có chắc chắn muốn xoá thành viên an nghỉ?",
+    },
+    deleteDeceasedSuccessMessage: "Xoá thành viên an nghỉ thành công!",
+    deleteDeceasedFailMessage: "Xoá thành viên an nghỉ thất bại!",
   },
   family: {
     title: "Hộ gia đình",

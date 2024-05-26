@@ -7,3 +7,9 @@ mutation createDeathAnniversary(
     errorCode
   }
 }
+
+mutation deleteDeceased($id: Int!) {
+  deleteDeceased(id: $id) {
+    errorCode
+  }
+}
