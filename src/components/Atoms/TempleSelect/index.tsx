@@ -66,7 +66,7 @@ const TempleSelect: React.FC<TempleSelectProps> = ({
       ]}
     >
       <Select
-        className="w-44"
+        className="w-full"
         showSearch
         optionFilterProp="children"
         placeholder={localeText.selectTemple}

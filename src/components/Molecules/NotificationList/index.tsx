@@ -30,8 +30,10 @@ const NotificationList = () => {
 
   const isCanSeeMore = useMemo(
     () =>
-      notificationCount?.notifications_aggregate.aggregate?.count &&
-      limit < notificationCount?.notifications_aggregate.aggregate?.count,
+      !!(
+        notificationCount?.notifications_aggregate.aggregate?.count &&
+        limit < notificationCount?.notifications_aggregate.aggregate?.count
+      ),
     [limit, notificationCount?.notifications_aggregate.aggregate?.count]
   );
   return (
@@ -41,7 +43,7 @@ const NotificationList = () => {
           isCanSeeMore && "border-b pb-2"
         }`}
       >
-        {notificationData?.notifications.length ? (
+        {!!notificationData?.notifications.length ? (
           notificationData?.notifications.map((notification) => (
             <Notification
               key={notification.id}

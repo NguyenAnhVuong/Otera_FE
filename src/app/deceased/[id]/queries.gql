@@ -8,7 +8,17 @@ query getDeceased($id: Int!) {
       dateOfDeath
       description
       createdAt
+      updatedAt
+      templeId
+      modifier {
+        id
+        userDetail {
+          id
+          name
+        }
+      }
       userDetail {
+        id
         avatar
         birthday
         citizenNumber

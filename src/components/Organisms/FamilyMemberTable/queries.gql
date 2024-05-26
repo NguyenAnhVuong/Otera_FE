@@ -45,6 +45,7 @@ query getFamilyMembers(
         role
         email
         userDetail {
+          id
           address
           avatar
           birthday

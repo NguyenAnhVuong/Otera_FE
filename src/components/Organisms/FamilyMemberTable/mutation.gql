@@ -1,0 +1,8 @@
+mutation RemoveFamilyMember($removeFamilyMemberInput: RemoveFamilyMemberInput!) {
+  removeFamilyMember(removeFamilyMemberInput: $removeFamilyMemberInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

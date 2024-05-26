@@ -1,3 +1,4 @@
+import useTrans from "@/hooks/useTrans";
 import { DatePicker, Form, FormInstance, Modal, Radio } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
@@ -27,6 +28,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
   openButton,
   data,
 }) => {
+  const { localeText } = useTrans();
   const [form] = Form.useForm();
   const handleOk = () => {
     form.submit();
@@ -66,11 +68,10 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
         onOk={handleOk}
         onCancel={handleCancel}
         className="flex justify-center"
-        cancelText="Hủy"
-        okText="Đăng ký"
+        cancelText={localeText.cancel}
+        okText={localeText.register}
       >
         <Form
-          // name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -79,32 +80,41 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
           layout="vertical"
         >
           <Form.Item
-            label="Thời gian mong muốn"
+            label={localeText.deathAnniversary.desiredTime}
             name="desiredTime"
             rules={[
-              { required: true, message: "Please input your desiredTime!" },
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.deathAnniversary.desiredTime
+                ),
+              },
             ]}
           >
             <RangePicker
               picker="time"
               format="HH:mm"
-              placeholder={["Bắt đầu", "Kết thúc"]}
+              placeholder={[localeText.start, localeText.end]}
             />
           </Form.Item>
           <Form.Item label="Ghi chú" name="note">
             <TextArea rows={4} className="w-[320px]" />
           </Form.Item>
           <Form.Item
-            label="Tổ chức livestream"
+            label={localeText.deathAnniversary.organizeLivestream}
             name="isLiveStream"
             rules={[
-              { required: true, message: "Please input your isLiveStream!" },
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.deathAnniversary.organizeLivestream
+                ),
+              },
             ]}
-            // initialValue={false}
           >
             <Radio.Group>
-              <Radio value={true}>Có</Radio>
-              <Radio value={false}>Không</Radio>
+              <Radio value={true}>{localeText.yes}</Radio>
+              <Radio value={false}>{localeText.no}</Radio>
             </Radio.Group>
           </Form.Item>
         </Form>

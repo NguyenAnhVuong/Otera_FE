@@ -4,8 +4,10 @@ import FilterSearchInput from "@/components/Atoms/FilterSearchInput";
 import Loading from "@/components/Atoms/Loading";
 import {
   ERole,
+  GetFamilyMembersDocument,
   OrderBy,
   useGetFamilyMembersQuery,
+  useRemoveFamilyMemberMutation,
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
@@ -33,6 +35,7 @@ type FamilyMemberTableProps = {
 
 const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
   const { role } = useAppSelector((state) => state.auth);
+  const { messageApi } = useAppSelector((state) => state.antd);
   const [page, setPage] = useState(PAGE);
   const [totalItems, setTotalItems] = useState(0);
   const { localeText } = useTrans();
@@ -41,7 +44,10 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
   const [orderBy, setOrderBy] = useState<OrderBy[]>([]);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [roleFilter, setRoleFilter] = useState<(string | number)[]>([]);
+  const [roleFilter, setRoleFilter] = useState<(string | number)[]>([
+    ERole.FamilyAdmin,
+    ERole.FamilyMember,
+  ]);
   const [dataSource, setDataSource] = useState<DataType[]>([]);
 
   const { data, loading } = useGetFamilyMembersQuery({
@@ -57,6 +63,26 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
     },
     skip: !familyId,
   });
+
+  const [removeFamilyMember] = useRemoveFamilyMemberMutation({
+    onCompleted: () => {
+      messageApi.success(localeText.family.familyMember.removeSuccessMessage);
+    },
+    onError: () => {
+      messageApi.error(localeText.family.familyMember.removeFailedMessage);
+    },
+    refetchQueries: [GetFamilyMembersDocument],
+  });
+
+  const handleRemoveFamilyMember = async (id: number) => {
+    await removeFamilyMember({
+      variables: {
+        removeFamilyMemberInput: {
+          id,
+        },
+      },
+    });
+  };
 
   const columns: TableProps<DataType>["columns"] = [
     {
@@ -170,7 +196,7 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
                 localeText.family.familyMember.deleteMemberPopConfirm
                   .description
               }
-              popConfirmOnConfirm={() => {}}
+              popConfirmOnConfirm={() => handleRemoveFamilyMember(record.id)}
             />
           )}
         </>
