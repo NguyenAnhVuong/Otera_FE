@@ -36,8 +36,9 @@ const FamilyMemberList: React.FC<FamilyMemberListProps> = ({ familyId }) => {
     },
     onCompleted: () => {
       messageApi.success(localeText.family.familyMember.inviteSuccessMessage);
+      form.resetFields();
     },
-    onError: (error) => {
+    onError: () => {
       messageApi.error(localeText.family.familyMember.inviteFailedMessage);
     },
   });

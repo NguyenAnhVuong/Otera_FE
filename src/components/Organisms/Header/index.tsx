@@ -86,6 +86,61 @@ const Header = () => {
     [dispatch, handleLogout, localeText, router]
   );
 
+  const familyMemberItems: MenuProps["items"] = useMemo(
+    () => [
+      {
+        label: (
+          <span onClick={() => router.push("/temple")}>
+            {localeText.temple.temples}
+          </span>
+        ),
+        key: "temple",
+      },
+
+      {
+        label: (
+          <span onClick={() => router.push("/death-anniversary")}>
+            Yêu cầu tổ chức lễ giỗ
+          </span>
+        ),
+        key: "death-anniversary",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("/deceased")}>
+            {localeText.deceased.deceasedList}
+          </span>
+        ),
+        key: "deceased",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("/event")}>
+            {localeText.event.events}
+          </span>
+        ),
+        key: "event",
+      },
+      {
+        label: (
+          <span onClick={async () => router.push("/event/user")}>
+            {localeText.event.bookingEvents}
+          </span>
+        ),
+        key: "event/user",
+      },
+      {
+        label: (
+          <span onClick={async () => await handleLogout(dispatch)}>
+            Đăng xuất
+          </span>
+        ),
+        key: "logout",
+      },
+    ],
+    [dispatch, handleLogout, localeText, router]
+  );
+
   const familyAdminItems: MenuProps["items"] = useMemo(
     () => [
       {
@@ -213,6 +268,9 @@ const Header = () => {
   switch (authUser.role) {
     case ERole.PUBLIC_USER:
       items = [...publicUserItems];
+      break;
+    case ERole.FAMILY_MEMBER:
+      items = [...familyMemberItems];
       break;
     case ERole.FAMILY_ADMIN:
       items = [...familyAdminItems];

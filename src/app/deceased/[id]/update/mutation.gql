@@ -1,0 +1,8 @@
+mutation UpdateDeceased($updateDeceasedInput: VUpdateDeceasedInput!) {
+  updateDeceased(updateDeceasedInput: $updateDeceasedInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

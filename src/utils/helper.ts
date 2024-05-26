@@ -1,5 +1,4 @@
 import {
-  EBookingStatus,
   EGender,
   ERole,
   ESortOrder,

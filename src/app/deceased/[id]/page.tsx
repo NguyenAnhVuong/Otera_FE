@@ -1,4 +1,6 @@
 "use client";
+import EditButton from "@/components/Atoms/EditButton";
+import Loading from "@/components/Atoms/Loading";
 import DeathAnniversaryInforModal from "@/components/Molecules/DeathAnniversaryInforModal";
 import {
   Deceased,
@@ -9,11 +11,12 @@ import {
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { formatDate } from "@/utils/constants";
-import { getGenderText } from "@/utils/helper";
+import { formatTimeDifference, getGenderText } from "@/utils/helper";
 import { DeepPartial } from "@apollo/client/utilities";
 import { Button, Carousel, Image as ImageAntd } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 type Props = {
@@ -28,6 +31,7 @@ const DeceasedDetail = ({ params }: Props) => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const { localeText } = useTrans();
+  const router = useRouter();
   const deathAnniversary = new Date(
     new Date(`${deceased?.dateOfDeath}`).setFullYear(currentYear)
   );
@@ -53,7 +57,7 @@ const DeceasedDetail = ({ params }: Props) => {
     ref.current.goTo(index);
   };
 
-  const { data } = useGetDeceasedQuery({
+  const { loading } = useGetDeceasedQuery({
     variables: {
       id: Number(params.id),
     },
@@ -119,6 +123,7 @@ const DeceasedDetail = ({ params }: Props) => {
 
   return (
     <div className="lg:flex lg:justify-center lg:mt-10 lg:p-4">
+      {loading && <Loading />}
       <div className="lg:w-[1200px] lg:grid lg:grid-cols-10">
         <div className="lg:col-span-6 lg:grid lg:grid-cols-6 lg:pt-4">
           <div className="hidden lg:col-span-1 lg:flex lg:flex-col lg:gap-2">
@@ -175,7 +180,7 @@ const DeceasedDetail = ({ params }: Props) => {
                 {deceased?.userDetail?.name}
               </h2>
               <DeathAnniversaryInforModal
-                title={localeText.deceasedDetail.registerDeathAnniversary}
+                title={localeText.deceased.registerDeathAnniversary}
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
                 handleSubmitForm={handleRegisterDeathAnniversary}
@@ -190,20 +195,33 @@ const DeceasedDetail = ({ params }: Props) => {
                     onClick={() => setIsModalOpen(true)}
                     disabled={disableCreateDeathAnniversary}
                   >
-                    {localeText.deceasedDetail.registerDeathAnniversary}
+                    {localeText.deceased.registerDeathAnniversary}
                   </Button>
                 }
               />
             </div>
-            <p>Giới tính: {getGenderText(deceased?.userDetail?.gender)}</p>
+            <div className="flex justify-between">
+              <p>
+                {localeText.deceased.gender}:{" "}
+                {getGenderText(deceased?.userDetail?.gender)}
+              </p>
+
+              <EditButton
+                title={localeText.deceased.update}
+                onClick={() => router.push(`/deceased/${params.id}/update`)}
+              />
+            </div>
             <p>
-              Ngày sinh:{" "}
+              {localeText.deceased.birthday}:{" "}
               {dayjs(deceased?.userDetail?.birthday).format("DD-MM-YYYY")}{" "}
             </p>
-            <p>Ngày mất: {dayjs(deceased?.dateOfDeath).format("DD-MM-YYYY")}</p>
+            <p>
+              {localeText.deceased.dateOfDeath}:{" "}
+              {dayjs(deceased?.dateOfDeath).format("DD-MM-YYYY")}
+            </p>
             {deceased?.dateOfDeath && (
               <p>
-                Ngày giỗ sắp tới:{" "}
+                {localeText.deceased.comingDeathAnniversary}:{" "}
                 {dayjs(
                   new Date(deceased.dateOfDeath).setFullYear(
                     currentDate > deathAnniversary
@@ -215,62 +233,18 @@ const DeceasedDetail = ({ params }: Props) => {
             )}
 
             <p>
-              Hạn đăng ký tổ chức lễ giỗ:{" "}
+              {localeText.deceased.deathAnniversaryRegisterExpired}:{" "}
               {dayjs(registerExpiredDate).format("DD-MM-YYYY")}
             </p>
             <p className="min-h-[128px]">{deceased?.description}</p>
+            <div>
+              <span>{localeText.deceased.updateBy}: </span>
+              <span>{deceased?.modifier?.userDetail?.name}</span>
+              <span> ({formatTimeDifference(deceased?.updatedAt)})</span>
+            </div>
           </div>
         </div>
       </div>
-      {/* <Modal
-        title="Đăng ký tổ chức lễ giỗ"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        className="flex justify-center"
-        cancelText="Hủy"
-        okText="Đăng ký"
-      >
-        <Form
-          name="basic"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          form={form}
-          autoComplete="off"
-          layout="vertical"
-        >
-          <Form.Item
-            label="Thời gian mong muốn"
-            name="desiredTime"
-            rules={[
-              { required: true, message: "Please input your desiredTime!" },
-            ]}
-          >
-            <RangePicker
-              picker="time"
-              format="HH:mm"
-              placeholder={["Bắt đầu", "Kết thúc"]}
-            />
-          </Form.Item>
-          <Form.Item label="Ghi chú" name="note">
-            <TextArea rows={4} className="w-[320px]" />
-          </Form.Item>
-          <Form.Item
-            label="Tổ chức livestream"
-            name="isLiveStream"
-            rules={[
-              { required: true, message: "Please input your isLiveStream!" },
-            ]}
-            // initialValue={false}
-          >
-            <Radio.Group>
-              <Radio value={true}>Có</Radio>
-              <Radio value={false}>Không</Radio>
-            </Radio.Group>
-          </Form.Item>
-        </Form>
-      </Modal> */}
     </div>
   );
 };

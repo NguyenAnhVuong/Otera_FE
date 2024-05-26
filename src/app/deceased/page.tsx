@@ -8,9 +8,8 @@ import Meta from "antd/es/card/Meta";
 import Image from "next/image";
 import Link from "next/link";
 
-type Props = {};
 // TODO Pagination
-const Page = (props: Props) => {
+const Page = () => {
   const { localeText } = useTrans();
   const auth = useAppSelector((state) => state.auth);
   const { data } = useGetListDeceasedQuery({
