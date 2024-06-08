@@ -1,0 +1,19 @@
+mutation FollowTemple($followTempleInput: VFollowTempleInput!) {
+  followTemple(followTempleInput: $followTempleInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data
+  }
+}
+
+mutation UnfollowTemple($templeId: Int!) {
+  unfollowTemple(templeId: $templeId) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data
+  }
+}

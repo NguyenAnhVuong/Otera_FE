@@ -26,6 +26,9 @@ query getDeceased($id: Int!) {
         name
         gender
       }
+      deathAnniversaries {
+        id
+      }
     }
   }
 }

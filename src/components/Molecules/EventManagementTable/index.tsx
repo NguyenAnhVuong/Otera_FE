@@ -367,7 +367,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
     },
   ];
 
-  const { data, loading } = useTempleGetEventsQuery({
+  const { loading } = useTempleGetEventsQuery({
     variables: {
       page: page,
       take: TAKE,
@@ -375,30 +375,30 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       orderBy,
       name,
     },
+    onCompleted: (data) => {
+      if (data?.templeGetEvents.data) {
+        setDataSource(
+          data.templeGetEvents.data.data.map((event) => ({
+            id: event.id,
+            avatar: event.avatar,
+            name: event.name,
+            startDateBooking: event.startDateBooking,
+            endDateBooking: event.endDateBooking,
+            startDateEvent: event.startDateEvent,
+            endDateEvent: event.endDateEvent,
+            eventParticipantTypes: event.eventParticipantTypes,
+            bookingParticipant: event.bookingParticipant,
+            currentParticipant: event.currentParticipant,
+            checkInParticipant: event.checkInParticipant,
+            maxParticipant: event.maxParticipant,
+            createdAt: event.createdAt,
+          }))
+        );
+        setTotalItems(data.templeGetEvents.data.totalItems);
+      }
+    },
+    fetchPolicy: "no-cache",
   });
-
-  useEffect(() => {
-    if (data?.templeGetEvents.data) {
-      setDataSource(
-        data.templeGetEvents.data.data.map((event) => ({
-          id: event.id,
-          avatar: event.avatar,
-          name: event.name,
-          startDateBooking: event.startDateBooking,
-          endDateBooking: event.endDateBooking,
-          startDateEvent: event.startDateEvent,
-          endDateEvent: event.endDateEvent,
-          eventParticipantTypes: event.eventParticipantTypes,
-          bookingParticipant: event.bookingParticipant,
-          currentParticipant: event.currentParticipant,
-          checkInParticipant: event.checkInParticipant,
-          maxParticipant: event.maxParticipant,
-          createdAt: event.createdAt,
-        }))
-      );
-      setTotalItems(data.templeGetEvents.data.totalItems);
-    }
-  }, [data, setTotalItems]);
 
   return (
     <>

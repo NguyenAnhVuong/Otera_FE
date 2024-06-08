@@ -263,7 +263,7 @@ const EventOrganize = (props: Props) => {
         </Form.Item>
 
         <Form.Item
-          label="Email"
+          label={localeText.event.email}
           name="email"
           rules={[
             {

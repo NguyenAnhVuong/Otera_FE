@@ -235,29 +235,32 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
                   </span>
                 ))}
             </div>
-            <div className="mt-3">
-              {event?.maxParticipant && (
-                <span className="mr-2">
-                  {localeText.event.maxParticipant(event.maxParticipant)}
-                </span>
-              )}
-            </div>
-            <div className="mt-3">
-              <span>{localeText.event.currentParticipant}: </span>
-              <span>{event?.currentParticipant}</span>
-            </div>
-
-            {event?.phone && (
-              <p>
-                {localeText.event.phone}: {event.phone}
-              </p>
+            {event?.maxParticipant && (
+              <div className="flex gap-4">
+                <div className="mt-3">
+                  <span className="mr-2">
+                    {localeText.event.maxParticipant(event.maxParticipant)}
+                  </span>
+                </div>
+                <div className="mt-3">
+                  <span>{localeText.event.currentParticipant}: </span>
+                  <span>{event?.currentParticipant}</span>
+                </div>
+              </div>
             )}
+
             {event?.email && (
               <p>
                 {localeText.event.email}: {event.email}
               </p>
             )}
             <p className="min-h-[128px]">{event?.description}</p>
+
+            {event?.phone && (
+              <p>
+                {localeText.event.phone}: {event.phone}
+              </p>
+            )}
           </div>
         </div>
       </div>

@@ -77,10 +77,55 @@ const DeathAnniversary = () => {
     },
   });
   const [templeUpdateDeathAnniversary] =
-    useTempleUpdateDeathAnniversaryMutation();
+    useTempleUpdateDeathAnniversaryMutation({
+      onCompleted: () => {
+        setIsApproveModalOpen(false);
+        form.resetFields();
+        messageApi.open({
+          type: "success",
+          content: localeText.deathAnniversary.approveSuccessMessage,
+        });
+      },
+      onError: () => {
+        messageApi.open({
+          type: "error",
+          content: localeText.deathAnniversary.approveFailMessage,
+        });
+      },
+      refetchQueries: [
+        {
+          query: GetDeathAnniversariesDocument,
+          variables: {
+            getDeathAnniversariesInput: {
+              // isPending: true,
+            },
+          },
+        },
+      ],
+    });
 
   const [familyUpdateDeathAnniversary] =
-    useFamilyUpdateDeathAnniversaryMutation();
+    useFamilyUpdateDeathAnniversaryMutation({
+      refetchQueries: [
+        {
+          query: GetDeathAnniversariesDocument,
+          variables: {
+            getDeathAnniversariesInput: {
+              // isPending: true,
+            },
+          },
+        },
+      ],
+      onCompleted: () => {
+        setIsApproveModalOpen(false);
+        form.resetFields();
+        messageApi.open({
+          type: "success",
+          content:
+            localeText.deathAnniversary.updateDeathAnniversarySuccessMessage,
+        });
+      },
+    });
 
   const [cancelDeathAnniversary] = useCancelDeathAnniversaryMutation();
 
@@ -99,31 +144,11 @@ const DeathAnniversary = () => {
       note: values.note,
     };
 
-    const { data } = await familyUpdateDeathAnniversary({
+    await familyUpdateDeathAnniversary({
       variables: {
         updateDeathAnniversaryInput,
       },
-      refetchQueries: [
-        {
-          query: GetDeathAnniversariesDocument,
-          variables: {
-            getDeathAnniversariesInput: {
-              // isPending: true,
-            },
-          },
-        },
-      ],
     });
-
-    if (data && !data.familyUpdateDeathAnniversary.errorCode) {
-      setIsApproveModalOpen(false);
-      form.resetFields();
-      messageApi.open({
-        type: "success",
-        content:
-          localeText.deathAnniversary.updateDeathAnniversarySuccessMessage,
-      });
-    }
   };
 
   const handleCancelDeathAnniversary = async (id: number) => {
@@ -159,6 +184,7 @@ const DeathAnniversary = () => {
     }
   };
 
+  // TODO add column requestor
   const columns: TableProps<DataType>["columns"] = [
     {
       title: "Ảnh đại diện",
@@ -266,7 +292,7 @@ const DeathAnniversary = () => {
             </Link>
             <CopyBox
               text={linkLiveStream}
-              tooltip={localeText.event.copyLinkEvent}
+              tooltip={localeText.deathAnniversary.copyLinkLiveStream}
             />
           </div>
         ),
@@ -283,6 +309,7 @@ const DeathAnniversary = () => {
           <DeathAnniversaryStatus status={status} />
         ),
     },
+    // TODO hidden when expired
     {
       title: "Hành động",
       dataIndex: "status",
@@ -291,7 +318,10 @@ const DeathAnniversary = () => {
       render: (status, record) =>
         status === EStatus.Pending && authUser.role === ERole.TempleAdmin ? (
           <div className="min-w-[40px] flex justify-between">
-            <Tooltip placement="top" title={"Đồng ý"}>
+            <Tooltip
+              placement="top"
+              title={localeText.deathAnniversary.approve}
+            >
               <CheckOutlined
                 className="text-green-400 text-xl cursor-pointer"
                 onClick={() => {
@@ -307,7 +337,7 @@ const DeathAnniversary = () => {
                 disabled={status !== EStatus.Pending}
               />
             </Tooltip>
-            <Tooltip placement="top" title={"Từ chối"}>
+            <Tooltip placement="top" title={localeText.deathAnniversary.reject}>
               <CloseOutlined
                 className="text-red-500 text-xl cursor-pointer"
                 disabled={status !== EStatus.Pending}
@@ -411,26 +441,7 @@ const DeathAnniversary = () => {
       variables: {
         templeUpdateDeathAnniversaryInput,
       },
-      refetchQueries: [
-        {
-          query: GetDeathAnniversariesDocument,
-          variables: {
-            getDeathAnniversariesInput: {
-              // isPending: true,
-            },
-          },
-        },
-      ],
     });
-
-    if (data && !data.templeUpdateDeathAnniversary.errorCode) {
-      setIsApproveModalOpen(false);
-      form.resetFields();
-      messageApi.open({
-        type: "success",
-        content: "Cập nhật thành công!",
-      });
-    }
   };
 
   const onFinishFailed = (errorInfo: any) => {

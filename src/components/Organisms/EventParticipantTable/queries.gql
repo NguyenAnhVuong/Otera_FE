@@ -7,7 +7,7 @@ query getEventParticipants(
   $email: String
   $address: String
   $familyName: String
-  $isBelongToTemple: Boolean
+  $isFollowing: Boolean
   $orderBy: [OrderBy!]
 ) {
   getEventParticipants(
@@ -19,7 +19,7 @@ query getEventParticipants(
     email: $email
     address: $address
     familyName: $familyName
-    isBelongToTemple: $isBelongToTemple
+    isFollowing: $isFollowing
     orderBy: $orderBy
   ) {
     statusCode
@@ -35,7 +35,7 @@ query getEventParticipants(
         rejectReason
         checkInAt
         familyName
-        isBelongToTemple
+        isFollowing
         user {
           id
           email

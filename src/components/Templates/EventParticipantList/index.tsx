@@ -23,7 +23,7 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
   const [bookingStatus, setBookingStatus] = useState<EBookingStatus>(
     EBookingStatus.Booking
   );
-  const [isBelongToTemple, setIsBelongToTemple] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const { data, loading } = useGetEventByIdQuery({
     variables: {
@@ -51,10 +51,10 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
   ];
 
   const handleChange = (value: string) => {
-    if (value === "isBelongToTemple") {
-      setIsBelongToTemple(true);
+    if (value === "isFollowing") {
+      setIsFollowing(true);
     } else {
-      setIsBelongToTemple(false);
+      setIsFollowing(false);
     }
   };
 
@@ -72,13 +72,13 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
         <div className="flex gap-2">
           <Select
             defaultValue="all"
-            style={{ width: 120 }}
+            style={{ width: 128 }}
             onChange={handleChange}
             options={[
               { value: "all", label: localeText.all },
               {
-                value: "isBelongToTemple",
-                label: localeText.event.participant.belongsToTemple,
+                value: "isFollowing",
+                label: localeText.event.participant.isFollowing,
               },
             ]}
           />
@@ -92,7 +92,7 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
       </div>
       <EventParticipantTable
         eventId={eventId}
-        isBelongToTemple={isBelongToTemple}
+        isFollowing={isFollowing}
         bookingStatus={bookingStatus}
       />
     </div>
