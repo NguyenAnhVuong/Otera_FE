@@ -5,13 +5,13 @@ import { Modal, Tooltip } from "antd";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 
-type EventApproveActionProps = {
+type EventApprovedActionProps = {
   approverName?: string;
   checkInAt?: Date | null;
   updatedAt?: Date | null;
 };
 
-const EventApproveAction: React.FC<EventApproveActionProps> = ({
+const EventApprovedAction: React.FC<EventApprovedActionProps> = ({
   approverName,
   checkInAt,
   updatedAt,
@@ -71,4 +71,4 @@ const EventApproveAction: React.FC<EventApproveActionProps> = ({
   );
 };
 
-export default EventApproveAction;
+export default EventApprovedAction;

@@ -8,6 +8,7 @@ import {
 } from "./config/middleware/config";
 import { validateJwtToken } from "./utils/jwt";
 
+// TODO protect route by role
 export default async function middleware(
   req: NextRequest,
   event: NextFetchEvent

@@ -229,6 +229,7 @@ const Header = () => {
         ),
         key: "death-anniversary",
       },
+      // Move to event management
       {
         label: (
           <span onClick={() => router.push("/event/organize")}>
@@ -245,6 +246,15 @@ const Header = () => {
         ),
         key: "event/temple",
       },
+      {
+        label: (
+          <span onClick={() => router.push("/temple/followers")}>
+            {localeText.temple.followers.title}
+          </span>
+        ),
+        key: "/temple/followers",
+      },
+      // TODO If the temple wants to participate in the event, create a new account and participate as a public user
       {
         label: (
           <span onClick={() => router.push("/event")}>

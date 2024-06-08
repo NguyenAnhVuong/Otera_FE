@@ -1,39 +1,80 @@
 "use client";
-import { useGetTempleByIdQuery } from "@/graphql/generated/schema";
+import FollowButton from "@/components/Atoms/FollowButton";
+import {
+  GetTempleDetailDocument,
+  useFollowTempleMutation,
+  useGetTempleDetailQuery,
+  useUnfollowTempleMutation,
+} from "@/graphql/generated/schema";
+import useTrans from "@/hooks/useTrans";
+import { useAppSelector } from "@/rtk/hook";
 import { Carousel, Image as ImageAntd } from "antd";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 type Props = {
   params: { id: string };
 };
-
 const TempleDetail = ({ params }: Props) => {
-  const [temple, setTemple] = useState<any>({});
-  const [images, setImages] = useState<any>([]);
-  // const [visible, setVisible] = useState(false);
-  // const [currentImage, setCurrentImage] = useState(0);
+  const { localeText } = useTrans();
+  const { messageApi } = useAppSelector((state) => state.antd);
+  const { id } = useAppSelector((state) => state.auth);
+  const [images, setImages] = useState<string[]>([]);
   const ref: any = useRef();
   const goToSlide = (index: Number) => {
     ref.current.goTo(index);
   };
-  const { data } = useGetTempleByIdQuery({
+  const { data } = useGetTempleDetailQuery({
     variables: {
       id: Number(params.id),
     },
+    onCompleted: (data) => {
+      if (data?.getTempleDetail?.data) {
+        const templeData = data?.getTempleDetail?.data;
+
+        setImages([
+          templeData.avatar,
+          ...(templeData.images
+            ? templeData.images.map((image) => image.image)
+            : []),
+        ]);
+      }
+    },
+    skip: !params.id,
   });
-  useEffect(() => {
-    if (data?.getTempleById?.data) {
-      const templeData = data?.getTempleById?.data;
-      setTemple(templeData);
-      setImages([
-        templeData.avatar,
-        ...(templeData.images
-          ? templeData.images.map((image: any) => image.image)
-          : []),
-      ]);
-    }
-  }, [params.id, data]);
+
+  const [follow] = useFollowTempleMutation({
+    variables: {
+      followTempleInput: {
+        templeId: Number(params.id),
+      },
+    },
+    onCompleted: (data) => {
+      if (!data.followTemple.errorCode) {
+        messageApi.success(localeText.temple.followSuccessMessage);
+      }
+    },
+    onError: () => {
+      messageApi.error(localeText.temple.followFailMessage);
+    },
+    refetchQueries: [GetTempleDetailDocument],
+  });
+
+  const [unFollow] = useUnfollowTempleMutation({
+    variables: {
+      templeId: Number(params.id),
+    },
+    onCompleted: (data) => {
+      if (!data.unfollowTemple.errorCode) {
+        messageApi.success(localeText.temple.unfollowSuccessMessage);
+      }
+    },
+    onError: () => {
+      messageApi.error(localeText.temple.unfollowFailMessage);
+    },
+    refetchQueries: [GetTempleDetailDocument],
+  });
+
   return (
     <div className="lg:flex lg:justify-center lg:mt-10 lg:p-4">
       <div className="lg:w-[1200px] lg:grid lg:grid-cols-10">
@@ -88,12 +129,35 @@ const TempleDetail = ({ params }: Props) => {
 
         <div className="text-black lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
           <div>
-            <h2 className="text-2xl font-bold uppercase">{temple?.name}</h2>
-            <p>Địa chỉ: {temple?.address}</p>
-            <p>Số điện thoại: {temple?.phone}</p>
-            <p className="min-h-[128px]">{temple?.description}</p>
-            {temple?.website && (
-              <p className="mt-8">Website: {temple?.website}</p>
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold uppercase">
+                {data?.getTempleDetail?.data?.name}
+              </h2>
+              {!!id && (
+                <FollowButton
+                  isFollowing={
+                    !!data?.getTempleDetail?.data.followerTemples.length
+                  }
+                  handleFollow={follow}
+                  handleUnFollow={unFollow}
+                />
+              )}
+            </div>
+            <p>
+              {localeText.temple.address}:{" "}
+              {data?.getTempleDetail?.data?.address}
+            </p>
+            <p>
+              {localeText.temple.phone}: {data?.getTempleDetail?.data?.phone}
+            </p>
+            <p className="min-h-[128px]">
+              {data?.getTempleDetail?.data?.description}
+            </p>
+            {data?.getTempleDetail?.data?.website && (
+              <p className="mt-8">
+                {localeText.temple.website}:{" "}
+                {data?.getTempleDetail?.data.website}
+              </p>
             )}
           </div>
         </div>

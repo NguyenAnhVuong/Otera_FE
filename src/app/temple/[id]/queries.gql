@@ -1,5 +1,5 @@
-query getTempleById($id: Int) {
-  getTempleById(query: { id: $id }) {
+query getTempleDetail($id: Int!) {
+  getTempleDetail(id: $id) {
     errorCode
     errorMessage
     statusCode
@@ -30,6 +30,9 @@ query getTempleById($id: Int) {
       plan
       phone
       name
+      followerTemples {
+        id
+      }
     }
   }
 }

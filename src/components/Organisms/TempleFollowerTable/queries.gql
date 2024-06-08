@@ -1,0 +1,51 @@
+query TempleGetFollowers(
+  $address: String
+  $email: String
+  $familyName: String
+  $name: String
+  $phone: String
+  $page: Int!
+  $take: Int!
+  $orderBy: [OrderBy!]
+  $isInFamily: Boolean
+) {
+  templeGetFollowers(
+    phone: $phone
+    name: $name
+    familyName: $familyName
+    email: $email
+    address: $address
+    take: $take
+    page: $page
+    orderBy: $orderBy
+    isInFamily: $isInFamily
+  ) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        user {
+          email
+          userDetail {
+            id
+            avatar
+            name
+            address
+            phone
+          }
+          family {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

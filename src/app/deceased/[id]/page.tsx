@@ -53,8 +53,9 @@ const DeceasedDetail = ({ params }: Props) => {
       : registerExpiredDateThisYear;
 
   const disableCreateDeathAnniversary =
-    registerExpiredDateThisYear <= currentDate &&
-    deathAnniversary >= currentDate;
+    (registerExpiredDateThisYear <= currentDate &&
+      deathAnniversary >= currentDate) ||
+    !!deceased?.deathAnniversaries?.length;
 
   // const [visible, setVisible] = useState(false);
   // const [currentImage, setCurrentImage] = useState(0);
@@ -85,25 +86,27 @@ const DeceasedDetail = ({ params }: Props) => {
     onCompleted: () => {
       messageApi.open({
         type: "success",
-        content: "Đăng ký thành công!",
+        content: localeText.deathAnniversary.requestSuccessMessage,
       });
+    },
+    onError: () => {
+      messageApi.error(localeText.deathAnniversary.requestFailMessage);
     },
   });
 
-  const [deleteDeceased, { loading: deleteLoading }] =
-    useDeleteDeceasedMutation({
-      onCompleted: () => {
-        messageApi.open({
-          type: "success",
-          content: localeText.deceased.deleteDeceasedSuccessMessage,
-        });
-        router.push("/deceased");
-      },
-      onError: () => {
-        messageApi.error(localeText.deceased.deleteDeceasedFailMessage);
-      },
-      refetchQueries: [GetDeathAnniversariesDocument, GetListDeceasedDocument],
-    });
+  const [deleteDeceased] = useDeleteDeceasedMutation({
+    onCompleted: () => {
+      messageApi.open({
+        type: "success",
+        content: localeText.deceased.deleteDeceasedSuccessMessage,
+      });
+      router.push("/deceased");
+    },
+    onError: () => {
+      messageApi.error(localeText.deceased.deleteDeceasedFailMessage);
+    },
+    refetchQueries: [GetDeathAnniversariesDocument, GetListDeceasedDocument],
+  });
 
   const handleRegisterDeathAnniversary = async (values: any) => {
     if (!deceased?.dateOfDeath) return;
@@ -192,6 +195,7 @@ const DeceasedDetail = ({ params }: Props) => {
               <h2 className="text-2xl font-bold uppercase">
                 {deceased?.userDetail?.name}
               </h2>
+              {/* TODO disable when requested */}
               <DeathAnniversaryInforModal
                 title={localeText.deceased.registerDeathAnniversary}
                 isModalOpen={isModalOpen}
@@ -277,11 +281,13 @@ const DeceasedDetail = ({ params }: Props) => {
               {dayjs(registerExpiredDate).format(formatDate.YYYY_MM_DD)}
             </p>
             <p className="min-h-[128px]">{deceased?.description}</p>
-            <div>
-              <span>{localeText.deceased.updateBy}: </span>
-              <span>{deceased?.modifier?.userDetail?.name}</span>
-              <span> ({formatTimeDifference(deceased?.updatedAt)})</span>
-            </div>
+            {deceased?.modifier && (
+              <div>
+                <span>{localeText.deceased.updateBy}: </span>
+                <span>{deceased?.modifier.userDetail?.name}</span>
+                <span> ({formatTimeDifference(deceased?.updatedAt)})</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

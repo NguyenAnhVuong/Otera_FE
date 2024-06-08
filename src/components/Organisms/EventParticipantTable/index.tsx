@@ -19,9 +19,10 @@ interface DataType {
   avatar: string;
   name: string;
   email: string;
+  phone?: string;
   address?: string | null;
   familyName?: string | null;
-  isBelongToTemple: boolean;
+  isFollowing: boolean;
   rejectReason?: string | null;
   approverName?: string;
   checkInAt?: Date | null;
@@ -32,13 +33,13 @@ interface DataType {
 type EventParticipantTableProps = {
   eventId: number;
   bookingStatus: EBookingStatus;
-  isBelongToTemple: boolean;
+  isFollowing: boolean;
 };
 
 const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
   eventId,
   bookingStatus,
-  isBelongToTemple,
+  isFollowing,
 }) => {
   const [page, setPage] = useState(PAGE);
   const [totalItems, setTotalItems] = useState(0);
@@ -48,7 +49,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
   const [address, setAddress] = useState("");
   const [familyName, setFamilyName] = useState("");
   const [orderBy, setOrderBy] = useState<OrderBy[]>([]);
-  const { data, loading } = useGetEventParticipantsQuery({
+  const { loading } = useGetEventParticipantsQuery({
     variables: {
       page,
       take: TAKE,
@@ -58,10 +59,32 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       email,
       address,
       familyName,
-      isBelongToTemple,
+      isFollowing,
       orderBy,
     },
     fetchPolicy: "no-cache",
+    onCompleted: (data) => {
+      if (data?.getEventParticipants.data?.data) {
+        setDataSource(
+          data.getEventParticipants.data?.data.map((item) => ({
+            id: item.id,
+            avatar: item.user.userDetail.avatar,
+            email: item.user.email,
+            name: item.user.userDetail.name,
+            address: item.user.userDetail.address,
+            familyName: item.familyName,
+            isFollowing: item.isFollowing,
+            createdAt: item.createdAt,
+            rejectReason: item.rejectReason,
+            approverName: item.approver?.userDetail.name,
+            checkInAt: item.checkInAt,
+            updatedAt: item.updatedAt,
+            endDateBooking: item.event.endDateBooking,
+          }))
+        );
+        setTotalItems(data.getEventParticipants.data?.totalItems);
+      }
+    },
   });
   const { localeText } = useTrans();
 
@@ -100,6 +123,14 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       filterDropdown: (props) => (
         <FilterSearchInput {...props} setKeyword={setEmail} />
       ),
+    },
+    {
+      title: localeText.event.participant.phone,
+      dataIndex: "phone",
+      key: "phone",
+      align: "center",
+      width: 120,
+      render: (phone) => <span>{phone}</span>,
     },
     {
       title: localeText.event.participant.address,
@@ -141,11 +172,11 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       showSorterTooltip: false,
     },
     {
-      title: localeText.event.participant.belongsToTemple,
-      key: "isBelongToTemple",
-      dataIndex: "isBelongToTemple",
+      title: localeText.event.participant.isFollowing,
+      key: "isFollowing",
+      dataIndex: "isFollowing",
       align: "center",
-      render: (isBelongToTemple) => <Checkbox checked={isBelongToTemple} />,
+      render: (isFollowing) => <Checkbox checked={isFollowing} />,
       width: 76,
     },
     {
@@ -168,30 +199,6 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       width: 116,
     },
   ];
-
-  useEffect(() => {
-    if (data?.getEventParticipants.data?.data) {
-      setDataSource(
-        data.getEventParticipants.data?.data.map((item) => ({
-          id: item.id,
-          avatar: item.user.userDetail.avatar,
-          email: item.user.email,
-          name: item.user.userDetail.name,
-          address: item.user.userDetail.address,
-          familyName: item.familyName,
-          isBelongToTemple: item.isBelongToTemple,
-          createdAt: item.createdAt,
-          rejectReason: item.rejectReason,
-          approverName: item.approver?.userDetail.name,
-          checkInAt: item.checkInAt,
-          updatedAt: item.updatedAt,
-          endDateBooking: item.event.endDateBooking,
-        }))
-      );
-
-      setTotalItems(data.getEventParticipants.data?.totalItems);
-    }
-  }, [data]);
 
   useEffect(() => {
     setPage(PAGE);

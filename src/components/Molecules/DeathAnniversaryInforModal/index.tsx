@@ -69,7 +69,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
         onCancel={handleCancel}
         className="flex justify-center"
         cancelText={localeText.cancel}
-        okText={localeText.register}
+        okText={localeText.request}
       >
         <Form
           initialValues={{ remember: true }}
@@ -97,6 +97,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
               placeholder={[localeText.start, localeText.end]}
             />
           </Form.Item>
+          {/* TODO validate max 5000 character */}
           <Form.Item label="Ghi chú" name="note">
             <TextArea rows={4} className="w-[320px]" />
           </Form.Item>

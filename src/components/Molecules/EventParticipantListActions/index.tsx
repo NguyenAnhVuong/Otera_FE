@@ -1,4 +1,4 @@
-import EventApproveAction from "@/components/Atoms/EventApproveAction";
+import EventApprovedAction from "@/components/Atoms/EventApproveAction";
 import EventBookingStatusAction from "@/components/Atoms/EventBookingStatusAction";
 import EventRejectStatusAction from "@/components/Atoms/EventRejectStatusAction";
 import { EBookingStatus } from "@/graphql/generated/schema";
@@ -38,7 +38,7 @@ const EventParticipantListActions: React.FC<
       );
     case EBookingStatus.Approved:
       return (
-        <EventApproveAction
+        <EventApprovedAction
           approverName={approverName}
           checkInAt={checkInAt}
           updatedAt={updatedAt}
