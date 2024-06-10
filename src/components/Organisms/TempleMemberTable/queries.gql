@@ -1,0 +1,45 @@
+query getTempleMembers(
+  $address: String
+  $email: String
+  $name: String
+  $phone: String
+  $roles: [ERole!]
+  $page: Int
+  $take: Int
+  $orderBy: [OrderBy!]
+) {
+  getTempleMembers(
+    address: $address
+    email: $email
+    name: $name
+    roles: $roles
+    phone: $phone
+    page: $page
+    take: $take
+    orderBy: $orderBy
+  ) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        email
+        role
+        userDetail {
+          id
+          name
+          phone
+          birthday
+          avatar
+          address
+        }
+      }
+    }
+  }
+}

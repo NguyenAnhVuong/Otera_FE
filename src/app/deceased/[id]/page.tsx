@@ -256,12 +256,12 @@ const DeceasedDetail = ({ params }: Props) => {
             <p>
               {localeText.deceased.birthday}:{" "}
               {dayjs(deceased?.userDetail?.birthday).format(
-                formatDate.YYYY_MM_DD
+                formatDate.DD_MM_YYYY
               )}{" "}
             </p>
             <p>
               {localeText.deceased.dateOfDeath}:{" "}
-              {dayjs(deceased?.dateOfDeath).format(formatDate.YYYY_MM_DD)}
+              {dayjs(deceased?.dateOfDeath).format(formatDate.DD_MM_YYYY)}
             </p>
             {deceased?.dateOfDeath && (
               <p>
@@ -272,13 +272,13 @@ const DeceasedDetail = ({ params }: Props) => {
                       ? currentYear + 1
                       : currentYear
                   )
-                ).format(formatDate.YYYY_MM_DD)}
+                ).format(formatDate.DD_MM_YYYY)}
               </p>
             )}
 
             <p>
               {localeText.deceased.deathAnniversaryRegisterExpired}:{" "}
-              {dayjs(registerExpiredDate).format(formatDate.YYYY_MM_DD)}
+              {dayjs(registerExpiredDate).format(formatDate.DD_MM_YYYY)}
             </p>
             <p className="min-h-[128px]">{deceased?.description}</p>
             {deceased?.modifier && (

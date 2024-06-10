@@ -248,6 +248,14 @@ const Header = () => {
       },
       {
         label: (
+          <span onClick={() => router.push("/temple/members")}>
+            {localeText.temple.members.title}
+          </span>
+        ),
+        key: "temple/members",
+      },
+      {
+        label: (
           <span onClick={() => router.push("/temple/followers")}>
             {localeText.temple.followers.title}
           </span>

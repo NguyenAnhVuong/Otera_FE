@@ -1,0 +1,8 @@
+mutation RemoveTempleMember($removeTempleMemberInput: VRemoveTempleMemberInput! ) {
+  removeTempleMember(removeTempleMemberInput: $removeTempleMemberInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}
