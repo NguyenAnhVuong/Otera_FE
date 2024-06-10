@@ -20,7 +20,7 @@ export const BLOCK_REASON_MAX_LENGTH = 200;
 
 export const formatDate = {
   YYYY_MM_DD_HH_mm: "YYYY-MM-DD HH:mm",
-  YYYY_MM_DD: "YYYY-MM-DD",
+  DD_MM_YYYY: "DD-MM-YYYY",
   HH_mm_DD_MM_YYYY: "HH:mm DD/MM/YYYY",
 };
 

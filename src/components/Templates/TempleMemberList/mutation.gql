@@ -1,0 +1,8 @@
+mutation AddTempleMember($addTempleMemberInput: VAddTempleMemberInput!) {
+  addTempleMember(addTempleMemberInput: $addTempleMemberInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

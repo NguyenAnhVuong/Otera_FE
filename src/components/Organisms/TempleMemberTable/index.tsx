@@ -4,10 +4,10 @@ import FilterSearchInput from "@/components/Atoms/FilterSearchInput";
 import Loading from "@/components/Atoms/Loading";
 import {
   ERole,
-  GetFamilyMembersDocument,
+  GetTempleMembersDocument,
   OrderBy,
-  useGetFamilyMembersQuery,
-  useRemoveFamilyMemberMutation,
+  useGetTempleMembersQuery,
+  useRemoveTempleMemberMutation,
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
@@ -16,69 +16,84 @@ import { handleSortByColumn } from "@/utils/helper";
 import { Table, TableProps, Tag } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-interface DataType {
+type TempleMemberTableProps = {};
+
+type DataType = {
   id: number;
   avatar: string;
   name: string;
+  email?: string | null;
   address?: string | null;
-  birthday: string;
-  email: string;
-  phone?: string | null;
+  birthday?: string | null;
   role: ERole;
-}
-
-type FamilyMemberTableProps = {
-  familyId?: number | null;
 };
 
-const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
-  const { role } = useAppSelector((state) => state.auth);
+const TempleMemberTable: React.FC<TempleMemberTableProps> = ({}) => {
+  const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
   const [page, setPage] = useState(PAGE);
   const [totalItems, setTotalItems] = useState(0);
-  const { localeText } = useTrans();
+  const [dataSource, setDataSource] = useState<DataType[] | undefined>(
+    undefined
+  );
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [orderBy, setOrderBy] = useState<OrderBy[]>([]);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [orderBy, setOrderBy] = useState<OrderBy[]>([]);
   const [roleFilter, setRoleFilter] = useState<(string | number)[]>([
-    ERole.FamilyAdmin,
-    ERole.FamilyMember,
+    ERole.TempleAdmin,
+    ERole.TempleMember,
   ]);
-  const [dataSource, setDataSource] = useState<DataType[]>([]);
-
-  const { data, loading } = useGetFamilyMembersQuery({
+  const { loading } = useGetTempleMembersQuery({
     variables: {
-      id: familyId as number,
+      page,
+      take: TAKE,
       name,
       address,
       email,
       phone,
-      roleFilter: roleFilter as ERole[],
-      take: TAKE,
-      page,
+      roles: roleFilter as ERole[],
+      orderBy,
     },
-    skip: !familyId,
+    fetchPolicy: "no-cache",
+    onCompleted: (data) => {
+      setDataSource(
+        data.getTempleMembers.data.data?.map((member) => ({
+          id: member.id,
+          avatar: member.userDetail.avatar,
+          name: member.userDetail.name,
+          address: member.userDetail.address,
+          email: member.email,
+          birthday: member.userDetail.birthday,
+          role: member.role,
+        }))
+      );
+      setTotalItems(data.getTempleMembers.data.totalItems);
+    },
+    notifyOnNetworkStatusChange: true,
   });
 
-  const [removeFamilyMember] = useRemoveFamilyMemberMutation({
-    onCompleted: () => {
-      messageApi.success(localeText.family.familyMember.removeSuccessMessage);
-    },
-    onError: () => {
-      messageApi.error(localeText.family.familyMember.removeFailedMessage);
-    },
-    refetchQueries: [GetFamilyMembersDocument],
-  });
+  const [removeTempleMember, { loading: removeLoading }] =
+    useRemoveTempleMemberMutation({
+      onCompleted: () => {
+        messageApi.success(
+          localeText.temple.members.removeMemberSuccessMessage
+        );
+      },
+      onError: () => {
+        messageApi.error(localeText.temple.members.removeMemberFailMessage);
+      },
+      refetchQueries: [GetTempleMembersDocument],
+    });
 
-  const handleRemoveFamilyMember = async (id: number) => {
-    await removeFamilyMember({
+  const handleRemoveFamilyMember = async (userId: number) => {
+    await removeTempleMember({
       variables: {
-        removeFamilyMemberInput: {
-          id,
+        removeTempleMemberInput: {
+          userId,
         },
       },
     });
@@ -156,15 +171,14 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
       },
       showSorterTooltip: false,
     },
-
     {
       title: localeText.role,
       dataIndex: "role",
       key: "role",
       align: "center",
       render: (role) => (
-        <Tag color={role === ERole.FamilyAdmin ? "gold" : "green"}>
-          {role === ERole.FamilyAdmin ? localeText.admin : localeText.member}
+        <Tag color={role === ERole.TempleAdmin ? "gold" : "green"}>
+          {role === ERole.TempleAdmin ? localeText.admin : localeText.member}
         </Tag>
       ),
       filterDropdown: (props) => (
@@ -172,8 +186,8 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
           {...props}
           setFilter={setRoleFilter}
           options={[
-            { label: localeText.admin, value: ERole.FamilyAdmin },
-            { label: localeText.member, value: ERole.FamilyMember },
+            { label: localeText.admin, value: ERole.TempleAdmin },
+            { label: localeText.member, value: ERole.TempleMember },
           ]}
         />
       ),
@@ -185,7 +199,7 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
       align: "center",
       render: (_, record) => (
         <>
-          {record.role !== ERole.FamilyAdmin && (
+          {record.role !== ERole.TempleAdmin && (
             <DeleteButton
               okText={localeText.OK}
               cancelText={localeText.cancel}
@@ -202,34 +216,13 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
           )}
         </>
       ),
-      hidden: role !== ERole.FamilyAdmin,
       width: 108,
     },
   ];
 
-  useEffect(() => {
-    if (data?.getFamilyMembers.data) {
-      const users = data.getFamilyMembers.data.data;
-      if (users) {
-        const data = users.map((user) => ({
-          id: user.id,
-          avatar: user.userDetail.avatar,
-          name: user.userDetail.name,
-          address: user.userDetail.address,
-          birthday: user.userDetail.birthday,
-          email: user.email,
-          phone: user.userDetail.phone,
-          role: user.role,
-        }));
-        setDataSource(data);
-      }
-      setTotalItems(data.getFamilyMembers.data.totalItems);
-    }
-  }, [data]);
-
   return (
     <>
-      {loading && <Loading />}
+      {(loading || removeLoading) && <Loading />}
       <Table
         columns={columns}
         dataSource={dataSource}
@@ -249,4 +242,4 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
   );
 };
 
-export default FamilyMemberTable;
+export default TempleMemberTable;

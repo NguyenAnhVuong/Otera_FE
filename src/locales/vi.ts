@@ -33,6 +33,7 @@ const vi = {
   blockReason: "Lý do chặn",
   redo: "Làm lại",
   unblock: "Bỏ chặn",
+  add: "Thêm",
   gender: {
     male: "Nam",
     female: "Nữ",
@@ -81,6 +82,14 @@ const vi = {
       familyName: "Hộ gia đình",
       name: "Họ và tên",
       isInFamily: "Thuộc hộ gia đình",
+    },
+    addMember: "Thêm hoà thượng",
+    members: {
+      title: "Danh sách hoà thượng",
+      addMemberSuccessMessage: "Thêm hoà thượng thành công!",
+      addMemberFailMessage: "Thêm hoà thượng thất bại!",
+      removeMemberSuccessMessage: "Xóa hoà thượng thành công!",
+      removeMemberFailMessage: "Xóa hoà thượng thất bại!",
     },
   },
   selectTemple: "Chọn nhà chùa",
