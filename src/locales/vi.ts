@@ -28,10 +28,40 @@ const vi = {
   close: "Đóng",
   phone: "Số điện thoại",
   address: "Địa chỉ",
+  rejectReason: "Lý do từ chối",
+  block: "Chặn",
+  blockReason: "Lý do chặn",
+  redo: "Làm lại",
+  unblock: "Bỏ chặn",
   gender: {
     male: "Nam",
     female: "Nữ",
     other: "Khác",
+  },
+  system: {
+    temple: {
+      title: "Danh sách nhà chùa",
+      status: {
+        rejected: "Từ chối",
+        pending: "Đang chờ",
+        approved: "Chấp nhận",
+        blocked: "Chặn",
+        unblock: "Bỏ chặn",
+        approveMessage: (name: string) =>
+          `Chấp nhận nhà chùa ${name} gia nhập hệ thống?`,
+        unblockMessage: (name: string) => `Bỏ chặn nhà chùa ${name}?`,
+        approveSuccessMessage: "Chấp nhận thành công!",
+        approveFailMessage: "Chấp nhận thất bại!",
+        rejectSuccessMessage: "Từ chối thành công!",
+        rejectFailMessage: "Từ chối thất bại!",
+        blockSuccessMessage: "Chặn thành công!",
+        blockFailMessage: "Chặn thất bại!",
+        unblockSuccessMessage: "Bỏ chặn thành công!",
+        unblockFailMessage: "Bỏ chặn thất bại!",
+      },
+      creator: "Người đăng ký",
+      action: "Hành động",
+    },
   },
   temple: {
     title: "Nhà chùa",
@@ -66,6 +96,7 @@ const vi = {
     types: {
       email: "Vui lòng nhập đúng định dạng email!",
     },
+    max: (length: number) => `Vui lòng nhập tối đa ${length} ký tự`,
   },
   deathAnniversary: {
     reject: "Từ chối",

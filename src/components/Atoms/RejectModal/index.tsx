@@ -1,5 +1,6 @@
 "use client";
 import useTrans from "@/hooks/useTrans";
+import { REJECT_REASON_MAX_LENGTH } from "@/utils/constants";
 import { Form, Input, Modal } from "antd";
 import React, { useState } from "react";
 
@@ -33,11 +34,19 @@ const RejectModal: React.FC<RejectModalProps> = ({
   };
 
   const handleOk = async () => {
-    form.submit();
-    setIsModalOpen(false);
+    form
+      .validateFields()
+      .then(() => {
+        form.submit();
+        setIsModalOpen(false);
+      })
+      .catch((errors) => {
+        // Errors in the fields
+      });
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setIsModalOpen(false);
   };
 
@@ -73,6 +82,12 @@ const RejectModal: React.FC<RejectModalProps> = ({
                   localeText.event.participant.rejectReason
                 ),
               },
+              {
+                max: REJECT_REASON_MAX_LENGTH,
+                message: localeText.validateMessages.max(
+                  REJECT_REASON_MAX_LENGTH
+                ),
+              },
             ]}
           >
             <Input.TextArea
@@ -81,6 +96,7 @@ const RejectModal: React.FC<RejectModalProps> = ({
               placeholder={localeText.event.participant.rejectReason}
               defaultValue={defaultRejectReason || undefined}
               rows={4}
+              maxLength={REJECT_REASON_MAX_LENGTH}
             />
           </Form.Item>
         </Form>

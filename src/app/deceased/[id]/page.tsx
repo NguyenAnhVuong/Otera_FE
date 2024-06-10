@@ -118,14 +118,14 @@ const DeceasedDetail = ({ params }: Props) => {
         ).setFullYear(
           currentDate > deathAnniversary ? currentYear + 1 : currentYear
         )
-      ).format(formatDate.YYYY_MM_DD_HH_MM),
+      ).format(formatDate.HH_mm_DD_MM_YYYY),
       desiredEndTime: dayjs(
         new Date(
           `${deceased?.dateOfDeath} ${values.desiredTime[1].format("HH:mm")}`
         ).setFullYear(
           currentDate > deathAnniversary ? currentYear + 1 : currentYear
         )
-      ).format(formatDate.YYYY_MM_DD_HH_MM),
+      ).format(formatDate.HH_mm_DD_MM_YYYY),
       note: values.note,
       isLiveStream: values.isLiveStream,
     };

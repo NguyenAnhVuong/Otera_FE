@@ -158,7 +158,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       dataIndex: "createdAt",
       align: "center",
       render: (createdAt) => (
-        <span>{dayjs(createdAt).format(formatDate.YYYY_MM_DD_HH_MM)}</span>
+        <span>{dayjs(createdAt).format(formatDate.HH_mm_DD_MM_YYYY)}</span>
       ),
       width: 116,
       sorter: {

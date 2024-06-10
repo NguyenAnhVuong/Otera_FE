@@ -105,7 +105,7 @@ const BookingEventTable: React.FC<BookingEventTableProps> = ({
           align: "center",
           render: (startDateEvent) => (
             <span>
-              {dayjs(startDateEvent).format(formatDate.YYYY_MM_DD_HH_MM)}
+              {dayjs(startDateEvent).format(formatDate.HH_mm_DD_MM_YYYY)}
             </span>
           ),
           width: 116,
@@ -128,7 +128,7 @@ const BookingEventTable: React.FC<BookingEventTableProps> = ({
           align: "center",
           render: (endDateEvent) => (
             <span>
-              {dayjs(endDateEvent).format(formatDate.YYYY_MM_DD_HH_MM)}
+              {dayjs(endDateEvent).format(formatDate.HH_mm_DD_MM_YYYY)}
             </span>
           ),
           width: 116,

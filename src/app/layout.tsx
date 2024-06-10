@@ -21,6 +21,7 @@ import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import Header from "@/components/Organisms/Header";
+import viVN from "antd/locale/vi_VN";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -113,9 +114,10 @@ export default function RootLayout({
               },
             }}
             renderEmpty={() => <NoData />}
+            locale={viVN}
           >
             <AntdProvider>
-              <html lang="en">
+              <html lang="vi">
                 <body className={inter.className}>
                   <Header />
                   <div className="flex justify-center w-full py-header min-h-screen text-black">

@@ -134,20 +134,6 @@ const Register = (props: Props) => {
           >
             <Input.Password placeholder="Nhập lại mật khẩu" />
           </Form.Item>
-          {/* <Form.Item
-            name="privacyPolicyAgreed"
-            rules={[
-              {
-                validator: (_, value) =>
-                  value
-                    ? Promise.resolve()
-                    : Promise.reject(new Error("Should accept agreement")),
-              },
-            ]}
-            valuePropName="checked"
-          >
-            <Checkbox> プライバシーポリシーと利用規約に同意します</Checkbox>
-          </Form.Item> */}
           <Form.Item className="flex justify-center">
             <Button className="px-8 " type="primary" htmlType="submit">
               Đăng ký
