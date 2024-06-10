@@ -1,0 +1,8 @@
+mutation UpdateStatusTemple($updateStatusTempleInput: VUpdateStatusTempleInput!) {
+  updateStatusTemple(updateStatusTempleInput: $updateStatusTempleInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

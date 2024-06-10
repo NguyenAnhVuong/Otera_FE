@@ -222,7 +222,7 @@ const DeathAnniversary = () => {
           align: "center",
           render: (desiredStartTime) => (
             <span>
-              {dayjs(desiredStartTime).format(formatDate.YYYY_MM_DD_HH_MM)}
+              {dayjs(desiredStartTime).format(formatDate.HH_mm_DD_MM_YYYY)}
             </span>
           ),
           width: 116,
@@ -234,7 +234,7 @@ const DeathAnniversary = () => {
           align: "center",
           render: (desiredEndTime) => (
             <span>
-              {dayjs(desiredEndTime).format(formatDate.YYYY_MM_DD_HH_MM)}
+              {dayjs(desiredEndTime).format(formatDate.HH_mm_DD_MM_YYYY)}
             </span>
           ),
           width: 116,
@@ -252,7 +252,7 @@ const DeathAnniversary = () => {
           render: (actualStartTime) =>
             actualStartTime && (
               <span>
-                {dayjs(actualStartTime).format(formatDate.YYYY_MM_DD_HH_MM)}
+                {dayjs(actualStartTime).format(formatDate.HH_mm_DD_MM_YYYY)}
               </span>
             ),
           width: 116,
@@ -265,7 +265,7 @@ const DeathAnniversary = () => {
           render: (actualEndTime) =>
             actualEndTime && (
               <span>
-                {dayjs(actualEndTime).format(formatDate.YYYY_MM_DD_HH_MM)}
+                {dayjs(actualEndTime).format(formatDate.HH_mm_DD_MM_YYYY)}
               </span>
             ),
           width: 116,

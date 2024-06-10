@@ -1,6 +1,6 @@
-import EventApprovedAction from "@/components/Atoms/EventApproveAction";
+import EventApprovedAction from "@/components/Atoms/EventApprovedAction";
 import EventBookingStatusAction from "@/components/Atoms/EventBookingStatusAction";
-import EventRejectStatusAction from "@/components/Atoms/EventRejectStatusAction";
+import ShowRejectReasonAction from "@/components/Atoms/ShowRejectReasonAction";
 import { EBookingStatus } from "@/graphql/generated/schema";
 import React from "react";
 
@@ -45,7 +45,7 @@ const EventParticipantListActions: React.FC<
         />
       );
     case EBookingStatus.Rejected:
-      return <EventRejectStatusAction rejectReason={rejectReason} />;
+      return <ShowRejectReasonAction rejectReason={rejectReason} />;
     default:
       return (
         <EventBookingStatusAction

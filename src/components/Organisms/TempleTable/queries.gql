@@ -1,0 +1,32 @@
+query SystemGetTemples($orderBy: [OrderBy!], $address: String, $email: String, $name: String, $page: Int, $status: EStatus, $take: Int) {
+  systemGetTemples(take: $take, status: $status, page: $page, name: $name, email: $email, address: $address, orderBy: $orderBy) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        name
+        email
+        address
+        avatar
+        rejectReason
+        blockReason
+        admin {
+          id
+          email
+          userDetail {
+            avatar
+            name
+          }
+        }
+        createdAt
+      }
+    }
+  }
+}

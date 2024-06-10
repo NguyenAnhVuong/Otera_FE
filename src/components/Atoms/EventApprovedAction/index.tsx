@@ -1,7 +1,7 @@
+import ShowDetailButton from "@/components/Atoms/ShowDetailButton";
 import useTrans from "@/hooks/useTrans";
 import { formatDate } from "@/utils/constants";
-import { EyeOutlined } from "@ant-design/icons";
-import { Modal, Tooltip } from "antd";
+import { Modal } from "antd";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 
@@ -34,12 +34,7 @@ const EventApprovedAction: React.FC<EventApprovedActionProps> = ({
 
   return (
     <>
-      <Tooltip placement="top" title={localeText.detail}>
-        <EyeOutlined
-          className="text-blue-400 text-xl cursor-pointer"
-          onClick={showModal}
-        />
-      </Tooltip>
+      <ShowDetailButton onClick={showModal} />
       <Modal
         title={localeText.detail}
         open={isModalOpen}
@@ -54,7 +49,7 @@ const EventApprovedAction: React.FC<EventApprovedActionProps> = ({
           <span>{localeText.event.participant.checkInAt}: </span>
           <span>
             {checkInAt
-              ? dayjs(checkInAt).format(formatDate.YYYY_MM_DD_HH_MM)
+              ? dayjs(checkInAt).format(formatDate.HH_mm_DD_MM_YYYY)
               : localeText.event.participant.notCheckIn}
           </span>
         </div>
@@ -63,7 +58,7 @@ const EventApprovedAction: React.FC<EventApprovedActionProps> = ({
           <div>
             <span>{localeText.event.participant.approvedBy(approverName)}</span>
             <span> {localeText.event.participant.at} </span>
-            <span>{dayjs(updatedAt).format(formatDate.YYYY_MM_DD_HH_MM)}</span>
+            <span>{dayjs(updatedAt).format(formatDate.HH_mm_DD_MM_YYYY)}</span>
           </div>
         )}
       </Modal>

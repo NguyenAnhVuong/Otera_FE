@@ -1,3 +1,5 @@
+import ApproveButton from "@/components/Atoms/ApproveButton";
+import RejectButton from "@/components/Atoms/RejectButton";
 import RejectModal from "@/components/Atoms/RejectModal";
 import {
   EBookingStatus,
@@ -6,8 +8,7 @@ import {
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { Popconfirm, Tag, Tooltip } from "antd";
+import { Popconfirm, Tag } from "antd";
 import React, { useMemo } from "react";
 
 type EventBookingStatusActionProps = {
@@ -80,14 +81,10 @@ const EventBookingStatusAction: React.FC<EventBookingStatusActionProps> = ({
         okText={localeText.OK}
         cancelText={localeText.cancel}
       >
-        <Tooltip placement="top" title={localeText.event.approved}>
-          <CheckOutlined className="text-green-400 text-xl cursor-pointer" />
-        </Tooltip>
+        <ApproveButton />
       </Popconfirm>
       <RejectModal onSubmit={handleRejectEventParticipant}>
-        <Tooltip placement="top" title={localeText.event.rejected}>
-          <CloseOutlined className="text-red-500 text-xl cursor-pointer" />
-        </Tooltip>
+        <RejectButton />
       </RejectModal>
     </div>
   );

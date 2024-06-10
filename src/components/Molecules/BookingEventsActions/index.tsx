@@ -1,6 +1,6 @@
 import DeleteButton from "@/components/Atoms/DeleteButton";
-import EventApproveAction from "@/components/Atoms/EventApproveAction";
-import EventRejectStatusAction from "@/components/Atoms/EventRejectStatusAction";
+import EventApprovedAction from "@/components/Atoms/EventApprovedAction";
+import ShowRejectReasonAction from "@/components/Atoms/ShowRejectReasonAction";
 import {
   EBookingStatus,
   GetBookingEventsDocument,
@@ -71,7 +71,7 @@ const BookingEventsActions: React.FC<BookingEventsActionsProps> = ({
     case EBookingStatus.Approved:
       return (
         <div className="flex justify-center items-center gap-2">
-          <EventApproveAction
+          <EventApprovedAction
             approverName={approverName}
             checkInAt={checkInAt}
             updatedAt={updatedAt}
@@ -93,7 +93,7 @@ const BookingEventsActions: React.FC<BookingEventsActionsProps> = ({
         </div>
       );
     case EBookingStatus.Rejected:
-      return <EventRejectStatusAction rejectReason={rejectReason} />;
+      return <ShowRejectReasonAction rejectReason={rejectReason} />;
     default:
       return null;
   }

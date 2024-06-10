@@ -275,6 +275,28 @@ const Header = () => {
     [dispatch, handleLogout, localeText, router]
   );
 
+  const systemItems: MenuProps["items"] = useMemo(
+    () => [
+      {
+        label: (
+          <span onClick={() => router.push("/system/temple")}>
+            {localeText.temple.temples}
+          </span>
+        ),
+        key: "system/temple",
+      },
+      {
+        label: (
+          <span onClick={async () => await handleLogout(dispatch)}>
+            Đăng xuất
+          </span>
+        ),
+        key: "logout",
+      },
+    ],
+    [dispatch, handleLogout, localeText, router]
+  );
+
   switch (authUser.role) {
     case ERole.PUBLIC_USER:
       items = [...publicUserItems];
@@ -287,6 +309,9 @@ const Header = () => {
       break;
     case ERole.TEMPLE_ADMIN:
       items = [...templeAdminItems];
+      break;
+    case ERole.SYSTEM:
+      items = [...systemItems];
       break;
   }
 

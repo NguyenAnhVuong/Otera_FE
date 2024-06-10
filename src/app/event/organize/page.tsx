@@ -199,7 +199,7 @@ const EventOrganize = (props: Props) => {
         >
           <RangePicker
             showTime
-            format={formatDate.YYYY_MM_DD_HH_MM}
+            format={formatDate.HH_mm_DD_MM_YYYY}
             className="w-full"
             placeholder={[localeText.event.startTime, localeText.event.endTime]}
             disabledDate={(current) => {
@@ -223,7 +223,7 @@ const EventOrganize = (props: Props) => {
         >
           <RangePicker
             disabled={!eventTime || eventTime.length === 0}
-            format={formatDate.YYYY_MM_DD_HH_MM}
+            format={formatDate.HH_mm_DD_MM_YYYY}
             showTime
             className="w-full"
             placeholder={[localeText.event.startTime, localeText.event.endTime]}

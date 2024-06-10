@@ -106,7 +106,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       dataIndex: "createdAt",
       align: "center",
       render: (createdAt) => (
-        <span>{dayjs(createdAt).format(formatDate.YYYY_MM_DD_HH_MM)}</span>
+        <span>{dayjs(createdAt).format(formatDate.HH_mm_DD_MM_YYYY)}</span>
       ),
       sorter: {
         compare: (a, b, sortOrder) =>
@@ -129,7 +129,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
           align: "center",
           render: (startDateEvent) => (
             <span>
-              {dayjs(startDateEvent).format(formatDate.YYYY_MM_DD_HH_MM)}
+              {dayjs(startDateEvent).format(formatDate.HH_mm_DD_MM_YYYY)}
             </span>
           ),
           sorter: {
@@ -156,7 +156,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
           align: "center",
           render: (endDateEvent) => (
             <span>
-              {dayjs(endDateEvent).format(formatDate.YYYY_MM_DD_HH_MM)}
+              {dayjs(endDateEvent).format(formatDate.HH_mm_DD_MM_YYYY)}
             </span>
           ),
           sorter: {
@@ -189,7 +189,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
           render: (startDateBooking) =>
             startDateBooking && (
               <span>
-                {dayjs(startDateBooking).format(formatDate.YYYY_MM_DD_HH_MM)}
+                {dayjs(startDateBooking).format(formatDate.HH_mm_DD_MM_YYYY)}
               </span>
             ),
           sorter: {
@@ -217,7 +217,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
           render: (endDateBooking) =>
             endDateBooking && (
               <span>
-                {dayjs(endDateBooking).format(formatDate.YYYY_MM_DD_HH_MM)}
+                {dayjs(endDateBooking).format(formatDate.HH_mm_DD_MM_YYYY)}
               </span>
             ),
           sorter: {

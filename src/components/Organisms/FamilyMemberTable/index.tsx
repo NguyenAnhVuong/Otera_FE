@@ -126,7 +126,7 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
       dataIndex: "birthday",
       align: "center",
       render: (birthday) => (
-        <span>{dayjs(birthday).format(formatDate.YYYY_MM_DD_HH_MM)}</span>
+        <span>{dayjs(birthday).format(formatDate.HH_mm_DD_MM_YYYY)}</span>
       ),
       width: 116,
       sorter: {

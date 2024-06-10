@@ -1,4 +1,5 @@
 import FilterSearchInput from "@/components/Atoms/FilterSearchInput";
+import Loading from "@/components/Atoms/Loading";
 import {
   OrderBy,
   useTempleGetFollowersQuery,
@@ -33,7 +34,7 @@ const TempleFollowerTable: React.FC<TempleFollowerTableProps> = ({
   const [totalItems, setTotalItems] = useState(0);
   const { localeText } = useTrans();
 
-  useTempleGetFollowersQuery({
+  const { loading } = useTempleGetFollowersQuery({
     variables: {
       page: PAGE,
       take: TAKE,
@@ -126,17 +127,20 @@ const TempleFollowerTable: React.FC<TempleFollowerTableProps> = ({
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={dataSource}
-      pagination={{
-        position: ["bottomCenter"],
-        total: totalItems,
-        pageSize: TAKE,
-        current: page,
-        onChange: (page) => setPage(page),
-      }}
-    />
+    <>
+      {loading && <Loading />}
+      <Table
+        columns={columns}
+        dataSource={dataSource}
+        pagination={{
+          position: ["bottomCenter"],
+          total: totalItems,
+          pageSize: TAKE,
+          current: page,
+          onChange: (page) => setPage(page),
+        }}
+      />
+    </>
   );
 };
 

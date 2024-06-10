@@ -13,6 +13,7 @@ import {
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
+import { formatDate } from "@/utils/constants";
 import { getParticipants } from "@/utils/helper";
 import { Button, Carousel, Image as ImageAntd } from "antd";
 import Image from "next/image";
@@ -214,14 +215,14 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
               title={localeText.event.time}
               startTime={event?.startDateEvent}
               endTime={event?.endDateEvent}
-              format={localeText.event.eventTimeFormat}
+              format={formatDate.HH_mm_DD_MM_YYYY}
             />
             <div className="mt-3">
               <TimeInterval
                 title={localeText.event.registration}
                 startTime={event?.startDateBooking}
                 endTime={event?.endDateBooking}
-                format={localeText.event.eventTimeFormat}
+                format={formatDate.HH_mm_DD_MM_YYYY}
               />
             </div>
             <div className="mt-3">

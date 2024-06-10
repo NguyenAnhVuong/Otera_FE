@@ -8,6 +8,7 @@ import { useState } from "react";
 const TempleFollowerList = () => {
   const { localeText } = useTrans();
   const [isInFamily, setIsInFamily] = useState(false);
+
   const handleChange = (value: string) => {
     if (value === "isInFamily") {
       setIsInFamily(true);
