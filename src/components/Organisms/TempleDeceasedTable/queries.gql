@@ -1,0 +1,53 @@
+query TempleGetDeceasedList(
+  $name: String
+  $status: EStatus
+  $address: String
+  $tombAddress: String
+  $familyKeyword: String
+  $isDeleted: Boolean
+  $page: Int
+  $take: Int
+  $orderBy: [OrderBy!]
+) {
+  templeGetDeceasedList(
+    name: $name
+    status: $status
+    address: $address
+    tombAddress: $tombAddress
+    familyKeyword: $familyKeyword
+    isDeleted: $isDeleted
+    page: $page
+    take: $take
+    orderBy: $orderBy
+  ) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      data {
+        id
+        rejectReason
+        family {
+          id
+          name
+          avatar
+          familyCode
+        }
+        userDetail {
+          id
+          avatar
+          name
+          birthday
+          address
+        }
+        tombAddress
+        dateOfDeath
+      }
+      totalPages
+      totalItems
+      take
+      page
+    }
+  }
+}

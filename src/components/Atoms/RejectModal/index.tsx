@@ -34,15 +34,18 @@ const RejectModal: React.FC<RejectModalProps> = ({
   };
 
   const handleOk = async () => {
-    form
-      .validateFields()
-      .then(() => {
-        form.submit();
-        setIsModalOpen(false);
-      })
-      .catch((errors) => {
-        // Errors in the fields
-      });
+    if (!isReadOnly) {
+      form
+        .validateFields()
+        .then(() => {
+          form.submit();
+          setIsModalOpen(false);
+        })
+        .catch((errors) => {
+          // Errors in the fields
+        });
+    }
+    setIsModalOpen(false);
   };
 
   const handleCancel = () => {

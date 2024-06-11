@@ -16,6 +16,8 @@ import { useRef, useState } from "react";
 type TempleDetailProps = {
   templeId: number;
 };
+
+// TODO responsive
 const TempleDetail: React.FC<TempleDetailProps> = ({ templeId }) => {
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);

@@ -224,10 +224,18 @@ const Header = () => {
       {
         label: (
           <span onClick={() => router.push("/death-anniversary")}>
-            Yêu cầu tổ chức lễ giỗ
+            {localeText.deathAnniversary.request}
           </span>
         ),
         key: "death-anniversary",
+      },
+      {
+        label: (
+          <span onClick={() => router.push("/temple/deceased")}>
+            {localeText.temple.deceasedList.title}
+          </span>
+        ),
+        key: "/temple/deceased",
       },
       // Move to event management
       {
