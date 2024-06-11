@@ -1,0 +1,17 @@
+mutation UpdateDeceasedStatus($updateDeceasedStatusInput: VUpdateDeceasedStatusInput!) {
+  updateDeceasedStatus(updateDeceasedStatusInput: $updateDeceasedStatusInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}
+
+mutation RestoreDeceased($id: Int!) {
+  restoreDeceased(id: $id) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

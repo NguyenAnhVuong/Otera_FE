@@ -3,8 +3,8 @@ import { Button, Form, Input, Modal } from "antd";
 import React, { useState } from "react";
 
 type InviteMemberModalProps = {
-  title: string;
-  okText: string;
+  title?: string;
+  okText?: string;
   handleInviteMember: (email: string) => Promise<void>;
 };
 

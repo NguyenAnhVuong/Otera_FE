@@ -5,23 +5,25 @@ query getListDeceased($familyId: Int!) {
     errorMessage
     errorCode
     data {
-      description
-      creatorId
-      dateOfDeath
-      familyId
-      id
-      templeId
-      userDetail {
-        address
-        avatar
-        birthday
-        citizenNumber
-        gender
-        name
-      }
-      images {
+      data {
+        description
+        creatorId
+        dateOfDeath
+        familyId
         id
-        image
+        templeId
+        userDetail {
+          address
+          avatar
+          birthday
+          citizenNumber
+          gender
+          name
+        }
+        images {
+          id
+          image
+        }
       }
     }
   }

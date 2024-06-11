@@ -154,6 +154,9 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
           handleSortByColumn(orderBy, setOrderBy, "birthday", sortOrder),
         multiple: 1,
       },
+      onHeaderCell: () => ({
+        onClick: () => handleSortByColumn(orderBy, setOrderBy, "birthday"),
+      }),
       showSorterTooltip: false,
     },
 

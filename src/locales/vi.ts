@@ -1,3 +1,5 @@
+import { title } from "process";
+
 const vi = {
   start: "Bắt đầu",
   end: "Kết thúc",
@@ -34,6 +36,8 @@ const vi = {
   redo: "Làm lại",
   unblock: "Bỏ chặn",
   add: "Thêm",
+  delete: "Xoá",
+  restore: "Khôi phục",
   gender: {
     male: "Nam",
     female: "Nữ",
@@ -76,6 +80,43 @@ const vi = {
     followFailMessage: "Theo dõi thất bại!",
     unfollowSuccessMessage: "Bỏ theo dõi thành công!",
     unfollowFailMessage: "Bỏ theo dõi thất bại!",
+    deceasedList: {
+      title: "Danh sách phần mộ và tro cốt",
+      action: "Hành động",
+      avatar: "Ảnh đại diện",
+      name: "Họ và tên",
+      tombAddress: "Địa chỉ phần mộ/tro cốt",
+      birthday: "Ngày sinh",
+      dateOfDeath: "Ngày mất",
+      address: "Địa chỉ",
+      family: "Hộ gia đình",
+      restorePopconfirm: {
+        title: (name: string) => `Khôi phục phần mộ/tro cốt ${name}`,
+        description: (name: string) =>
+          `Bạn có chắc chắn muốn khôi phục phần mộ/tro cốt của ${name}?`,
+        restoreDeceasedSuccessMessage: "Khôi phục phần mộ/tro cốt thành công!",
+        restoreDeceasedFailMessage: "Khôi phục phần mộ/tro cốt thất bại!",
+      },
+      deleteDeceasedPopConfirm: {
+        title: "Xoá phần mộ/tro cốt",
+        description: (name: string) =>
+          `Bạn có chắc chắn muốn xoá phần mộ/tro cốt của ${name}?`,
+        deleteDeceasedSuccessMessage: "Xoá phần mộ/tro cốt thành công!",
+        deleteDeceasedFailMessage: "Xoá phần mộ/tro cốt thất bại!",
+      },
+      status: {
+        pending: "Đang chờ",
+        approved: "Chấp nhận",
+        rejected: "Từ chối",
+        isDeleted: "Đã xoá",
+        approveMessage: (name: string) =>
+          `Bạn có chắc chắn có phần mộ/tro cốt của ${name} được đặt tại chùa?`,
+        approveSuccessMessage: "Chấp nhận thành công!",
+        approveFailMessage: "Chấp nhận thất bại!",
+        rejectSuccessMessage: "Từ chối thành công!",
+        rejectFailMessage: "Từ chối thất bại!",
+      },
+    },
     followers: {
       avatar: "Ảnh đại diện",
       title: "Danh sách người theo dõi",
@@ -108,6 +149,7 @@ const vi = {
     max: (length: number) => `Vui lòng nhập tối đa ${length} ký tự`,
   },
   deathAnniversary: {
+    request: "Yêu cầu tổ chức lễ giỗ",
     reject: "Từ chối",
     approve: "Chấp nhận",
     pending: "Đang chờ",
