@@ -38,6 +38,7 @@ const vi = {
   add: "Thêm",
   delete: "Xoá",
   restore: "Khôi phục",
+  login: "Đăng nhập",
   gender: {
     male: "Nam",
     female: "Nữ",
@@ -136,6 +137,25 @@ const vi = {
   selectTemple: "Chọn nhà chùa",
   publicUser: "Phật tử",
   register: "Đăng ký",
+  registerAccount: {
+    title: "Đăng ký tài khoản",
+    name: "Họ và tên",
+    gender: "Giới tính",
+    birthday: "Ngày sinh",
+    email: "Email",
+    password: "Mật khẩu",
+    confirmPassword: "Nhập lại mật khẩu",
+    registerSuccessMessage:
+      "Đăng ký thành công, vui lòng kiểm tra email để xác nhận tài khoản!",
+    registerFailMessage: "Tài khoản đã tồn tại!",
+    verifyResult: {
+      successSubtitle: "Chúc mừng bạn đã đăng ký tài khoản thành công!",
+      failSubtitle: "Link xác nhận đã hết hạn hoặc tài khoản đã tồn tại!",
+      verifying: "Đang xác nhận...",
+      success: "Xác nhận thành công",
+      fail: "Xác nhận thất bại",
+    },
+  },
   request: "Yêu cầu",
   declareDeceased: "Khai báo người thân đã khuất",
   filter: "Lọc",
@@ -147,6 +167,7 @@ const vi = {
       email: "Vui lòng nhập đúng định dạng email!",
     },
     max: (length: number) => `Vui lòng nhập tối đa ${length} ký tự`,
+    confirmPassword: "Hai mật khẩu không trùng khớp. Vui lòng nhập lại!",
   },
   deathAnniversary: {
     request: "Yêu cầu tổ chức lễ giỗ",
