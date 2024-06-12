@@ -33,6 +33,10 @@ export const authorizer: PageAuthorizeConfig[] = [
     path: "/temple",
     auth: false,
   },
+  {
+    path: "/verify/:path*",
+    auth: false,
+  },
   //   {
   //     path: "/temple-register",
   //     auth: true,

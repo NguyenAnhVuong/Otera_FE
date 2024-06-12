@@ -4,21 +4,21 @@ import {
   UserRegisterInput,
   useUserRegisterMutation,
 } from "@/graphql/generated/schema";
+import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { EGender } from "@/utils/enum";
 import { Button, DatePicker, Form, Input, Radio } from "antd";
 import { useRouter } from "next/navigation";
-type Props = {};
+type RegisterProps = {};
 
-const Register = (props: Props) => {
+const Register: RegisterProps = ({}) => {
   const router = useRouter();
-  // const [messageApi, contextHolder] = message.useMessage();
   const [userRegister] = useUserRegisterMutation();
   const messageApi = useAppSelector(messageApiSelector);
+  const { localeText } = useTrans();
   const onFinish = async (
     input: UserRegisterInput & { confirmPassword?: string }
   ) => {
-    // const success = await authApi.register(values);
     delete input.confirmPassword;
     const { errors } = await userRegister({
       variables: {
@@ -29,13 +29,13 @@ const Register = (props: Props) => {
     if (!errors) {
       messageApi.open({
         type: "success",
-        content: "Đăng ký thành công!",
+        content: localeText.registerAccount.registerSuccessMessage,
       });
       router.push("/login");
     } else {
       messageApi.open({
         type: "error",
-        content: "Register fail!",
+        content: localeText.registerAccount.registerFailMessage,
       });
     }
   };
@@ -47,7 +47,7 @@ const Register = (props: Props) => {
   return (
     <div className="flex justify-center items-center h-screen w-full">
       <div className="bg-white shadow-xl p-6 flex items-center flex-col w-full max-w-[360px]">
-        <h3>Đăng ký</h3>
+        <h3>{localeText.register}</h3>
         <Form
           className="w-full"
           name="basic"
@@ -58,85 +58,118 @@ const Register = (props: Props) => {
           layout="vertical"
         >
           <Form.Item
-            label="Họ và tên"
+            label={localeText.registerAccount.name}
             name="name"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.registerAccount.name
+                ),
+              },
+            ]}
           >
-            <Input placeholder="Họ và tên" />
+            <Input placeholder={localeText.registerAccount.name} />
           </Form.Item>
 
           <Form.Item
             className="text-left"
-            label="Giới tính"
+            label={localeText.registerAccount.gender}
             name="gender"
-            rules={[{ required: true, message: "Please input your gender!" }]}
+            rules={[
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.registerAccount.gender
+                ),
+              },
+            ]}
           >
             <Radio.Group>
-              <Radio value={EGender.MALE}>Nam</Radio>
-              <Radio value={EGender.FEMALE}>Nữ</Radio>
-              <Radio value={EGender.OTHER}>Khác</Radio>
+              <Radio value={EGender.MALE}>{localeText.gender.male}</Radio>
+              <Radio value={EGender.FEMALE}>{localeText.gender.female}</Radio>
+              <Radio value={EGender.OTHER}>{localeText.gender.other}</Radio>
             </Radio.Group>
           </Form.Item>
 
           <Form.Item
-            // className="w-full"
-            label="Ngày sinh"
+            label={localeText.registerAccount.birthday}
             name="birthday"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.registerAccount.birthday
+                ),
+              },
+            ]}
           >
-            <DatePicker className="w-full" placeholder="Ngày sinh" />
+            <DatePicker
+              className="w-full"
+              placeholder={localeText.registerAccount.birthday}
+              format="DD-MM-YYYY"
+            />
           </Form.Item>
 
           <Form.Item
-            label="Email"
+            label={localeText.registerAccount.email}
             name="email"
             rules={[
               {
                 type: "email",
-                message: "Vui lòng nhập đúng định dạng email!",
+                message: localeText.validateMessages.types.email,
               },
               {
                 required: true,
-                message: "Please input your email!",
+                message: localeText.validateMessages.required(
+                  localeText.registerAccount.email
+                ),
               },
             ]}
           >
-            <Input placeholder="Email" />
+            <Input placeholder={localeText.registerAccount.email} />
           </Form.Item>
 
           <Form.Item
-            label="Mật khẩu"
+            label={localeText.registerAccount.password}
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[
+              { required: true, message: localeText.registerAccount.password },
+            ]}
           >
-            <Input.Password placeholder="Mật khẩu" />
+            <Input.Password placeholder={localeText.registerAccount.password} />
           </Form.Item>
 
           <Form.Item
-            label="Nhập lại mật khẩu"
+            label={localeText.registerAccount.confirmPassword}
             name="confirmPassword"
             dependencies={["password"]}
             rules={[
-              { required: true, message: "Vui lòng nhập lại mật khẩu" },
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.registerAccount.confirmPassword
+                ),
+              },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    new Error(
-                      "Hai mật khẩu không trùng khớp. Vui lòng nhập lại!"
-                    )
+                    new Error(localeText.validateMessages.confirmPassword)
                   );
                 },
               }),
             ]}
           >
-            <Input.Password placeholder="Nhập lại mật khẩu" />
+            <Input.Password
+              placeholder={localeText.registerAccount.confirmPassword}
+            />
           </Form.Item>
           <Form.Item className="flex justify-center">
             <Button className="px-8 " type="primary" htmlType="submit">
-              Đăng ký
+              {localeText.register}
             </Button>
           </Form.Item>
         </Form>

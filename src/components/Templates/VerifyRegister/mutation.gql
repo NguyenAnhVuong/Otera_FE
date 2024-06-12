@@ -1,0 +1,8 @@
+mutation VerifyRegister($token: String!) {
+  verifyRegister(token: $token) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

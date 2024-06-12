@@ -14,6 +14,7 @@ export default async function middleware(
   event: NextFetchEvent
 ) {
   const path = req.nextUrl.pathname;
+
   const config = authorizer.find((config) => match(config.path)(path));
   if (config) {
     const token = req.cookies.get("refreshToken")?.value;

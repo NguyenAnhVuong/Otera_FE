@@ -4,15 +4,5 @@ mutation UserRegister($input: UserRegisterInput!) {
     statusCode
     errorMessage
     errorCode
-    data {
-      birthday
-      email
-      familyId
-      id
-      name
-      refreshToken
-      role
-      createdAt
-    }
   }
 }
