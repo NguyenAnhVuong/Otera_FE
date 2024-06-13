@@ -37,11 +37,14 @@ export const authorizer: PageAuthorizeConfig[] = [
     path: "/verify/:path*",
     auth: false,
   },
-  //   {
-  //     path: "/temple-register",
-  //     auth: true,
-  //     role: ERole.SYSTEM,
-  //   },
+  {
+    path: "/forgot-password",
+    auth: false,
+  },
+  {
+    path: "/reset-password",
+    auth: false,
+  },
   {
     path: authRequireRouters,
     auth: true,

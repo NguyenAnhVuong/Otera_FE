@@ -67,7 +67,7 @@ const VerifyRegister: React.FC<VerifyRegisterProps> = ({ token }) => {
           extra={[
             <Button type="primary" key="console">
               {result === "success" ? (
-                <Link href="/login">{localeText.login}</Link>
+                <Link href="/login">{localeText.login.title}</Link>
               ) : (
                 <Link href="/register">{localeText.register}</Link>
               )}

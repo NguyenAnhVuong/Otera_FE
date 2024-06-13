@@ -11,4 +11,12 @@ export const authApi = {
     } catch (err) {}
     return 0;
   },
+  removeRefreshToken: async () => {
+    try {
+      await axios.post("/user/remove-refresh-token", null, {
+        baseURL: process.env.NEXT_PUBLIC_API_URL,
+        withCredentials: true,
+      });
+    } catch (err) {}
+  },
 };

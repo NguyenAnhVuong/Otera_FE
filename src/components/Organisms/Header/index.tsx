@@ -24,7 +24,10 @@ const Header = () => {
   let items: MenuProps["items"] = [
     {
       label: (
-        <span onClick={async () => await handleLogout(dispatch)}>
+        <span
+          className="block"
+          onClick={async () => await handleLogout(dispatch)}
+        >
           Đăng xuất
         </span>
       ),
@@ -36,7 +39,7 @@ const Header = () => {
     () => [
       {
         label: (
-          <span onClick={() => router.push("/temple")}>
+          <span className="block" onClick={() => router.push("/temple")}>
             {localeText.temple.temples}
           </span>
         ),
@@ -44,7 +47,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/family-register")}>
+          <span
+            className="block"
+            onClick={() => router.push("/family-register")}
+          >
             Đăng ký gia đình
           </span>
         ),
@@ -52,7 +58,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/temple-register")}>
+          <span
+            className="block"
+            onClick={() => router.push("/temple-register")}
+          >
             Đăng ký chùa
           </span>
         ),
@@ -60,7 +69,7 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/event")}>
+          <span className="block" onClick={() => router.push("/event")}>
             {localeText.event.events}
           </span>
         ),
@@ -68,7 +77,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={async () => router.push("/event/user")}>
+          <span
+            className="block"
+            onClick={async () => router.push("/event/user")}
+          >
             {localeText.event.bookingEvents}
           </span>
         ),
@@ -76,7 +88,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={async () => await handleLogout(dispatch)}>
+          <span
+            className="block"
+            onClick={async () => await handleLogout(dispatch)}
+          >
             Đăng xuất
           </span>
         ),
@@ -90,7 +105,7 @@ const Header = () => {
     () => [
       {
         label: (
-          <span onClick={() => router.push("/temple")}>
+          <span className="block" onClick={() => router.push("/temple")}>
             {localeText.temple.temples}
           </span>
         ),
@@ -99,7 +114,10 @@ const Header = () => {
 
       {
         label: (
-          <span onClick={() => router.push("/death-anniversary")}>
+          <span
+            className="block"
+            onClick={() => router.push("/death-anniversary")}
+          >
             Yêu cầu tổ chức lễ giỗ
           </span>
         ),
@@ -107,7 +125,7 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/deceased")}>
+          <span className="block" onClick={() => router.push("/deceased")}>
             {localeText.deceased.deceasedList}
           </span>
         ),
@@ -115,7 +133,7 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/event")}>
+          <span className="block" onClick={() => router.push("/event")}>
             {localeText.event.events}
           </span>
         ),
@@ -123,7 +141,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={async () => router.push("/event/user")}>
+          <span
+            className="block"
+            onClick={async () => router.push("/event/user")}
+          >
             {localeText.event.bookingEvents}
           </span>
         ),
@@ -131,7 +152,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={async () => await handleLogout(dispatch)}>
+          <span
+            className="block"
+            onClick={async () => await handleLogout(dispatch)}
+          >
             Đăng xuất
           </span>
         ),
@@ -145,7 +169,7 @@ const Header = () => {
     () => [
       {
         label: (
-          <span onClick={() => router.push("/temple")}>
+          <span className="block" onClick={() => router.push("/temple")}>
             {localeText.temple.temples}
           </span>
         ),
@@ -153,7 +177,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/death-anniversary")}>
+          <span
+            className="block"
+            onClick={() => router.push("/death-anniversary")}
+          >
             Yêu cầu tổ chức lễ giỗ
           </span>
         ),
@@ -161,7 +188,7 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/event")}>
+          <span className="block" onClick={() => router.push("/event")}>
             {localeText.event.events}
           </span>
         ),
@@ -169,7 +196,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={async () => router.push("/event/user")}>
+          <span
+            className="block"
+            onClick={async () => router.push("/event/user")}
+          >
             {localeText.event.bookingEvents}
           </span>
         ),
@@ -177,7 +207,7 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/deceased")}>
+          <span className="block" onClick={() => router.push("/deceased")}>
             {localeText.deceased.deceasedList}
           </span>
         ),
@@ -185,7 +215,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/deceased/declare")}>
+          <span
+            className="block"
+            onClick={() => router.push("/deceased/declare")}
+          >
             {localeText.declareDeceased}
           </span>
         ),
@@ -193,7 +226,7 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/family")}>
+          <span className="block" onClick={() => router.push("/family")}>
             {localeText.family.members}
           </span>
         ),
@@ -201,7 +234,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={async () => await handleLogout(dispatch)}>
+          <span
+            className="block"
+            onClick={async () => await handleLogout(dispatch)}
+          >
             Đăng xuất
           </span>
         ),
@@ -215,7 +251,7 @@ const Header = () => {
     () => [
       {
         label: (
-          <span onClick={() => router.push("/temple")}>
+          <span className="block" onClick={() => router.push("/temple")}>
             {localeText.temple.temples}
           </span>
         ),
@@ -223,7 +259,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/death-anniversary")}>
+          <span
+            className="block"
+            onClick={() => router.push("/death-anniversary")}
+          >
             {localeText.deathAnniversary.request}
           </span>
         ),
@@ -231,7 +270,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/temple/deceased")}>
+          <span
+            className="block"
+            onClick={() => router.push("/temple/deceased")}
+          >
             {localeText.temple.deceasedList.title}
           </span>
         ),
@@ -240,7 +282,10 @@ const Header = () => {
       // Move to event management
       {
         label: (
-          <span onClick={() => router.push("/event/organize")}>
+          <span
+            className="block"
+            onClick={() => router.push("/event/organize")}
+          >
             {localeText.event.organizeEvent}
           </span>
         ),
@@ -248,7 +293,7 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/event/temple")}>
+          <span className="block" onClick={() => router.push("/event/temple")}>
             {localeText.event.eventManagements}
           </span>
         ),
@@ -256,7 +301,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/temple/members")}>
+          <span
+            className="block"
+            onClick={() => router.push("/temple/members")}
+          >
             {localeText.temple.members.title}
           </span>
         ),
@@ -264,7 +312,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={() => router.push("/temple/followers")}>
+          <span
+            className="block"
+            onClick={() => router.push("/temple/followers")}
+          >
             {localeText.temple.followers.title}
           </span>
         ),
@@ -273,7 +324,7 @@ const Header = () => {
       // TODO If the temple wants to participate in the event, create a new account and participate as a public user
       {
         label: (
-          <span onClick={() => router.push("/event")}>
+          <span className="block" onClick={() => router.push("/event")}>
             {localeText.event.events}
           </span>
         ),
@@ -281,7 +332,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={async () => await handleLogout(dispatch)}>
+          <span
+            className="block"
+            onClick={async () => await handleLogout(dispatch)}
+          >
             Đăng xuất
           </span>
         ),
@@ -295,7 +349,7 @@ const Header = () => {
     () => [
       {
         label: (
-          <span onClick={() => router.push("/system/temple")}>
+          <span className="block" onClick={() => router.push("/system/temple")}>
             {localeText.temple.temples}
           </span>
         ),
@@ -303,7 +357,10 @@ const Header = () => {
       },
       {
         label: (
-          <span onClick={async () => await handleLogout(dispatch)}>
+          <span
+            className="block"
+            onClick={async () => await handleLogout(dispatch)}
+          >
             Đăng xuất
           </span>
         ),
