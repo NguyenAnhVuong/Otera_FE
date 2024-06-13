@@ -1,0 +1,8 @@
+mutation ResetPassword($resetPasswordInput: VResetPasswordInput!) {
+  resetPassword(resetPasswordInput: $resetPasswordInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

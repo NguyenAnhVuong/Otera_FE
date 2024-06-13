@@ -1,0 +1,8 @@
+mutation ForgotPassword($forgotPasswordInput: VForgotPasswordInput!) {
+  forgotPassword(forgotPasswordInput: $forgotPasswordInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

@@ -5,21 +5,19 @@ import {
   UserLoginInput,
   useUserLoginMutation,
 } from "@/graphql/generated/schema";
+import useTrans from "@/hooks/useTrans";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
-import JWTManager from "@/utils/jwt";
 
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-type Props = {};
-
-// TODO fix text
-const Login = (props: Props) => {
+const Login = () => {
   const router = useRouter();
   const messageApi = useAppSelector(messageApiSelector);
   const dispatch = useAppDispatch();
   const [userLogin] = useUserLoginMutation();
+  const { localeText } = useTrans();
 
   const onFinish = async (values: UserLoginInput) => {
     await userLogin({
@@ -29,7 +27,7 @@ const Login = (props: Props) => {
       onCompleted: (data) => {
         messageApi.open({
           type: "success",
-          content: "Đăng nhập thành công!",
+          content: localeText.login.loginSuccessMessage,
         });
 
         dispatch(authActions.login(data?.userLogin?.data?.user));
@@ -42,7 +40,7 @@ const Login = (props: Props) => {
       onError: () => {
         messageApi.open({
           type: "error",
-          content: "Sai tài khoản hoặc mật khẩu!",
+          content: localeText.login.loginFailMessage,
         });
       },
     });
@@ -54,8 +52,8 @@ const Login = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-white shadow-xl p-6 flex items-center flex-col w-full max-w-[320px]">
-        <h3 className="text-black">Đăng nhập</h3>
+      <div className="bg-white rounded-xl shadow-xl p-6 flex items-center flex-col w-full max-w-[320px]">
+        <h3 className="text-black">{localeText.login.title}</h3>
         <Form
           className="w-full"
           name="basic"
@@ -66,37 +64,55 @@ const Login = (props: Props) => {
           layout="vertical"
         >
           <Form.Item
-            label="Email"
+            label={localeText.login.email}
             name="email"
             rules={[
               {
                 type: "email",
-                message: "Vui lòng nhập đúng định dạng email!",
+                message: localeText.validateMessages.types.email,
               },
-              { required: true, message: "Please input your email!" },
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.login.email
+                ),
+              },
             ]}
           >
-            <Input placeholder="Email" />
+            <Input placeholder={localeText.login.email} />
           </Form.Item>
 
           <Form.Item
-            label="Mật khẩu"
+            label={localeText.login.password}
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.login.password
+                ),
+              },
+            ]}
           >
-            <Input.Password autoComplete="on" placeholder="Mật khẩu" />
+            <Input.Password
+              autoComplete="on"
+              placeholder={localeText.login.password}
+            />
           </Form.Item>
 
           <Form.Item className="flex w-full justify-center mb-0">
             <Button className="w-40" type="primary" htmlType="submit">
-              Đăng nhập
+              {localeText.login.title}
             </Button>
           </Form.Item>
-          <div className="flex flex-col items-center">
-            <p>Không có tài khoản ?</p>
-            <Button className="w-40">
-              <Link href="/register">Đăng ký</Link>
-            </Button>
+          <div className="flex flex-col items-center gap-2">
+            <Link className="text-black mt-4" href="/forgot-password">
+              {localeText.login.forgotPassword}
+            </Link>
+            <div>
+              <span>{localeText.login.noAccount} </span>
+              <Link href="/register">{localeText.register}</Link>
+            </div>
           </div>
         </Form>
       </div>

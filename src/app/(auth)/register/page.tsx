@@ -46,7 +46,7 @@ const Register: RegisterProps = ({}) => {
 
   return (
     <div className="flex justify-center items-center h-screen w-full">
-      <div className="bg-white shadow-xl p-6 flex items-center flex-col w-full max-w-[360px]">
+      <div className="bg-white shadow-xl p-6 flex items-center flex-col w-full max-w-[360px] rounded-xl">
         <h3>{localeText.register}</h3>
         <Form
           className="w-full"
