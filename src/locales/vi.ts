@@ -38,6 +38,12 @@ const vi = {
   add: "Thêm",
   delete: "Xoá",
   restore: "Khôi phục",
+  organize: "Tổ chức",
+  participantType: {
+    familyAdmin: "Quản trị viên gia đình",
+    familyMember: "Thành viên gia đình",
+    publicUser: "Phật tử",
+  },
   resetPassword: {
     title: "Đặt lại mật khẩu",
     password: "Mật khẩu mới",
@@ -285,6 +291,7 @@ const vi = {
     },
   },
   event: {
+    descriptionImages: "Ảnh mô tả",
     copyLinkEvent: "Sao chép link sự kiện",
     event: "Sự kiện",
     listEvents: "Danh sách sự kiện",
@@ -293,6 +300,7 @@ const vi = {
     eventManagements: "Quản lý sự kiện",
     organizeEvent: "Tổ chức sự kiện",
     name: "Tên sự kiện",
+    isFreeOpen: "Mở cửa tự do",
     description: "Mô tả",
     eventTime: "Thời gian tổ chức sự kiện",
     bookingTime: "Thời gian đăng ký tham gia",
@@ -303,7 +311,7 @@ const vi = {
     isOrganizedAtTemple: "Tổ chức tại nhà chùa",
     phone: "Số điện thoại hỗ trợ",
     email: "Email hỗ trợ",
-    maxParticipantLabel: "Tối đa",
+    maxParticipantLabel: "Số lượng tham gia tối đa",
     maxParticipant: (max: number) => `Tối đa: ${max}`,
     avatar: "Ảnh đại diện",
     participants: "Đối tượng tham gia",

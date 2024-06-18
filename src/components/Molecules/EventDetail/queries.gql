@@ -13,6 +13,7 @@ query GetEventById($id: Int!) {
       creatorId
       description
       email
+      isFreeOpen
       endDateBooking
       endDateEvent
       maxParticipant

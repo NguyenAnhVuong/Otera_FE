@@ -1,10 +1,11 @@
-query getListDeceased($familyId: Int!) {
-  getListDeceased(familyId: $familyId) {
+query FamilyGetListDeceased($page: Int, $take: Int) {
+  familyGetListDeceased(page: $page, take: $take) {
     timestamp
     statusCode
     errorMessage
     errorCode
     data {
+      totalItems
       data {
         description
         creatorId

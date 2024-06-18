@@ -1,15 +1,15 @@
 export const participantTypeOptions = (localeText: any) => [
   {
-    label: localeText.temple.title,
-    value: localeText.temple.title,
+    label: localeText.participantType.familyAdmin,
+    value: localeText.participantType.familyAdmin,
   },
   {
-    label: localeText.family.title,
-    value: localeText.family.title,
+    label: localeText.participantType.familyMember,
+    value: localeText.participantType.familyMember,
   },
   {
-    label: localeText.publicUser,
-    value: localeText.publicUser,
+    label: localeText.participantType.publicUser,
+    value: localeText.participantType.publicUser,
   },
 ];
 

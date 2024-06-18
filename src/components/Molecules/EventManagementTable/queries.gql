@@ -1,5 +1,5 @@
-query templeGetEvents($upcoming: Boolean , $onGoing: Boolean,$ended: Boolean, $page: Int, $skip: Int, $take: Int, $name: String, $orderBy: [OrderBy!]) {
-  templeGetEvents(upcoming: $upcoming,onGoing: $onGoing,ended: $ended, page: $page, skip: $skip, take: $take, name: $name, orderBy: $orderBy) {
+query templeGetEvents($upcoming: Boolean , $onGoing: Boolean,$ended: Boolean, $isFreeOpen: Boolean, $page: Int, $skip: Int, $take: Int, $name: String, $orderBy: [OrderBy!]) {
+  templeGetEvents(upcoming: $upcoming,onGoing: $onGoing,ended: $ended, isFreeOpen: $isFreeOpen, page: $page, skip: $skip, take: $take, name: $name, orderBy: $orderBy) {
     data {
       totalItems
       take
@@ -14,6 +14,7 @@ query templeGetEvents($upcoming: Boolean , $onGoing: Boolean,$ended: Boolean, $p
         endDateEvent
         endDateBooking
         maxParticipant
+        isFreeOpen
         address
         currentParticipant
         bookingParticipant

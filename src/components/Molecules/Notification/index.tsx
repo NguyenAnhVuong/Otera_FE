@@ -3,14 +3,14 @@ import {
   EStatus,
   GetUserDocument,
   useResponseFamilyInvitationMutation,
+  useUpdateNotificationMutation,
 } from "@/graphql/generated/schema";
 import { useLogout } from "@/hooks/useLogout";
 import useTrans from "@/hooks/useTrans";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
-import { formatDate } from "@/utils/constants";
 import { formatTimeDifference } from "@/utils/helper";
 import { Button } from "antd";
-import dayjs from "dayjs";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -43,6 +43,19 @@ const Notification: React.FC<NotificationProps> = ({
   const [responseFamilyInvitation] = useResponseFamilyInvitationMutation({
     refetchQueries: [GetUserDocument],
   });
+
+  const [updateNotification] = useUpdateNotificationMutation();
+
+  const handleReadNotification = async () => {
+    await updateNotification({
+      variables: {
+        updateNotificationInput: {
+          id,
+          isRead: true,
+        },
+      },
+    });
+  };
 
   const handleResponseFamilyInvitation = async (status: EStatus) => {
     await responseFamilyInvitation({
@@ -87,7 +100,7 @@ const Notification: React.FC<NotificationProps> = ({
             <div>
               <span>{description}</span>
               <div className="flex justify-between mt-2">
-                <span className="text-gray-500">
+                <span className="text-gray-500 text-xs">
                   {formatTimeDifference(createdAt)}
                 </span>
                 <div>
@@ -113,6 +126,20 @@ const Notification: React.FC<NotificationProps> = ({
               </div>
             </div>
           </div>
+        </div>
+      );
+
+    case ENotificationType.NewEvent:
+      return (
+        <div
+          className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg overflow-hidden"
+          onClick={handleReadNotification}
+        >
+          {!isRead && <div className="bg-primary p-1 rounded-full mr-2" />}
+          <Link href={redirectTo as string}>
+            <span className="font-bold text-black">{title}</span>
+            <div className="text-gray-500 text-xs">{description}</div>
+          </Link>
         </div>
       );
     default:

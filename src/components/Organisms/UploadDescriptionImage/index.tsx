@@ -1,22 +1,22 @@
 import DescriptionImage from "@/components/Molecules/DescriptionImage";
 import MultipleImageInput from "@/components/Molecules/MultipleImageInput";
-import useTrans from "@/hooks/useTrans";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 type UploadDescriptionImageProps = {
   oldDescriptionImages?: string[];
   setOldDescriptionImages?: Dispatch<SetStateAction<string[]>>;
   setNewDescriptionImages: Dispatch<SetStateAction<File[]>>;
+  newDescriptionImagePreviews: string[];
+  setNewDescriptionImagePreviews: Dispatch<SetStateAction<string[]>>;
 };
 
 const UploadDescriptionImage: React.FC<UploadDescriptionImageProps> = ({
   oldDescriptionImages,
   setOldDescriptionImages,
   setNewDescriptionImages,
+  newDescriptionImagePreviews,
+  setNewDescriptionImagePreviews,
 }) => {
-  const [newDescriptionImagePreviews, setNewDescriptionImagePreviews] =
-    useState<string[]>([]);
-
   const handleRemoveOldDescriptionImage = (
     removedOldDescriptionImage: string
   ) => {

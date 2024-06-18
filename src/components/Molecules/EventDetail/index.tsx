@@ -23,6 +23,7 @@ import { useRef, useState } from "react";
 type EventDetailProps = {
   id: number;
 };
+// TODO fix display
 
 const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
   const { id: userId } = useAppSelector((state) => state.auth);
