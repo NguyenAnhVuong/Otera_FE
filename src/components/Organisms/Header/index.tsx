@@ -279,18 +279,6 @@ const Header = () => {
         ),
         key: "/temple/deceased",
       },
-      // Move to event management
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/event/organize")}
-          >
-            {localeText.event.organizeEvent}
-          </span>
-        ),
-        key: "event/organize",
-      },
       {
         label: (
           <span className="block" onClick={() => router.push("/event/temple")}>

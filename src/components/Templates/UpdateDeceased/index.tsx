@@ -5,8 +5,8 @@ import UploadDescriptionImage from "@/components/Organisms/UploadDescriptionImag
 import UploadSingleImage from "@/components/Organisms/UploadSingleImage";
 import {
   EGender,
+  FamilyGetListDeceasedDocument,
   GetDeceasedDocument,
-  GetListDeceasedDocument,
   VUpdateDeceasedInput,
   useGetDeceasedQuery,
   useUpdateDeceasedMutation,
@@ -47,6 +47,8 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
     []
   );
   const [newDescriptionImages, setNewDescriptionImages] = useState<File[]>([]);
+  const [newDescriptionImagePreviews, setNewDescriptionImagePreviews] =
+    useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const { localeText } = useTrans();
   const router = useRouter();
@@ -97,7 +99,7 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
       onError: () => {
         messageApi.error(localeText.deceased.updateFailedMessage);
       },
-      refetchQueries: [GetDeceasedDocument, GetListDeceasedDocument],
+      refetchQueries: [GetDeceasedDocument, FamilyGetListDeceasedDocument],
     });
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
@@ -288,6 +290,8 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
               oldDescriptionImages={oldDescriptionImages}
               setOldDescriptionImages={setOldDescriptionImages}
               setNewDescriptionImages={setNewDescriptionImages}
+              newDescriptionImagePreviews={newDescriptionImagePreviews}
+              setNewDescriptionImagePreviews={setNewDescriptionImagePreviews}
             />
           </Form.Item>
 

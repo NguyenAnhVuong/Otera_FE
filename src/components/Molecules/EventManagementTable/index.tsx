@@ -1,9 +1,12 @@
+import FilterCheckboxInput from "@/components/Atoms/FilterCheckboxInput";
 import FilterSearchInput from "@/components/Atoms/FilterSearchInput";
 import Loading from "@/components/Atoms/Loading";
 import ParticipantTexts from "@/components/Atoms/ParticipantTexts";
+import UpdateEventButton from "@/components/Organisms/UpdateEventButton";
 import {
   ERole,
   OrderBy,
+  TempleGetEventsDocument,
   useTempleGetEventsQuery,
   useUpdateEventMutation,
 } from "@/graphql/generated/schema";
@@ -12,7 +15,7 @@ import { useAppSelector } from "@/rtk/hook";
 import { PAGE, TAKE, formatDate } from "@/utils/constants";
 import { handleSortByColumn } from "@/utils/helper";
 import { DeleteOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
-import { Popconfirm, Table, TableProps, Tooltip } from "antd";
+import { Checkbox, Popconfirm, Table, TableProps, Tooltip } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -33,6 +36,7 @@ interface DataType {
   endDateBooking: Date;
   startDateEvent: Date;
   endDateEvent: Date;
+  isFreeOpen: boolean;
   eventParticipantTypes: {
     role: ERole;
   }[];
@@ -71,6 +75,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       onError: () => {
         messageApi.error(localeText.event.cancelEventFailMessage);
       },
+      refetchQueries: [TempleGetEventsDocument],
     });
   };
 
@@ -99,6 +104,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       filterDropdown: (props) => (
         <FilterSearchInput setKeyword={setName} {...props} />
       ),
+      width: 200,
     },
     {
       title: localeText.event.createdAt,
@@ -179,6 +185,14 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       ],
     },
     {
+      title: localeText.event.isFreeOpen,
+      key: "isFreeOpen",
+      dataIndex: "isFreeOpen",
+      align: "center",
+      render: (isFreeOpen) => <Checkbox checked={isFreeOpen} />,
+      width: 84,
+    },
+    {
       title: localeText.event.bookingTime,
       children: [
         {
@@ -256,7 +270,8 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       key: "bookingParticipant",
       dataIndex: "bookingParticipant",
       align: "center",
-      render: (bookingParticipant) => <span>{bookingParticipant}</span>,
+      render: (bookingParticipant, record) =>
+        record.maxParticipant && <span>{bookingParticipant}</span>,
       sorter: {
         compare: (a, b, sortOrder) =>
           handleSortByColumn(
@@ -279,11 +294,12 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       key: "currentParticipant",
       dataIndex: "currentParticipant",
       align: "center",
-      render: (currentParticipant, record) => (
-        <span>
-          {currentParticipant}/{record.maxParticipant}
-        </span>
-      ),
+      render: (currentParticipant, record) =>
+        record.maxParticipant && (
+          <span>
+            {currentParticipant}/{record.maxParticipant}
+          </span>
+        ),
       sorter: {
         compare: (a, b, sortOrder) =>
           handleSortByColumn(
@@ -306,11 +322,12 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       key: "checkInParticipant",
       dataIndex: "checkInParticipant",
       align: "center",
-      render: (checkInParticipant, record) => (
-        <span>
-          {checkInParticipant}/{record.maxParticipant}
-        </span>
-      ),
+      render: (checkInParticipant, record) =>
+        record.maxParticipant && (
+          <span>
+            {checkInParticipant}/{record.maxParticipant}
+          </span>
+        ),
       sorter: {
         compare: (a, b, sortOrder) =>
           handleSortByColumn(
@@ -333,6 +350,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       key: "action",
       align: "center",
       fixed: "right",
+      width: 100,
       onCell: () => ({
         onClick: (e) => e.stopPropagation(),
         style: { cursor: "default" },
@@ -345,12 +363,9 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
               onClick={() => router.push(`${record.id}/participant`)}
             />
           </Tooltip>
-          <Tooltip placement="top" title={localeText.event.editInfo}>
-            <EditOutlined
-              className="text-green-400 text-xl cursor-pointer"
-              onClick={() => router.push(`${record.id}/update`)}
-            />
-          </Tooltip>
+          {new Date(record.startDateEvent) > new Date() && (
+            <UpdateEventButton id={record.id} />
+          )}
           <Tooltip placement="top" title={localeText.event.cancelEvent}>
             <Popconfirm
               title={localeText.event.cancelEventPopConfirm.title}
@@ -382,6 +397,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
             id: event.id,
             avatar: event.avatar,
             name: event.name,
+            isFreeOpen: event.isFreeOpen,
             startDateBooking: event.startDateBooking,
             endDateBooking: event.endDateBooking,
             startDateEvent: event.startDateEvent,
@@ -398,6 +414,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       }
     },
     fetchPolicy: "no-cache",
+    notifyOnNetworkStatusChange: true,
   });
 
   return (
@@ -421,7 +438,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
           };
         }}
         rowClassName={() => "cursor-pointer"}
-        scroll={{ x: 1300 }}
+        scroll={{ x: 1480 }}
       />
     </>
   );

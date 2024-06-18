@@ -28,22 +28,17 @@ export const getParticipants = (
   const participants: string[] = [];
   eventParticipantTypes.forEach((eventParticipantType) => {
     switch (eventParticipantType.role) {
-      case ERole.TempleAdmin:
-      case ERole.TempleMember:
-        if (!participants.includes(localeText.temple.title)) {
-          participants.push(localeText.temple.title);
-        }
-        break;
       case ERole.FamilyAdmin:
+        participants.push(localeText.participantType.familyAdmin);
+
+        break;
       case ERole.FamilyMember:
-        if (!participants.includes(localeText.family.title)) {
-          participants.push(localeText.family.title);
-        }
+        participants.push(localeText.participantType.familyMember);
+
         break;
       case ERole.PublicUser:
-        if (!participants.includes(localeText.publicUser)) {
-          participants.push(localeText.publicUser);
-        }
+        participants.push(localeText.participantType.publicUser);
+
         break;
     }
   });

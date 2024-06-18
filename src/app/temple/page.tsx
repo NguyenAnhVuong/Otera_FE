@@ -1,6 +1,5 @@
 "use client";
 import { useGetTemplesQuery } from "@/graphql/generated/schema";
-import { useAppSelector } from "@/rtk/hook";
 import { SearchOutlined } from "@ant-design/icons";
 import { Card, Input } from "antd";
 import Meta from "antd/es/card/Meta";

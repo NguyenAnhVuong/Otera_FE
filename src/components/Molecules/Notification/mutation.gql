@@ -8,3 +8,13 @@ mutation ResponseFamilyInvitation($responseInviteFamilyInput: ResponseInviteFami
     errorCode
   }
 }
+
+mutation UpdateNotification($updateNotificationInput: UpdateNotificationInput!) {
+  updateNotification(updateNotificationInput: $updateNotificationInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}
+
