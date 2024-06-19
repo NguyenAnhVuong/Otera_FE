@@ -133,6 +133,7 @@ const Notification: React.FC<NotificationProps> = ({
     case ENotificationType.UpdateEvent:
     case ENotificationType.ApproveEventParticipant:
     case ENotificationType.RejectEventParticipant:
+    case ENotificationType.RequestDeathAnniversary:
       return (
         <div
           className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg overflow-hidden"
