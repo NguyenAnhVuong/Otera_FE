@@ -370,7 +370,7 @@ const vi = {
       checkIn: "Check-in",
       checkInAt: "Thời gian check-in",
       notCheckIn: "Chưa check-in",
-      approvedBy: (name: string) => `Được chấp nhận bởi ${name}`,
+      approvedBy: (name: string) => `Được chấp nhận bởi thầy ${name}`,
       at: "vào lúc",
       code: "Mã tham gia",
       checkInSuccessMessage: "Check-in thành công!",

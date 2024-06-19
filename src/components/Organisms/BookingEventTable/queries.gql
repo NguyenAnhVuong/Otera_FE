@@ -16,6 +16,7 @@ $address: String, $orderBy: [OrderBy!]) {
         name
         startDateEvent
         endDateEvent
+        endDateBooking
         address
         eventParticipants {
           bookingStatus

@@ -190,7 +190,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
                     popConfirmOnConfirm={handleCancelEvent}
                   />
                 </div>
-              ) : (
+              ) : event && !!event.startDateBooking ? (
                 <Button
                   type="primary"
                   onClick={handleBookingEvent}
@@ -207,6 +207,8 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
                 >
                   {getBookingStatus()}
                 </Button>
+              ) : (
+                <></>
               )}
             </div>
             <p>

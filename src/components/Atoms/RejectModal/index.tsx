@@ -96,7 +96,9 @@ const RejectModal: React.FC<RejectModalProps> = ({
             <Input.TextArea
               readOnly={isReadOnly}
               disabled={isReadOnly}
-              placeholder={localeText.event.participant.rejectReason}
+              placeholder={
+                !isReadOnly ? localeText.event.participant.rejectReason : ""
+              }
               defaultValue={defaultRejectReason || undefined}
               rows={4}
               maxLength={REJECT_REASON_MAX_LENGTH}

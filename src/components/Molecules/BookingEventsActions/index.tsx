@@ -18,6 +18,7 @@ type BookingEventsActionsProps = {
   checkInAt?: Date | null;
   updatedAt?: Date | null;
   rejectReason?: string | null;
+  endDateBooking?: Date;
 };
 
 const BookingEventsActions: React.FC<BookingEventsActionsProps> = ({
@@ -27,6 +28,7 @@ const BookingEventsActions: React.FC<BookingEventsActionsProps> = ({
   checkInAt,
   updatedAt,
   rejectReason,
+  endDateBooking,
 }) => {
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
@@ -52,6 +54,9 @@ const BookingEventsActions: React.FC<BookingEventsActionsProps> = ({
 
   switch (bookingStatus) {
     case EBookingStatus.Booking:
+      if (endDateBooking && new Date(endDateBooking) < new Date()) {
+        return <></>;
+      }
       return (
         <DeleteButton
           okText={localeText.OK}
@@ -76,20 +81,24 @@ const BookingEventsActions: React.FC<BookingEventsActionsProps> = ({
             checkInAt={checkInAt}
             updatedAt={updatedAt}
           />
-          <DeleteButton
-            okText={localeText.OK}
-            cancelText={localeText.cancel}
-            tooltipTitle={
-              localeText.event.participant.cancelBookingPopConfirm.title
-            }
-            popConfirmTitle={
-              localeText.event.participant.cancelBookingPopConfirm.title
-            }
-            popConfirmDescription={
-              localeText.event.participant.cancelBookingPopConfirm.description
-            }
-            popConfirmOnConfirm={handleCancelBooking}
-          />
+          {endDateBooking && new Date(endDateBooking) < new Date() ? (
+            <></>
+          ) : (
+            <DeleteButton
+              okText={localeText.OK}
+              cancelText={localeText.cancel}
+              tooltipTitle={
+                localeText.event.participant.cancelBookingPopConfirm.title
+              }
+              popConfirmTitle={
+                localeText.event.participant.cancelBookingPopConfirm.title
+              }
+              popConfirmDescription={
+                localeText.event.participant.cancelBookingPopConfirm.description
+              }
+              popConfirmOnConfirm={handleCancelBooking}
+            />
+          )}
         </div>
       );
     case EBookingStatus.Rejected:
