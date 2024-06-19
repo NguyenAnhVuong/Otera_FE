@@ -195,8 +195,15 @@ const vi = {
     },
     max: (length: number) => `Vui lòng nhập tối đa ${length} ký tự`,
     confirmPassword: "Hai mật khẩu không trùng khớp. Vui lòng nhập lại!",
+    selectRequired: (label: string) => `Vui lòng chọn ${label}!`,
   },
   deathAnniversary: {
+    firstAnniversary: "Giỗ đầu",
+    secondAnniversary: "Giỗ hết",
+    regularAnniversary: "Giỗ thường",
+    type: "Loại lễ giỗ",
+    note: "Ghi chú",
+    offering: "Lễ cúng",
     request: "Yêu cầu tổ chức lễ giỗ",
     reject: "Từ chối",
     approve: "Chấp nhận",
@@ -207,6 +214,7 @@ const vi = {
     updateDeathAnniversary: "Cập nhật thông tin lễ giỗ",
     updateDeathAnniversarySuccessMessage:
       "Cập nhật thông tin lễ giỗ thành công!",
+    updateDeathAnniversaryFailMessage: "Cập nhật thông tin lễ giỗ thất bại!",
     cancelDeathAnniversarySuccessMessage: "Hủy đăng ký lễ giỗ thành công!",
     cancelDeathAnniversaryFailMessage: "Hủy đăng ký lễ giỗ thất bại!",
     rejectModal: {
@@ -225,7 +233,7 @@ const vi = {
       description: "Bạn có chắc chắn muốn hủy đăng ký lễ giỗ?",
     },
     desiredTime: "Thời gian mong muốn",
-    organizeLivestream: "Tổ chức live stream",
+    organizeLivestream: "Live stream",
     copyLinkLiveStream: "Sao chép link live stream",
     requestSuccessMessage: "Đã gửi yêu cầu tổ chức lễ giỗ!",
     requestFailMessage: "Yêu cầu tổ chức lễ giỗ thất bại!",

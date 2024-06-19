@@ -7,6 +7,7 @@ query getDeathAnniversaries(
     data {
       deceased {
         userDetail {
+          id
           avatar
           name
         }
@@ -22,6 +23,12 @@ query getDeathAnniversaries(
       id
       rejectReason
       enableUpdate
+      graveAddress
+      deathAnniversaryType
+      deathAnniversaryOfferings {
+        id
+        offeringId
+      }
     }
   }
 }

@@ -6,8 +6,9 @@ import DeathAnniversaryInforModal from "@/components/Molecules/DeathAnniversaryI
 import {
   Deceased,
   ERole,
+  FamilyGetListDeceasedDocument,
   GetDeathAnniversariesDocument,
-  GetListDeceasedDocument,
+  GetDeceasedDocument,
   useCreateDeathAnniversaryMutation,
   useDeleteDeceasedMutation,
   useGetDeceasedQuery,
@@ -38,11 +39,16 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
   const currentYear = currentDate.getFullYear();
   const { localeText } = useTrans();
   const router = useRouter();
+  // const [isRequested, setIsRequested] = useState(false);
+
+  // current year death anniversary
   const deathAnniversary = new Date(
     new Date(`${deceased?.dateOfDeath}`).setFullYear(currentYear)
   );
+
+  // register expired date this year (1 days before death anniversary)
   const registerExpiredDateThisYear = new Date(
-    new Date(deathAnniversary).setDate(deathAnniversary.getDate() - 3)
+    new Date(deathAnniversary).setDate(deathAnniversary.getDate() - 1)
   );
 
   const registerExpiredDate =
@@ -62,6 +68,19 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
     ref.current.goTo(index);
   };
 
+  // useCheckIsExistedRequestDeathAnniversaryQuery({
+  //   variables: {
+  //     deceasedId: id,
+  //   },
+  //   onCompleted: (data) => {
+  //     if (data?.checkIsExistedRequestDeathAnniversary) {
+  //       setIsRequested(data?.checkIsExistedRequestDeathAnniversary.data);
+  //     }
+  //   },
+  //   fetchPolicy: "no-cache",
+  //   notifyOnNetworkStatusChange: true,
+  // });
+
   const { loading } = useGetDeceasedQuery({
     variables: {
       id: id,
@@ -78,20 +97,23 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
         ]);
       }
     },
+    fetchPolicy: "no-cache",
+    notifyOnNetworkStatusChange: true,
   });
 
-  const [createDeathAnniversary] = useCreateDeathAnniversaryMutation({
-    refetchQueries: [GetDeathAnniversariesDocument],
-    onCompleted: () => {
-      messageApi.open({
-        type: "success",
-        content: localeText.deathAnniversary.requestSuccessMessage,
-      });
-    },
-    onError: () => {
-      messageApi.error(localeText.deathAnniversary.requestFailMessage);
-    },
-  });
+  const [createDeathAnniversary, { loading: createDeathAnniversaryLoading }] =
+    useCreateDeathAnniversaryMutation({
+      refetchQueries: [GetDeathAnniversariesDocument, GetDeceasedDocument],
+      onCompleted: () => {
+        messageApi.open({
+          type: "success",
+          content: localeText.deathAnniversary.requestSuccessMessage,
+        });
+      },
+      onError: () => {
+        messageApi.error(localeText.deathAnniversary.requestFailMessage);
+      },
+    });
 
   const [deleteDeceased] = useDeleteDeceasedMutation({
     onCompleted: () => {
@@ -104,29 +126,34 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
     onError: () => {
       messageApi.error(localeText.deceased.deleteDeceasedFailMessage);
     },
-    refetchQueries: [GetDeathAnniversariesDocument, GetListDeceasedDocument],
+    refetchQueries: [
+      GetDeathAnniversariesDocument,
+      FamilyGetListDeceasedDocument,
+    ],
   });
 
   const handleRegisterDeathAnniversary = async (values: any) => {
     if (!deceased?.dateOfDeath) return;
     const createDeathAnniversaryInput = {
       deceasedId: id,
-      desiredStartTime: dayjs(
+      desiredStartTime: new Date(
         new Date(
           `${deceased?.dateOfDeath} ${values.desiredTime[0].format("HH:mm")}`
         ).setFullYear(
           currentDate > deathAnniversary ? currentYear + 1 : currentYear
         )
-      ).format(formatDate.HH_mm_DD_MM_YYYY),
-      desiredEndTime: dayjs(
+      ),
+      desiredEndTime: new Date(
         new Date(
           `${deceased?.dateOfDeath} ${values.desiredTime[1].format("HH:mm")}`
         ).setFullYear(
           currentDate > deathAnniversary ? currentYear + 1 : currentYear
         )
-      ).format(formatDate.HH_mm_DD_MM_YYYY),
+      ),
       note: values.note,
       isLiveStream: values.isLiveStream,
+      offeringIds: values.offeringIds,
+      deathAnniversaryType: values.deathAnniversaryType,
     };
 
     await createDeathAnniversary({
@@ -138,7 +165,7 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
 
   return (
     <div className="lg:flex lg:justify-center lg:mt-10 lg:p-4">
-      {loading && <Loading />}
+      {(loading || createDeathAnniversaryLoading) && <Loading />}
       <div className="lg:w-[1200px] lg:grid lg:grid-cols-10">
         <div className="lg:col-span-6 lg:grid lg:grid-cols-6 lg:pt-4">
           <div className="hidden lg:col-span-1 lg:flex lg:flex-col lg:gap-2">
@@ -194,7 +221,6 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
               <h2 className="text-2xl font-bold uppercase">
                 {deceased?.userDetail?.name}
               </h2>
-              {/* TODO disable when requested */}
               {(role === ERole.FamilyAdmin || role === ERole.FamilyMember) && (
                 <DeathAnniversaryInforModal
                   title={localeText.deceased.registerDeathAnniversary}

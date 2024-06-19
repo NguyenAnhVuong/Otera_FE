@@ -32,3 +32,13 @@ query getDeceased($id: Int!) {
     }
   }
 }
+
+query CheckIsExistedRequestDeathAnniversary($deceasedId: Int!) {
+  checkIsExistedRequestDeathAnniversary(deceasedId: $deceasedId) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data
+  }
+}

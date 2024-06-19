@@ -1,0 +1,19 @@
+query GetOfferings($page: Int, $take: Int) {
+  getOfferings(page: $page, take: $take) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        name
+        image
+      }
+    }
+  }
+}

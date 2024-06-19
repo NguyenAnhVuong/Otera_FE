@@ -1,10 +1,13 @@
 "use client";
 import CopyBox from "@/components/Atoms/CopyBox";
 import DeathAnniversaryStatus from "@/components/Atoms/DeathAnniversaryStatus";
+import Loading from "@/components/Atoms/Loading";
 import RejectDeathAnniversaryModal from "@/components/Atoms/RejectDeathAnniversaryModal";
 import DeathAnniversaryInforModal from "@/components/Molecules/DeathAnniversaryInforModal";
 import RejectInforModal from "@/components/Molecules/RejectInforModal";
 import {
+  EDeathAnniversaryStatus,
+  EDeathAnniversaryType,
   ERole,
   EStatus,
   GetDeathAnniversariesDocument,
@@ -35,7 +38,7 @@ import {
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface DataType {
   key: number;
@@ -48,13 +51,15 @@ interface DataType {
   actualEndTime?: Date | null;
   isLiveStream: boolean;
   linkLiveStream?: string | null;
-  status: EStatus;
+  status: EDeathAnniversaryStatus;
   rejectReason?: string | null;
   enableUpdate: boolean;
+  offeringIds: number[];
+  deathAnniversaryType: EDeathAnniversaryType;
 }
 
 const { RangePicker } = DatePicker;
-
+// TODO pagination
 const DeathAnniversary = () => {
   const { messageApi } = useAppSelector((state) => state.antd);
   const authUser = useAppSelector((state) => state.auth);
@@ -69,53 +74,69 @@ const DeathAnniversary = () => {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   const [form] = Form.useForm();
   // TODO Pagination, filter
-  const { data } = useGetDeathAnniversariesQuery({
+  const { loading } = useGetDeathAnniversariesQuery({
     variables: {
       getDeathAnniversariesInput: {
         // isPending: true,
       },
     },
+    onCompleted: (data) => {
+      if (data) {
+        const deathAnniversaries = data.getDeathAnniversaries.data;
+        setDataSource(
+          deathAnniversaries.map((deathAnniversary) => ({
+            key: deathAnniversary.id,
+            avatar: deathAnniversary.deceased.userDetail.avatar,
+            name: deathAnniversary.deceased.userDetail.name,
+            note: deathAnniversary.note,
+            desiredStartTime: new Date(deathAnniversary.desiredStartTime),
+            desiredEndTime: new Date(deathAnniversary.desiredEndTime),
+            actualStartTime: deathAnniversary.actualStartTime
+              ? new Date(deathAnniversary.actualStartTime)
+              : null,
+            actualEndTime: deathAnniversary.actualEndTime
+              ? new Date(deathAnniversary.actualEndTime)
+              : null,
+            isLiveStream: deathAnniversary.isLiveStream,
+            linkLiveStream: deathAnniversary.linkLiveStream,
+            status: deathAnniversary.status,
+            rejectReason: deathAnniversary.rejectReason,
+            enableUpdate: deathAnniversary.enableUpdate,
+            offeringIds: deathAnniversary.deathAnniversaryOfferings.map(
+              (deathAnniversaryOffering) => deathAnniversaryOffering.offeringId
+            ),
+            deathAnniversaryType: deathAnniversary.deathAnniversaryType,
+          }))
+        );
+      }
+    },
+    fetchPolicy: "no-cache",
+    notifyOnNetworkStatusChange: true,
   });
-  const [templeUpdateDeathAnniversary] =
-    useTempleUpdateDeathAnniversaryMutation({
-      onCompleted: () => {
-        setIsApproveModalOpen(false);
-        form.resetFields();
-        messageApi.open({
-          type: "success",
-          content: localeText.deathAnniversary.approveSuccessMessage,
-        });
-      },
-      onError: () => {
-        messageApi.open({
-          type: "error",
-          content: localeText.deathAnniversary.approveFailMessage,
-        });
-      },
-      refetchQueries: [
-        {
-          query: GetDeathAnniversariesDocument,
-          variables: {
-            getDeathAnniversariesInput: {
-              // isPending: true,
-            },
-          },
-        },
-      ],
-    });
+  const [
+    templeUpdateDeathAnniversary,
+    { loading: templeUpdateDeathAnniversaryLoading },
+  ] = useTempleUpdateDeathAnniversaryMutation({
+    onCompleted: () => {
+      setIsApproveModalOpen(false);
+      form.resetFields();
+      messageApi.open({
+        type: "success",
+        content: localeText.deathAnniversary.approveSuccessMessage,
+      });
+    },
+    onError: () => {
+      messageApi.open({
+        type: "error",
+        content: localeText.deathAnniversary.approveFailMessage,
+      });
+    },
+    refetchQueries: [GetDeathAnniversariesDocument],
+  });
 
   const [familyUpdateDeathAnniversary] =
     useFamilyUpdateDeathAnniversaryMutation({
-      refetchQueries: [
-        {
-          query: GetDeathAnniversariesDocument,
-          variables: {
-            getDeathAnniversariesInput: {
-              // isPending: true,
-            },
-          },
-        },
-      ],
+      refetchQueries: [GetDeathAnniversariesDocument],
       onCompleted: () => {
         setIsApproveModalOpen(false);
         form.resetFields();
@@ -123,6 +144,13 @@ const DeathAnniversary = () => {
           type: "success",
           content:
             localeText.deathAnniversary.updateDeathAnniversarySuccessMessage,
+        });
+      },
+      onError: () => {
+        messageApi.open({
+          type: "error",
+          content:
+            localeText.deathAnniversary.updateDeathAnniversaryFailMessage,
         });
       },
     });
@@ -142,6 +170,9 @@ const DeathAnniversary = () => {
         values.desiredTime[1].$m
       ),
       note: values.note,
+      offeringIds: values.offeringIds,
+      isLiveStream: values.isLiveStream,
+      deathAnniversaryType: values.deathAnniversaryType,
     };
 
     await familyUpdateDeathAnniversary({
@@ -356,10 +387,18 @@ const DeathAnniversary = () => {
               setIsModalOpen={setIsEditModalOpen}
               handleSubmitForm={handleEditDeathAnniversary}
               data={{
-                desiredStartTime: record.desiredStartTime,
-                desiredEndTime: record.desiredEndTime,
-                note: record.note,
-                isLiveStream: record.isLiveStream,
+                desiredStartTime:
+                  deathAnniversary?.desiredStartTime ?? record.desiredStartTime,
+                desiredEndTime:
+                  deathAnniversary?.desiredEndTime ?? record.desiredEndTime,
+                note: deathAnniversary?.note ?? record.note,
+                isLiveStream:
+                  deathAnniversary?.isLiveStream ?? record.isLiveStream,
+                offeringIds:
+                  deathAnniversary?.offeringIds ?? record.offeringIds,
+                deathAnniversaryType:
+                  deathAnniversary?.deathAnniversaryType ??
+                  record.deathAnniversaryType,
               }}
               openButton={
                 <Tooltip
@@ -433,11 +472,10 @@ const DeathAnniversary = () => {
         values.actualTime[1].$H,
         values.actualTime[1].$m
       ),
-      status: EStatus.Approved,
+      status: EDeathAnniversaryStatus.Approved,
       linkLiveStream: values.linkLiveStream,
     };
-
-    const { data } = await templeUpdateDeathAnniversary({
+    await templeUpdateDeathAnniversary({
       variables: {
         templeUpdateDeathAnniversaryInput,
       },
@@ -448,35 +486,9 @@ const DeathAnniversary = () => {
     console.log("Failed:", errorInfo);
   };
 
-  useEffect(() => {
-    if (data) {
-      const deathAnniversaries = data.getDeathAnniversaries.data;
-      setDataSource(
-        deathAnniversaries.map((deathAnniversary) => ({
-          key: deathAnniversary.id,
-          avatar: deathAnniversary.deceased.userDetail.avatar,
-          name: deathAnniversary.deceased.userDetail.name,
-          note: deathAnniversary.note,
-          desiredStartTime: new Date(deathAnniversary.desiredStartTime),
-          desiredEndTime: new Date(deathAnniversary.desiredEndTime),
-          actualStartTime: deathAnniversary.actualStartTime
-            ? new Date(deathAnniversary.actualStartTime)
-            : null,
-          actualEndTime: deathAnniversary.actualEndTime
-            ? new Date(deathAnniversary.actualEndTime)
-            : null,
-          isLiveStream: deathAnniversary.isLiveStream,
-          linkLiveStream: deathAnniversary.linkLiveStream,
-          status: deathAnniversary.status,
-          rejectReason: deathAnniversary.rejectReason,
-          enableUpdate: deathAnniversary.enableUpdate,
-        }))
-      );
-    }
-  }, [data]);
-
   return (
     <div className="py-header">
+      {(loading || templeUpdateDeathAnniversaryLoading) && <Loading />}
       <Table columns={columns} dataSource={dataSource} />
       <Modal
         className=""
