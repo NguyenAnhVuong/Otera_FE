@@ -10,7 +10,7 @@ import { Form, Pagination, Select } from "antd";
 import { useState } from "react";
 
 type Props = {};
-
+// TODO fix display
 const Events = (props: Props) => {
   const [page, setPage] = useState(PAGE);
   const [form] = Form.useForm();

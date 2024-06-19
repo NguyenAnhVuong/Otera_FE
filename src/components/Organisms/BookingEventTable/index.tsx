@@ -34,6 +34,7 @@ interface DataType {
   checkInAt?: Date | null;
   updatedAt?: Date | null;
   rejectReason?: string | null;
+  endDateBooking?: Date;
 }
 
 const BookingEventTable: React.FC<BookingEventTableProps> = ({
@@ -56,7 +57,30 @@ const BookingEventTable: React.FC<BookingEventTableProps> = ({
       address,
       orderBy,
     },
+    onCompleted: (data) => {
+      if (data?.getBookingEvents.data.data) {
+        setDataSource(
+          data?.getBookingEvents.data.data.map((event) => ({
+            id: event.id,
+            avatar: event.avatar,
+            name: event.name,
+            startDateEvent: event.startDateEvent,
+            endDateEvent: event.endDateEvent,
+            address: event.address,
+            code: event.eventParticipants[0].code,
+            bookingStatus: event.eventParticipants[0].bookingStatus,
+            approverName: event.eventParticipants[0].approver?.userDetail.name,
+            checkInAt: event.eventParticipants[0].checkInAt,
+            updatedAt: event.eventParticipants[0].updatedAt,
+            rejectReason: event.eventParticipants[0].rejectReason,
+            endDateBooking: event.endDateBooking,
+          }))
+        );
+        setTotalItems(data?.getBookingEvents.data.totalItems);
+      }
+    },
     fetchPolicy: "no-cache",
+    notifyOnNetworkStatusChange: true,
   });
 
   const columns: TableProps<DataType>["columns"] = [
@@ -189,32 +213,11 @@ const BookingEventTable: React.FC<BookingEventTableProps> = ({
           checkInAt={record.checkInAt}
           updatedAt={record.updatedAt}
           rejectReason={record.rejectReason}
+          endDateBooking={record.endDateBooking}
         />
       ),
     },
   ];
-
-  useEffect(() => {
-    if (data?.getBookingEvents.data.data) {
-      setDataSource(
-        data?.getBookingEvents.data.data.map((event) => ({
-          id: event.id,
-          avatar: event.avatar,
-          name: event.name,
-          startDateEvent: event.startDateEvent,
-          endDateEvent: event.endDateEvent,
-          address: event.address,
-          code: event.eventParticipants[0].code,
-          bookingStatus: event.eventParticipants[0].bookingStatus,
-          approverName: event.eventParticipants[0].approver?.userDetail.name,
-          checkInAt: event.eventParticipants[0].checkInAt,
-          updatedAt: event.eventParticipants[0].updatedAt,
-          rejectReason: event.eventParticipants[0].rejectReason,
-        }))
-      );
-      setTotalItems(data?.getBookingEvents.data.totalItems);
-    }
-  }, [data]);
 
   return (
     <>

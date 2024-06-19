@@ -31,14 +31,6 @@ const EventBookingStatusAction: React.FC<EventBookingStatusActionProps> = ({
   );
 
   const [updateEventParticipant] = useUpdateEventParticipantMutation({
-    onCompleted: () => {
-      messageApi.success(
-        localeText.event.participant.approveSuccessMessage(name)
-      );
-    },
-    onError: () => {
-      messageApi.error(localeText.event.participant.approveFailMessage);
-    },
     refetchQueries: [GetEventParticipantsDocument],
   });
 
@@ -49,6 +41,14 @@ const EventBookingStatusAction: React.FC<EventBookingStatusActionProps> = ({
           eventParticipantId: eventParticipantId,
           bookingStatus: EBookingStatus.Approved,
         },
+      },
+      onCompleted: () => {
+        messageApi.success(
+          localeText.event.participant.approveSuccessMessage(name)
+        );
+      },
+      onError: () => {
+        messageApi.error(localeText.event.participant.approveFailMessage);
       },
     });
   };
@@ -61,6 +61,14 @@ const EventBookingStatusAction: React.FC<EventBookingStatusActionProps> = ({
           bookingStatus: EBookingStatus.Rejected,
           rejectReason,
         },
+      },
+      onCompleted: () => {
+        messageApi.success(
+          localeText.event.participant.rejectSuccessMessage(name)
+        );
+      },
+      onError: () => {
+        messageApi.error(localeText.event.participant.rejectFailMessage);
       },
     });
   };

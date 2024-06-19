@@ -346,7 +346,7 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
       width: 80,
     },
     {
-      title: "Hành động",
+      title: localeText.event.action,
       key: "action",
       align: "center",
       fixed: "right",
@@ -364,19 +364,23 @@ const EventManagementTable: React.FC<EventManagementTableProps> = ({
             />
           </Tooltip>
           {new Date(record.startDateEvent) > new Date() && (
-            <UpdateEventButton id={record.id} />
+            <>
+              <UpdateEventButton id={record.id} />
+              <Tooltip placement="top" title={localeText.event.cancelEvent}>
+                <Popconfirm
+                  title={localeText.event.cancelEventPopConfirm.title}
+                  description={
+                    localeText.event.cancelEventPopConfirm.description
+                  }
+                  onConfirm={() => handleCancelEvent(record.id)}
+                  okText={localeText.OK}
+                  cancelText={localeText.cancel}
+                >
+                  <DeleteOutlined className="text-red-500 text-xl cursor-pointer" />
+                </Popconfirm>
+              </Tooltip>
+            </>
           )}
-          <Tooltip placement="top" title={localeText.event.cancelEvent}>
-            <Popconfirm
-              title={localeText.event.cancelEventPopConfirm.title}
-              description={localeText.event.cancelEventPopConfirm.description}
-              onConfirm={() => handleCancelEvent(record.id)}
-              okText={localeText.OK}
-              cancelText={localeText.cancel}
-            >
-              <DeleteOutlined className="text-red-500 text-xl cursor-pointer" />
-            </Popconfirm>
-          </Tooltip>
         </div>
       ),
     },

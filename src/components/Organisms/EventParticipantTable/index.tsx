@@ -85,6 +85,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
         setTotalItems(data.getEventParticipants.data?.totalItems);
       }
     },
+    notifyOnNetworkStatusChange: true,
   });
   const { localeText } = useTrans();
 

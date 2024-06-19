@@ -128,8 +128,11 @@ const Notification: React.FC<NotificationProps> = ({
           </div>
         </div>
       );
-
+    // Have redirect
     case ENotificationType.NewEvent:
+    case ENotificationType.UpdateEvent:
+    case ENotificationType.ApproveEventParticipant:
+    case ENotificationType.RejectEventParticipant:
       return (
         <div
           className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg overflow-hidden"
@@ -140,6 +143,21 @@ const Notification: React.FC<NotificationProps> = ({
             <span className="font-bold text-black">{title}</span>
             <div className="text-gray-500 text-xs">{description}</div>
           </Link>
+        </div>
+      );
+
+    // No redirect
+    case ENotificationType.CancelEvent:
+      return (
+        <div
+          className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg overflow-hidden"
+          onClick={handleReadNotification}
+        >
+          {!isRead && <div className="bg-primary p-1 rounded-full mr-2" />}
+          <div>
+            <span className="font-bold text-black">{title}</span>
+            <div className="text-gray-500 text-xs">{description}</div>
+          </div>
         </div>
       );
     default:
