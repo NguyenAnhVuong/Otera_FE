@@ -1,0 +1,11 @@
+mutation templeUpdateDeathAnniversary(
+  $templeUpdateDeathAnniversaryInput: TempleUpdateDeathAnniversaryInput!
+) {
+  templeUpdateDeathAnniversary(
+    templeUpdateDeathAnniversaryInput: $templeUpdateDeathAnniversaryInput
+  ) {
+    errorCode
+  }
+}
+
+

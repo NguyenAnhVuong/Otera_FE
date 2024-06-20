@@ -7,7 +7,7 @@ import {
   Deceased,
   ERole,
   FamilyGetListDeceasedDocument,
-  GetDeathAnniversariesDocument,
+  FamilyGetDeathAnniversariesDocument,
   GetDeceasedDocument,
   useCreateDeathAnniversaryMutation,
   useDeleteDeceasedMutation,
@@ -103,7 +103,10 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
 
   const [createDeathAnniversary, { loading: createDeathAnniversaryLoading }] =
     useCreateDeathAnniversaryMutation({
-      refetchQueries: [GetDeathAnniversariesDocument, GetDeceasedDocument],
+      refetchQueries: [
+        FamilyGetDeathAnniversariesDocument,
+        GetDeceasedDocument,
+      ],
       onCompleted: () => {
         messageApi.open({
           type: "success",
@@ -127,7 +130,7 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
       messageApi.error(localeText.deceased.deleteDeceasedFailMessage);
     },
     refetchQueries: [
-      GetDeathAnniversariesDocument,
+      FamilyGetDeathAnniversariesDocument,
       FamilyGetListDeceasedDocument,
     ],
   });

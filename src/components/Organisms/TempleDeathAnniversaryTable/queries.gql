@@ -1,0 +1,84 @@
+query TempleGetDeathAnniversaries(
+  $name: String
+  $page: Int
+  $orderBy: [OrderBy!]
+  $status: EDeathAnniversaryStatus
+  $take: Int
+  $familyKeyword: String
+  $tombAddress: String
+  $requesterName: String
+  $deathAnniversaryTypes: [EDeathAnniversaryType!]
+) {
+  templeGetDeathAnniversaries(
+    name: $name
+    page: $page
+    orderBy: $orderBy
+    status: $status
+    familyKeyword: $familyKeyword
+    requesterName: $requesterName
+    take: $take
+    tombAddress: $tombAddress
+    deathAnniversaryTypes: $deathAnniversaryTypes
+  ) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+    data {
+      totalPages
+      totalItems
+      take
+      page
+      data {
+        id
+        desiredStartTime
+        desiredEndTime
+        actualStartTime
+        actualEndTime
+        enableUpdate
+        finishImage
+        isLiveStream
+        linkLiveStream
+        readyImage
+        rejectReason
+        status
+        note
+        deathAnniversaryType
+        deathAnniversaryOfferings {
+          id
+          offeringId
+          offering {
+            id
+            name
+            image
+          }
+        }
+        deceased {
+          id
+          userDetail {
+            id
+            avatar
+            name
+          }
+          tombAddress
+          rejectReason
+        }
+        user {
+          id
+          email
+          userDetail {
+            id
+            avatar
+            name
+            phone
+          }
+        }
+        family{
+          id
+          name
+          familyCode
+        }
+      }
+    }
+  }
+}
