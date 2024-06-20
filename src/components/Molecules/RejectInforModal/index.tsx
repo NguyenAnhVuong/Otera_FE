@@ -1,5 +1,6 @@
+import ShowDetailButton from "@/components/Atoms/ShowDetailButton";
 import useTrans from "@/hooks/useTrans";
-import { Button, Modal } from "antd";
+import { Button, Modal, Tag } from "antd";
 import React, { useState } from "react";
 
 type InformationModalProps = {
@@ -24,9 +25,7 @@ const RejectInforModal: React.FC<InformationModalProps> = ({ infor }) => {
 
   return (
     <>
-      <span className="underline cursor-pointer" onClick={showModal}>
-        {localeText.deathAnniversary.reject}
-      </span>
+      <ShowDetailButton onClick={showModal} />
       <Modal
         title={localeText.deathAnniversary.rejectInforModal.title}
         open={isModalOpen}

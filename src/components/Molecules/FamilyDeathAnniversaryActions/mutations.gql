@@ -1,13 +1,3 @@
-mutation templeUpdateDeathAnniversary(
-  $templeUpdateDeathAnniversaryInput: TempleUpdateDeathAnniversaryInput!
-) {
-  templeUpdateDeathAnniversary(
-    templeUpdateDeathAnniversaryInput: $templeUpdateDeathAnniversaryInput
-  ) {
-    errorCode
-  }
-}
-
 mutation familyUpdateDeathAnniversary(
   $updateDeathAnniversaryInput: UpdateDeathAnniversaryInput!
 ) {

@@ -12,11 +12,23 @@ const DeathAnniversaryStatus: React.FC<DeathAnniversaryStatusProps> = ({
   const { localeText } = useTrans();
   switch (status) {
     case EStatus.Rejected:
-      return <Tag color="red">{localeText.deathAnniversary.reject}</Tag>;
+      return (
+        <Tag className="m-0" color="red">
+          {localeText.deathAnniversary.reject}
+        </Tag>
+      );
     case EStatus.Approved:
-      return <Tag color="green">{localeText.deathAnniversary.approve}</Tag>;
+      return (
+        <Tag className="m-0" color="green">
+          {localeText.deathAnniversary.approve}
+        </Tag>
+      );
     default:
-      return <Tag color="blue">{localeText.deathAnniversary.pending}</Tag>;
+      return (
+        <Tag className="m-0" color="blue">
+          {localeText.deathAnniversary.pending}
+        </Tag>
+      );
   }
 };
 

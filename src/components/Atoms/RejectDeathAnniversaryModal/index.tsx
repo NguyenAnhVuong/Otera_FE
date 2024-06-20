@@ -1,6 +1,7 @@
 import {
-  EStatus,
-  GetDeathAnniversariesDocument,
+  EDeathAnniversaryStatus,
+  FamilyGetDeathAnniversariesDocument,
+  TempleGetDeathAnniversariesDocument,
   useTempleUpdateDeathAnniversaryMutation,
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
@@ -37,7 +38,7 @@ const RejectDeathAnniversaryModal = ({
     }
     const templeUpdateDeathAnniversaryInput = {
       id: rejectDeathAnniversaryId,
-      status: EStatus.Rejected,
+      status: EDeathAnniversaryStatus.Rejected,
       rejectReason: values.rejectReason,
       enableUpdate: values.enableUpdate,
     };
@@ -46,17 +47,9 @@ const RejectDeathAnniversaryModal = ({
       variables: {
         templeUpdateDeathAnniversaryInput,
       },
-      refetchQueries: [
-        {
-          query: GetDeathAnniversariesDocument,
-          variables: {
-            getDeathAnniversariesInput: {
-              // isPending: true,
-            },
-          },
-        },
-      ],
+      refetchQueries: [TempleGetDeathAnniversariesDocument],
     });
+
     if (data && !data.templeUpdateDeathAnniversary.errorCode) {
       form.resetFields();
       handleCloseModal();

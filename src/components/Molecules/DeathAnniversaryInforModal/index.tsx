@@ -5,15 +5,7 @@ import {
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { PAGE } from "@/utils/constants";
-import {
-  Checkbox,
-  DatePicker,
-  Form,
-  FormInstance,
-  Modal,
-  Radio,
-  Tooltip,
-} from "antd";
+import { Checkbox, DatePicker, Form, Modal, Radio, Tooltip } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -86,7 +78,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
   }, [data, form]);
 
   return (
-    <div>
+    <>
       {loading && <Loading />}
       {openButton}
       <Modal
@@ -218,7 +210,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </>
   );
 };
 

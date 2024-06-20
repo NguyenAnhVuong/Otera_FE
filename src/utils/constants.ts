@@ -17,6 +17,7 @@ export const PAGE = 1;
 export const TAKE = 10;
 export const REJECT_REASON_MAX_LENGTH = 200;
 export const BLOCK_REASON_MAX_LENGTH = 200;
+export const DEBOUNCE_TIME = 500;
 
 export const formatDate = {
   YYYY_MM_DD_HH_mm: "YYYY-MM-DD HH:mm",

@@ -1,0 +1,17 @@
+mutation familyUpdateDeathAnniversary(
+  $updateDeathAnniversaryInput: UpdateDeathAnniversaryInput!
+) {
+  familyUpdateDeathAnniversary(
+    updateDeathAnniversaryInput: $updateDeathAnniversaryInput
+  ) {
+    errorCode
+  }
+}
+
+mutation cancelDeathAnniversary(
+  $cancelDeathAnniversaryInput: CancelDeathAnniversaryInput!
+) {
+  cancelDeathAnniversary(cancelDeathAnniversaryInput: $cancelDeathAnniversaryInput) {
+    errorCode
+  }
+}
