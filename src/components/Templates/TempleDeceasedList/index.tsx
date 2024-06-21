@@ -10,9 +10,14 @@ type TempleDeceasedListProps = {};
 
 const TempleDeceasedList: React.FC<TempleDeceasedListProps> = ({}) => {
   const { localeText } = useTrans();
-  const [status, setStatus] = useState<string>(EStatus.Pending);
+  const [status, setStatus] = useState<EStatus | null>(null);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const items: TabsProps["items"] = [
+    {
+      key: "all",
+      label: localeText.all,
+    },
     {
       key: EStatus.Pending,
       label: localeText.temple.deceasedList.status.pending,
@@ -31,16 +36,25 @@ const TempleDeceasedList: React.FC<TempleDeceasedListProps> = ({}) => {
     },
   ];
 
+  const onChange = (key: string) => {
+    if (key === "all") {
+      setStatus(null);
+      setIsDeleted(false);
+    } else if (key === "isDeleted") {
+      setIsDeleted(true);
+      setStatus(null);
+    } else {
+      setStatus(key as EStatus);
+      setIsDeleted(false);
+    }
+  };
+
   return (
     <div>
       <PageTitle title={localeText.temple.deceasedList.title} />
-      <Tabs
-        defaultActiveKey="1"
-        items={items}
-        onChange={(key: string) => setStatus(key)}
-      />
+      <Tabs defaultActiveKey="all" items={items} onChange={onChange} />
       {/* TODO temple add deceased */}
-      <TempleDeceasedTable status={status} />
+      <TempleDeceasedTable status={status} isDeleted={isDeleted} />
     </div>
   );
 };

@@ -12,6 +12,8 @@ import { useAppSelector } from "@/rtk/hook";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Popconfirm, Tooltip } from "antd";
 import React, { useState } from "react";
+import ReadyProofModal from "@/components/Molecules/ReadyProofModal";
+import FinishedProofModal from "@/components/Molecules/FinishedProofModal";
 
 type FamilyDeathAnniversaryActionsProps = {
   id: number;
@@ -24,6 +26,8 @@ type FamilyDeathAnniversaryActionsProps = {
   isLiveStream: boolean;
   offeringIds: number[];
   deathAnniversaryType: EDeathAnniversaryType;
+  readyImage?: string | null;
+  finishedImage?: string | null;
 };
 
 const FamilyDeathAnniversaryActions: React.FC<
@@ -39,6 +43,8 @@ const FamilyDeathAnniversaryActions: React.FC<
   isLiveStream,
   offeringIds,
   deathAnniversaryType,
+  readyImage,
+  finishedImage,
 }) => {
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
@@ -169,6 +175,26 @@ const FamilyDeathAnniversaryActions: React.FC<
             </Popconfirm>
           </Tooltip>
         </div>
+      );
+
+    case EDeathAnniversaryStatus.Ready:
+      return (
+        <div className="flex justify-center gap-2 items-center">
+          <ReadyProofModal
+            deathAnniversaryId={id}
+            proofImage={readyImage}
+            isReadOnly
+          />
+        </div>
+      );
+    case EDeathAnniversaryStatus.Finished:
+      return (
+        <FinishedProofModal
+          deathAnniversaryId={id}
+          readyImage={readyImage}
+          finishedImage={finishedImage}
+          isReadOnly
+        />
       );
 
     case EDeathAnniversaryStatus.Rejected:

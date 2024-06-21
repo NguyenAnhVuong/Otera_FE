@@ -2,16 +2,14 @@ import Family from "@/components/Atoms/Family";
 import FilterSearchInput from "@/components/Atoms/FilterSearchInput";
 import Loading from "@/components/Atoms/Loading";
 import AvatarCustom from "@/components/Molecules/AvatarCustom";
+import DeceasedStatus from "@/components/Molecules/DeceasedStatus";
 import TempleDeceasedActions from "@/components/Molecules/TempleDeceasedActions";
 import {
   EStatus,
   OrderBy,
-  TempleGetDeceasedListDocument,
   useTempleGetDeceasedListQuery,
-  useUpdateDeceasedStatusMutation,
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
-import { useAppSelector } from "@/rtk/hook";
 import { PAGE, TAKE, formatDate } from "@/utils/constants";
 import { handleSortByColumn } from "@/utils/helper";
 import { Table, TableProps } from "antd";
@@ -19,7 +17,8 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 
 type TempleDeceasedTableProps = {
-  status: string;
+  status?: EStatus | null;
+  isDeleted: boolean;
 };
 
 interface DataType {
@@ -34,13 +33,15 @@ interface DataType {
   familyAvatar: string;
   familyName: string;
   familyCode: string;
+  status?: EStatus | null;
+  isDeleted?: boolean;
 }
 
 const TempleDeceasedTable: React.FC<TempleDeceasedTableProps> = ({
   status,
+  isDeleted,
 }) => {
   const { localeText } = useTrans();
-  const { messageApi } = useAppSelector((state) => state.antd);
   const [totalItems, setTotalItems] = useState(0);
   const [page, setPage] = useState(PAGE);
   const [name, setName] = useState("");
@@ -52,9 +53,8 @@ const TempleDeceasedTable: React.FC<TempleDeceasedTableProps> = ({
 
   const { loading } = useTempleGetDeceasedListQuery({
     variables: {
-      ...(status === "isDeleted"
-        ? { isDeleted: true }
-        : { status: status as EStatus }),
+      isDeleted,
+      status,
       page,
       take: TAKE,
       name,
@@ -78,6 +78,8 @@ const TempleDeceasedTable: React.FC<TempleDeceasedTableProps> = ({
           familyAvatar: item.family?.avatar,
           familyName: item.family?.name,
           familyCode: item.family?.familyCode,
+          status: item.status,
+          isDeleted: item.isDeleted,
         }))
       );
     },
@@ -175,15 +177,26 @@ const TempleDeceasedTable: React.FC<TempleDeceasedTableProps> = ({
       ),
     },
     {
+      title: localeText.temple.deceasedList.status.title,
+      dataIndex: "status",
+      key: "status",
+      align: "center",
+      render: (status, record) => (
+        <DeceasedStatus status={status} isDeleted={record.isDeleted} />
+      ),
+    },
+    {
       title: localeText.temple.deceasedList.action,
       key: "action",
       align: "center",
+      width: 108,
       render: (_, record) => (
         <TempleDeceasedActions
           deceasedId={record.id}
           deceasedName={record.name}
-          status={status}
+          status={record.status}
           rejectReason={record.rejectReason}
+          isDeleted={record.isDeleted}
         />
       ),
     },

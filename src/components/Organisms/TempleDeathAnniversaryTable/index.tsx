@@ -43,6 +43,8 @@ interface DataType {
   offeringIds: number[];
   deathAnniversaryType: EDeathAnniversaryType;
   tombAddress: string;
+  readyImage?: string | null;
+  finishedImage?: string | null;
   offerings: {
     id: number;
     name: string;
@@ -120,6 +122,8 @@ const TempleDeathAnniversaryTable: React.FC<
             ),
             deathAnniversaryType: deathAnniversary.deathAnniversaryType,
             tombAddress: deathAnniversary.deceased.tombAddress,
+            readyImage: deathAnniversary.readyImage,
+            finishedImage: deathAnniversary.finishedImage,
             offerings: deathAnniversary.deathAnniversaryOfferings.map(
               (deathAnniversaryOffering) => ({
                 id: deathAnniversaryOffering.offering.id,
@@ -143,7 +147,6 @@ const TempleDeathAnniversaryTable: React.FC<
     notifyOnNetworkStatusChange: true,
   });
 
-  // TODO add column requestor
   const columns: TableProps<DataType>["columns"] = [
     {
       title: localeText.deathAnniversary.avatar,
@@ -186,7 +189,7 @@ const TempleDeathAnniversaryTable: React.FC<
       filterDropdown: (props) => (
         <FilterSearchInput {...props} setKeyword={setFamilyKeyword} />
       ),
-      render: (family, record) => (
+      render: (family) => (
         <div>
           <Family name={family.name} code={family.code} />
         </div>
@@ -443,6 +446,9 @@ const TempleDeathAnniversaryTable: React.FC<
           isLiveStream={record.isLiveStream}
           offeringIds={record.offeringIds}
           deathAnniversaryType={record.deathAnniversaryType}
+          readyImage={record.readyImage}
+          actualEndTime={record.actualEndTime}
+          finishedImage={record.finishedImage}
         />
       ),
     },

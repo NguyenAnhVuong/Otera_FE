@@ -3,15 +3,17 @@ import UploadedLabel from "@/components/Molecules/UploadedLabel";
 import React, { useEffect, useState } from "react";
 
 type UploadSingleImageProps = {
-  imageSrc?: string;
+  imageSrc?: string | null;
   setUploadImage: (file: File) => void;
+  isReadOnly?: boolean;
 };
 
 const UploadSingleImage: React.FC<UploadSingleImageProps> = ({
   imageSrc,
   setUploadImage,
+  isReadOnly = false,
 }) => {
-  const [preview, setPreview] = useState<string | undefined>(imageSrc);
+  const [preview, setPreview] = useState<string | null | undefined>(imageSrc);
 
   const handleUpload = (file: File | null) => {
     if (!file) return;
@@ -28,20 +30,26 @@ const UploadSingleImage: React.FC<UploadSingleImageProps> = ({
   return (
     <>
       {preview ? (
-        <UploadedLabel htmlFor="image" preview={preview} />
+        <UploadedLabel
+          htmlFor={isReadOnly ? "isReadOnly" : "image"}
+          preview={preview}
+          isReadOnly={isReadOnly}
+        />
       ) : (
         <UploadLabel htmlFor="image" />
       )}
-
-      <input
-        className="hidden"
-        id="image"
-        name="image"
-        type="file"
-        onChange={(e) =>
-          handleUpload(e.target.files ? e.target.files[0] : null)
-        }
-      />
+      {!isReadOnly && (
+        <input
+          className="hidden"
+          disabled={isReadOnly}
+          id="image"
+          name="image"
+          type="file"
+          onChange={(e) =>
+            handleUpload(e.target.files ? e.target.files[0] : null)
+          }
+        />
+      )}
     </>
   );
 };

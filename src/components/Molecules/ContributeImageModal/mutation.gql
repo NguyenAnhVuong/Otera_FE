@@ -1,0 +1,8 @@
+mutation AddDeceasedImage($addDeceasedImageInput: VAddDeceasedImageInput!) {
+  addDeceasedImage(addDeceasedImageInput: $addDeceasedImageInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

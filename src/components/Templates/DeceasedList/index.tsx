@@ -19,6 +19,8 @@ const DeceasedList = () => {
     onCompleted: (data) => {
       setTotalItems(data.familyGetListDeceased.data.totalItems);
     },
+    fetchPolicy: "no-cache",
+    notifyOnNetworkStatusChange: true,
   });
   return (
     <div className="bg-white flex flex-col items-center">

@@ -41,6 +41,8 @@ interface DataType {
   offeringIds: number[];
   deathAnniversaryType: EDeathAnniversaryType;
   tombAddress: string;
+  readyImage?: string | null;
+  finishedImage?: string | null;
   offerings: {
     id: number;
     name: string;
@@ -107,6 +109,8 @@ const FamilyDeathAnniversaryTable: React.FC<
             status: deathAnniversary.status,
             rejectReason: deathAnniversary.rejectReason,
             enableUpdate: deathAnniversary.enableUpdate,
+            readyImage: deathAnniversary.readyImage,
+            finishedImage: deathAnniversary.finishedImage,
             offeringIds: deathAnniversary.deathAnniversaryOfferings.map(
               (deathAnniversaryOffering) => deathAnniversaryOffering.offeringId
             ),
@@ -416,6 +420,8 @@ const FamilyDeathAnniversaryTable: React.FC<
           isLiveStream={record.isLiveStream}
           offeringIds={record.offeringIds}
           deathAnniversaryType={record.deathAnniversaryType}
+          readyImage={record.readyImage}
+          finishedImage={record.finishedImage}
         />
       ),
     },
