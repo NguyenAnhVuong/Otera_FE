@@ -1,7 +1,6 @@
 "use client";
 import { deceasedApi } from "@/api/deceasedApi";
 import TempleSelect from "@/components/Atoms/TempleSelect";
-import { useGetListDeceasedQuery } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { EGender } from "@/utils/enum";
@@ -41,10 +40,6 @@ const DeceasedDeclare = (props: Props) => {
     setDescriptionImagePreviews(newDescriptionImagePreviews);
   }
 
-  const { refetch } = useGetListDeceasedQuery({
-    variables: { familyId: auth.familyId as number },
-  });
-
   const onFinish = async (values: any) => {
     const newDeceased = new FormData();
     newDeceased.append("images[]", avatar);
@@ -65,7 +60,6 @@ const DeceasedDeclare = (props: Props) => {
       form.resetFields();
       setAvatarPreview("");
       setDescriptionImagePreviews([]);
-      refetch();
     }
   };
 

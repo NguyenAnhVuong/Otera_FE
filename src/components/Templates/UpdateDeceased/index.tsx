@@ -82,6 +82,8 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
       router.push(`/deceased/${id}`);
     },
     skip: !id,
+    fetchPolicy: "no-cache",
+    notifyOnNetworkStatusChange: true,
   });
 
   const [updateDeceased, { loading: updateLoading }] =

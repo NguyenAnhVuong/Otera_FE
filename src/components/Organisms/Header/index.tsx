@@ -118,7 +118,7 @@ const Header = () => {
             className="block"
             onClick={() => router.push("/death-anniversary")}
           >
-            Yêu cầu tổ chức lễ giỗ
+            {localeText.deathAnniversary.list}
           </span>
         ),
         key: "death-anniversary",
@@ -181,7 +181,7 @@ const Header = () => {
             className="block"
             onClick={() => router.push("/death-anniversary")}
           >
-            Yêu cầu tổ chức lễ giỗ
+            {localeText.deathAnniversary.list}
           </span>
         ),
         key: "death-anniversary",
@@ -207,14 +207,6 @@ const Header = () => {
       },
       {
         label: (
-          <span className="block" onClick={() => router.push("/deceased")}>
-            {localeText.deceased.deceasedList}
-          </span>
-        ),
-        key: "deceased",
-      },
-      {
-        label: (
           <span
             className="block"
             onClick={() => router.push("/deceased/declare")}
@@ -222,7 +214,15 @@ const Header = () => {
             {localeText.declareDeceased}
           </span>
         ),
-        key: "deceased/declare",
+        key: "/deceased/declare",
+      },
+      {
+        label: (
+          <span className="block" onClick={() => router.push("/deceased")}>
+            {localeText.deceased.deceasedList}
+          </span>
+        ),
+        key: "deceased",
       },
       {
         label: (
@@ -263,7 +263,7 @@ const Header = () => {
             className="block"
             onClick={() => router.push("/death-anniversary")}
           >
-            {localeText.deathAnniversary.request}
+            {localeText.deathAnniversary.list}
           </span>
         ),
         key: "death-anniversary",

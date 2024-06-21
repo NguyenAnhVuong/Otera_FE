@@ -17,7 +17,7 @@ const NotificationList = () => {
   const { data: notificationData } = useNotificationsSubscription({
     variables: {
       userId: id,
-      limit: TAKE,
+      limit: limit,
       offset: 0,
     },
   });
@@ -36,10 +36,11 @@ const NotificationList = () => {
       ),
     [limit, notificationCount?.notifications_aggregate.aggregate?.count]
   );
+
   return (
     <div>
       <div
-        className={`max-w-[360px] border-t border-0 border-solid border-divider pt-2 ${
+        className={`max-w-[360px] h-[480px] overflow-y-auto no-scrollbar border-t border-0 border-solid border-divider pt-2 ${
           isCanSeeMore && "border-b pb-2"
         }`}
       >

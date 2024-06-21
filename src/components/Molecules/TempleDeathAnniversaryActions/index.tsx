@@ -13,6 +13,8 @@ import { DatePicker, Form, Input, Modal, Tooltip } from "antd";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import RejectInforModal from "@/components/Molecules/RejectInforModal";
+import ReadyProofModal from "@/components/Molecules/ReadyProofModal";
+import FinishedProofModal from "@/components/Molecules/FinishedProofModal";
 
 type TempleDeathAnniversaryActionsProps = {
   id: number;
@@ -25,6 +27,9 @@ type TempleDeathAnniversaryActionsProps = {
   isLiveStream: boolean;
   offeringIds: number[];
   deathAnniversaryType: EDeathAnniversaryType;
+  readyImage?: string | null;
+  actualEndTime?: Date | null;
+  finishedImage?: string | null;
 };
 
 const { RangePicker } = DatePicker;
@@ -38,6 +43,9 @@ const TempleDeathAnniversaryActions: React.FC<
   desiredEndTime,
   isLiveStream,
   rejectReason,
+  readyImage,
+  actualEndTime,
+  finishedImage,
 }) => {
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
@@ -129,7 +137,7 @@ const TempleDeathAnniversaryActions: React.FC<
           </Tooltip>
           <Modal
             className=""
-            title="Thời gian có thể tổ chức thực tế"
+            title={localeText.deathAnniversary.actual}
             open={isApproveModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -144,22 +152,29 @@ const TempleDeathAnniversaryActions: React.FC<
               autoComplete="off"
             >
               <Form.Item
-                label="Thời gian thực tế"
+                label={localeText.deathAnniversary.actualTime}
                 name="actualTime"
                 rules={[
-                  { required: true, message: "Please input your desiredTime!" },
+                  {
+                    required: true,
+                    message: localeText.validateMessages.required(
+                      localeText.deathAnniversary.actualTime
+                    ),
+                  },
                 ]}
               >
                 <RangePicker className="w-full" picker="time" format="HH:mm" />
               </Form.Item>
               {isLiveStream && (
                 <Form.Item
-                  label="Link livestream"
+                  label={localeText.deathAnniversary.linkLiveStream}
                   name="linkLiveStream"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Link livestream!",
+                      message: localeText.validateMessages.required(
+                        localeText.deathAnniversary.linkLiveStream
+                      ),
                     },
                   ]}
                 >
@@ -174,7 +189,32 @@ const TempleDeathAnniversaryActions: React.FC<
           />
         </div>
       );
-
+    case EDeathAnniversaryStatus.Approved:
+      return <ReadyProofModal deathAnniversaryId={id} />;
+    case EDeathAnniversaryStatus.Ready:
+      return (
+        <div className="flex justify-center gap-2 items-center">
+          <ReadyProofModal
+            deathAnniversaryId={id}
+            proofImage={readyImage}
+            isReadOnly
+          />
+          <FinishedProofModal
+            deathAnniversaryId={id}
+            readyImage={readyImage}
+            actualEndTime={actualEndTime}
+          />
+        </div>
+      );
+    case EDeathAnniversaryStatus.Finished:
+      return (
+        <FinishedProofModal
+          deathAnniversaryId={id}
+          readyImage={readyImage}
+          finishedImage={finishedImage}
+          isReadOnly
+        />
+      );
     case EDeathAnniversaryStatus.Rejected:
       return (
         <div>{rejectReason && <RejectInforModal infor={rejectReason} />}</div>

@@ -22,8 +22,9 @@ import React from "react";
 type TempleDeceasedActionsProps = {
   deceasedId: number;
   deceasedName: string;
-  status: string;
+  status?: EStatus | null | "isDeleted";
   rejectReason?: string | null;
+  isDeleted?: boolean;
 };
 
 const TempleDeceasedActions: React.FC<TempleDeceasedActionsProps> = ({
@@ -31,6 +32,7 @@ const TempleDeceasedActions: React.FC<TempleDeceasedActionsProps> = ({
   deceasedName,
   status,
   rejectReason,
+  isDeleted,
 }) => {
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
@@ -131,10 +133,31 @@ const TempleDeceasedActions: React.FC<TempleDeceasedActionsProps> = ({
     await restoreDeceased();
   };
 
+  if (isDeleted) {
+    return (
+      <div>
+        {restoreDeceasedLoading && <Loading />}
+        <Popconfirm
+          title={localeText.temple.deceasedList.restorePopconfirm.title(
+            deceasedName
+          )}
+          description={localeText.temple.deceasedList.restorePopconfirm.description(
+            deceasedName
+          )}
+          onConfirm={handleUnblockTemple}
+          okText={localeText.OK}
+          cancelText={localeText.cancel}
+        >
+          <RedoButton title={localeText.restore} />
+        </Popconfirm>
+      </div>
+    );
+  }
+
   switch (status) {
     case EStatus.Pending:
       return (
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center justify-center">
           {updateDeceasedStatusLoading && <Loading />}
           <InforPreviewModal>
             <DeceasedDetail id={deceasedId} />
@@ -157,7 +180,7 @@ const TempleDeceasedActions: React.FC<TempleDeceasedActionsProps> = ({
       );
     case EStatus.Approved:
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-center">
           {deleteDeceasedLoading && <Loading />}
           <InforPreviewModal>
             <DeceasedDetail id={deceasedId} />
@@ -185,27 +208,8 @@ const TempleDeceasedActions: React.FC<TempleDeceasedActionsProps> = ({
           </RejectModal>
         </div>
       );
-    case "isDeleted":
-      return (
-        <div>
-          {restoreDeceasedLoading && <Loading />}
-          <Popconfirm
-            title={localeText.temple.deceasedList.restorePopconfirm.title(
-              deceasedName
-            )}
-            description={localeText.temple.deceasedList.restorePopconfirm.description(
-              deceasedName
-            )}
-            onConfirm={handleUnblockTemple}
-            okText={localeText.OK}
-            cancelText={localeText.cancel}
-          >
-            <RedoButton title={localeText.restore} />
-          </Popconfirm>
-        </div>
-      );
     default:
-      return <div>Invalid status</div>;
+      return <></>;
   }
 };
 

@@ -34,7 +34,7 @@ query FamilyGetDeathAnniversaries(
         actualStartTime
         actualEndTime
         enableUpdate
-        finishImage
+        finishedImage
         isLiveStream
         linkLiveStream
         readyImage

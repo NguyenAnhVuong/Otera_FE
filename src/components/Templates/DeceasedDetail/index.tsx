@@ -2,6 +2,7 @@
 import DeleteButton from "@/components/Atoms/DeleteButton";
 import EditButton from "@/components/Atoms/EditButton";
 import Loading from "@/components/Atoms/Loading";
+import ContributeImageModal from "@/components/Molecules/ContributeImageModal";
 import DeathAnniversaryInforModal from "@/components/Molecules/DeathAnniversaryInforModal";
 import {
   Deceased,
@@ -252,15 +253,19 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
                 {localeText.deceased.gender}:{" "}
                 {getGenderText(deceased?.userDetail?.gender)}
               </p>
-              {/* TODO Assign admin can update and delete, and members can only upload images */}
-              {(role === ERole.FamilyAdmin || role === ERole.FamilyMember) && (
-                <div className="flex gap-2 items-center">
-                  <EditButton
-                    title={localeText.deceased.update}
-                    onClick={() => router.push(`/deceased/${id}/update`)}
-                  />
 
-                  {role === ERole.FamilyAdmin && (
+              <div className="flex gap-2 items-center">
+                {(role === ERole.FamilyMember ||
+                  role === ERole.FamilyAdmin) && (
+                  <ContributeImageModal deceasedId={+id} />
+                )}
+                {role === ERole.FamilyAdmin && (
+                  <>
+                    <EditButton
+                      title={localeText.deceased.update}
+                      onClick={() => router.push(`/deceased/${id}/update`)}
+                    />
+
                     <DeleteButton
                       okText={localeText.OK}
                       cancelText={localeText.cancel}
@@ -279,9 +284,9 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
                         })
                       }
                     />
-                  )}
-                </div>
-              )}
+                  </>
+                )}
+              </div>
             </div>
             <p>
               {localeText.deceased.birthday}:{" "}
