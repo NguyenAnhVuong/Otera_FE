@@ -128,7 +128,6 @@ const Notification: React.FC<NotificationProps> = ({
           </div>
         </div>
       );
-    // Have redirect
     case ENotificationType.NewEvent:
     case ENotificationType.UpdateEvent:
     case ENotificationType.ApproveEventParticipant:
@@ -139,31 +138,30 @@ const Notification: React.FC<NotificationProps> = ({
     case ENotificationType.ReadyDeathAnniversary:
     case ENotificationType.FinishDeathAnniversary:
     case ENotificationType.ContributeDeceasedImage:
-      return (
-        <div
-          className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg overflow-hidden"
-          onClick={handleReadNotification}
-        >
-          {!isRead && <div className="bg-primary p-1 rounded-full mr-2" />}
-          <Link href={redirectTo as string}>
-            <span className="font-bold text-black">{title}</span>
-            <div className="text-gray-500 text-xs">{description}</div>
-          </Link>
-        </div>
-      );
-
-    // No redirect
+    case ENotificationType.DeclareDeceased:
+    case ENotificationType.UpdateDeceased:
+    case ENotificationType.ApproveDeceased:
+    case ENotificationType.DeleteDeceased:
     case ENotificationType.CancelEvent:
+    case ENotificationType.RejectDeceased:
+    case ENotificationType.RestoreDeceased:
       return (
         <div
           className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg overflow-hidden"
           onClick={handleReadNotification}
         >
-          {!isRead && <div className="bg-primary p-1 rounded-full mr-2" />}
-          <div>
+          <div
+            className={`${
+              isRead ? "bg-transparent" : "bg-primary"
+            } p-1 rounded-full mr-2`}
+          />
+          <Link href={redirectTo ? redirectTo : "#"}>
             <span className="font-bold text-black">{title}</span>
-            <div className="text-gray-500 text-xs">{description}</div>
-          </div>
+            <div className="text-black text-xs">{description}</div>
+            <span className="text-gray-400 text-xs">
+              {formatTimeDifference(createdAt)}
+            </span>
+          </Link>
         </div>
       );
     default:

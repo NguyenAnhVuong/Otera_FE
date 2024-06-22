@@ -39,6 +39,10 @@ const vi = {
   delete: "Xoá",
   restore: "Khôi phục",
   organize: "Tổ chức",
+  declare: "Khai báo",
+  tiptap: {
+    resetColor: "Đặt lại màu",
+  },
   participantType: {
     familyAdmin: "Quản trị viên gia đình",
     familyMember: "Thành viên gia đình",
@@ -97,6 +101,7 @@ const vi = {
     },
   },
   temple: {
+    preName: "Chùa",
     title: "Nhà chùa",
     temples: "Danh sách nhà chùa",
     address: "Địa chỉ",
@@ -262,14 +267,19 @@ const vi = {
     readyFailMessage: "Cập nhật trạng thái lễ giỗ thất bại!",
   },
   deceased: {
+    declare: {
+      declareSuccessMessage: "Khai báo thành công!",
+      declareFailMessage: "Khai báo thất bại!",
+    },
     contributeImageSuccessMessage: "Đóng góp ảnh thành công!",
     contributeImageFailMessage: "Đóng góp ảnh thất bại!",
     contributeImage: "Đóng góp ảnh",
+    tombAddress: "Địa chỉ phần mộ/tro cốt",
     family: "Hộ gia đình",
     name: "Họ và tên",
     birthday: "Ngày sinh",
     dateOfDeath: "Ngày mất",
-    address: "Địa chỉ",
+    address: "Quê quán",
     gender: "Giới tính",
     description: "Mô tả",
     citizenNumber: "Căn cước công dân/CMND",
@@ -283,7 +293,7 @@ const vi = {
     updateFailedMessage: "Cập nhật thông tin thất bại!",
     comingDeathAnniversary: "Ngày giỗ sắp tới",
     registerDeathAnniversary: "Yêu cầu tổ chức lễ giỗ",
-    deathAnniversaryRegisterExpired: "Hạn đăng ký tổ chức lễ giỗ",
+    deathAnniversaryRegisterExpired: "Hạn đăng ký",
     updateBy: "Cập nhật lần cuối bởi",
     delete: "Xoá người thân đã khuất",
     deleteDeceasedPopConfirm: {

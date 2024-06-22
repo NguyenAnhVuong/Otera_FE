@@ -1,4 +1,6 @@
 "use client";
+import "@/styles/globals.css";
+import "@/styles/tiptap.scss";
 import { authApi } from "@/api/authApi";
 import AntdProvider from "@/lib/AntdProvider";
 import { store } from "@/rtk/store";
@@ -15,7 +17,6 @@ import { setContext } from "@apollo/client/link/context";
 import { ConfigProvider } from "antd";
 import { Inter } from "next/font/google";
 import { Provider } from "react-redux";
-import "./globals.css";
 import NoData from "@/components/Atoms/NoData";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";

@@ -6,6 +6,7 @@ import {
 } from "@/graphql/generated/schema";
 import { SortOrder } from "antd/es/table/interface";
 import dayjs from "dayjs";
+import { formatDate } from "./constants";
 
 export const getGenderText = (gender?: EGender) => {
   switch (gender) {
@@ -93,7 +94,7 @@ export const formatTimeDifference = (date: Date) => {
     } else if (diffInWeeks < 4) {
       return `${diffInWeeks} tuần trước`;
     } else {
-      return inputDate.format("YYYY/MM/DD");
+      return inputDate.format(formatDate.DD_MM_YYYY);
     }
   }
 };
