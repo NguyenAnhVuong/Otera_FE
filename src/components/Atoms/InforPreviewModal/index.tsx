@@ -19,7 +19,12 @@ const InforPreviewModal: React.FC<InforPreviewModalProps> = ({ children }) => {
   return (
     <>
       <ShowDetailButton onClick={showModal} />
-      <Modal open={isModalOpen} footer={null} onCancel={handleCancel}>
+      <Modal
+        className="w-[1248px]"
+        open={isModalOpen}
+        footer={null}
+        onCancel={handleCancel}
+      >
         {children}
       </Modal>
     </>

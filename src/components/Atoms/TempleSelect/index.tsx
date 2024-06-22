@@ -4,19 +4,19 @@ import { Form, Select } from "antd";
 import { useState } from "react";
 
 type TempleSelectProps = {
-  familyId?: number | null;
   required?: boolean;
   displayLabel?: boolean;
+  disabled?: boolean;
 };
 
 const TempleSelect: React.FC<TempleSelectProps> = ({
-  familyId,
   required = true,
   displayLabel = true,
+  disabled = false,
 }) => {
   const [keyword, setKeyword] = useState("");
   const { data: templesData } = useGetTempleListQuery({
-    variables: { keyword, ...(familyId && { familyId }) },
+    variables: { keyword },
   });
 
   const { localeText } = useTrans();
@@ -29,7 +29,7 @@ const TempleSelect: React.FC<TempleSelectProps> = ({
         ? [
             ...arr,
             {
-              label: temple.name,
+              label: localeText.temple.preName + " " + temple.name,
               value: temple.id,
             },
           ]
@@ -73,6 +73,7 @@ const TempleSelect: React.FC<TempleSelectProps> = ({
         onSearch={onSearch}
         filterOption={filterOption}
         options={options}
+        disabled={disabled}
       />
     </Form.Item>
   );

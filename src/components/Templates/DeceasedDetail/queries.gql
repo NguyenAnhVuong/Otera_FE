@@ -5,6 +5,7 @@ query getDeceased($id: Int!) {
         id
         image
       }
+      tombAddress
       dateOfDeath
       description
       createdAt
@@ -28,6 +29,10 @@ query getDeceased($id: Int!) {
       }
       deathAnniversaries {
         id
+      }
+      temple {
+        id
+        name
       }
     }
   }

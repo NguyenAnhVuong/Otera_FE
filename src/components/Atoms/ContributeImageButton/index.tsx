@@ -17,7 +17,7 @@ const ContributeImageButton: React.FC<ContributeImageButtonProps> = ({
     <>
       <Tooltip placement="top" title={localeText.deceased.contributeImage}>
         <FileImageOutlined
-          className="text-primary text-xl cursor-pointer"
+          className="text-primary text-2xl cursor-pointer"
           onClick={onClick}
           disabled={disabled}
         />

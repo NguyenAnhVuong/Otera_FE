@@ -1,166 +1,68 @@
-import { uploadApi } from "@/api/uploadApi";
-import Loading from "@/components/Atoms/Loading";
+"use client";
+import { deceasedApi } from "@/api/deceasedApi";
 import TempleSelect from "@/components/Atoms/TempleSelect";
 import Tiptap from "@/components/Organisms/TipTap";
 import UploadDescriptionImage from "@/components/Organisms/UploadDescriptionImage";
 import UploadSingleImage from "@/components/Organisms/UploadSingleImage";
-import {
-  EGender,
-  FamilyGetListDeceasedDocument,
-  GetDeceasedDocument,
-  VUpdateDeceasedInput,
-  useGetDeceasedQuery,
-  useUpdateDeceasedMutation,
-} from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { formatDate } from "@/utils/constants";
-import { Button, DatePicker, Form, FormProps, Input, Radio } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { EGender } from "@/utils/enum";
+import { Button, DatePicker, Form, Input, Radio } from "antd";
 import { useState } from "react";
 
-type UpdateDeceasedProps = {
-  id: number;
-};
+type Props = {};
 
-type FieldType = {
-  name: string;
-  gender: EGender;
-  address: string;
-  birthday: dayjs.Dayjs;
-  dateOfDeath: dayjs.Dayjs;
-  description: string;
-  citizenNumber?: string;
-  avatar?: string;
-  descriptionImages?: string[];
-  templeId: number;
-  tombAddress: string;
-};
-
-const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
+const DeceasedDeclare = (props: Props) => {
   const [form] = Form.useForm();
   const { messageApi } = useAppSelector((state) => state.antd);
-  const [oldAvatar, setOldAvatar] = useState<string>();
-  const [avatar, setAvatar] = useState<File>();
-  const [oldDescriptionImages, setOldDescriptionImages] = useState<string[]>(
-    []
-  );
-  const [newDescriptionImages, setNewDescriptionImages] = useState<File[]>([]);
-  const [newDescriptionImagePreviews, setNewDescriptionImagePreviews] =
-    useState<string[]>([]);
-
-  const [isUploading, setIsUploading] = useState(false);
+  const [avatar, setAvatar] = useState<any>();
+  const [descriptionImagePreviews, setDescriptionImagePreviews] = useState<
+    string[]
+  >([]);
+  const [descriptionImages, setDescriptionImages] = useState<File[]>([]);
   const { localeText } = useTrans();
-  const router = useRouter();
 
-  const { loading } = useGetDeceasedQuery({
-    variables: {
-      id,
-    },
-    onCompleted: (data) => {
-      const formValues = {
-        name: data.getDeceased.data.userDetail.name,
-        gender: data.getDeceased.data.userDetail.gender,
-        address: data.getDeceased.data.userDetail.address,
-        birthday: dayjs(data.getDeceased.data.userDetail.birthday),
-        dateOfDeath: dayjs(data.getDeceased.data.dateOfDeath),
-        description: data.getDeceased.data.description,
-        templeId: data.getDeceased.data.templeId,
-        tombAddress: data.getDeceased.data.tombAddress,
-        avatar: data.getDeceased.data.userDetail.avatar,
-        ...(data.getDeceased.data.userDetail.citizenNumber && {
-          citizenNumber: data.getDeceased.data.userDetail.citizenNumber,
-        }),
-      };
-      setOldAvatar(data.getDeceased.data.userDetail.avatar);
-      setOldDescriptionImages(
-        data.getDeceased.data.images.map((image) => image.image)
-      );
-
-      form.setFieldsValue(formValues);
-    },
-    onError: () => {
-      messageApi.success(localeText.errorOccurred);
-      router.push(`/deceased/${id}`);
-    },
-    skip: !id,
-    fetchPolicy: "no-cache",
-    notifyOnNetworkStatusChange: true,
-  });
-
-  const [updateDeceased, { loading: updateLoading }] =
-    useUpdateDeceasedMutation({
-      onCompleted: () => {
-        messageApi.open({
-          type: "success",
-          content: localeText.deceased.updateSuccessMessage,
-        });
-        form.resetFields();
-        setOldAvatar("");
-        setOldDescriptionImages([]);
-        router.push(`/deceased/${id}`);
-      },
-      onError: () => {
-        messageApi.error(localeText.deceased.updateFailedMessage);
-      },
-      refetchQueries: [GetDeceasedDocument, FamilyGetListDeceasedDocument],
+  const onFinish = async (values: any) => {
+    const newDeceased = new FormData();
+    newDeceased.append("images[]", avatar);
+    descriptionImages?.forEach((descriptionImage) => {
+      newDeceased.append("images[]", descriptionImage);
     });
-
-  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    const newDeceased: VUpdateDeceasedInput = {
-      id,
-      name: values.name,
-      gender: values.gender,
-      address: values.address,
-      birthday: dayjs(values.birthday).format(formatDate.YYYY_MM_DD),
-      dateOfDeath: dayjs(values.dateOfDeath).format(formatDate.YYYY_MM_DD),
-      description: values.description,
-      citizenNumber: values.citizenNumber,
-      images: oldDescriptionImages,
-    };
-
-    if (avatar) {
-      setIsUploading(true);
-      const avatarFormData = new FormData();
-      avatarFormData.append("file", avatar);
-      const res = await uploadApi.uploadImage(avatarFormData);
-      newDeceased.avatar = res.data.url;
+    for (const key in values) {
+      if (key !== "avatar" && key !== "descriptionImages") {
+        newDeceased.append(key, values[key]);
+      }
     }
-
-    if (newDescriptionImages.length) {
-      setIsUploading(true);
-      const newDescriptionImageFormData = new FormData();
-      newDescriptionImages?.forEach((newDescriptionImage) => {
-        newDescriptionImageFormData.append("files", newDescriptionImage);
+    const res = await deceasedApi.declareDeceased(newDeceased);
+    if (res) {
+      messageApi.open({
+        type: "success",
+        content: localeText.deceased.declare.declareSuccessMessage,
       });
-      const res = await uploadApi.uploadImages(newDescriptionImageFormData);
-      const newDescriptionImageUrls = res.data.map((image: any) => image.url);
-
-      newDeceased.images = [
-        ...oldDescriptionImages,
-        ...newDescriptionImageUrls,
-      ];
+      form.resetFields();
+      setDescriptionImagePreviews([]);
+    } else {
+      messageApi.open({
+        type: "error",
+        content: localeText.deceased.declare.declareFailMessage,
+      });
     }
+  };
 
-    await updateDeceased({
-      variables: {
-        updateDeceasedInput: newDeceased,
-      },
-    });
-    setIsUploading(false);
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
   };
 
   return (
     <div className="flex justify-center items-center mt-header">
-      {(loading || updateLoading || isUploading) && <Loading />}
-      <div className="bg-white flex justify-center px-5 py-4 pt-8 shadow-xl w-full w-full max-w-[688px]">
+      <div className="bg-white flex justify-center px-5 py-4 pt-8 shadow-xl w-full max-w-[688px]">
         <Form
           name="basic"
           className="w-full text-center"
           initialValues={{ remember: true }}
           onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
           layout="vertical"
           form={form}
         >
@@ -199,7 +101,7 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
                 },
               ]}
             >
-              <Input disabled placeholder={localeText.deceased.tombAddress} />
+              <Input placeholder={localeText.deceased.tombAddress} />
             </Form.Item>
           </div>
           <div className="grid grid-cols-3">
@@ -217,9 +119,9 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
               ]}
             >
               <Radio.Group>
-                <Radio value={EGender.Male}>{localeText.gender.male}</Radio>
-                <Radio value={EGender.Female}>{localeText.gender.female}</Radio>
-                <Radio value={EGender.Other}>{localeText.gender.other}</Radio>
+                <Radio value={EGender.MALE}>{localeText.gender.male}</Radio>
+                <Radio value={EGender.FEMALE}>{localeText.gender.female}</Radio>
+                <Radio value={EGender.OTHER}>{localeText.gender.other}</Radio>
               </Radio.Group>
             </Form.Item>
             <div className="grid grid-cols-2 gap-2 col-span-2">
@@ -266,7 +168,7 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
             </div>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <TempleSelect disabled />
+            <TempleSelect />
             <Form.Item
               className="col-span-2"
               label={localeText.deceased.address}
@@ -299,10 +201,7 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
               ]}
             >
               <div className="">
-                <UploadSingleImage
-                  imageSrc={oldAvatar}
-                  setUploadImage={setAvatar}
-                />
+                <UploadSingleImage setUploadImage={setAvatar} />
               </div>
             </Form.Item>
             <Form.Item
@@ -312,18 +211,13 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
             >
               <div className="">
                 <UploadDescriptionImage
-                  oldDescriptionImages={oldDescriptionImages}
-                  setOldDescriptionImages={setOldDescriptionImages}
-                  setNewDescriptionImages={setNewDescriptionImages}
-                  newDescriptionImagePreviews={newDescriptionImagePreviews}
-                  setNewDescriptionImagePreviews={
-                    setNewDescriptionImagePreviews
-                  }
+                  setNewDescriptionImages={setDescriptionImages}
+                  newDescriptionImagePreviews={descriptionImagePreviews}
+                  setNewDescriptionImagePreviews={setDescriptionImagePreviews}
                 />
               </div>
             </Form.Item>
           </div>
-
           <Form.Item
             label={localeText.deceased.description}
             name="description"
@@ -337,7 +231,6 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
             ]}
           >
             <Tiptap
-              defaultValue={form.getFieldValue("description") || ""}
               setContent={(newContent) =>
                 form.setFieldsValue({ description: newContent })
               }
@@ -346,7 +239,7 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              {localeText.save}
+              {localeText.declare}
             </Button>
           </Form.Item>
         </Form>
@@ -355,4 +248,4 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
   );
 };
 
-export default UpdateDeceased;
+export default DeceasedDeclare;
