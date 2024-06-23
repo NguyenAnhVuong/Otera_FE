@@ -1,6 +1,7 @@
 "use client";
 import { uploadApi } from "@/api/uploadApi";
 import Loading from "@/components/Atoms/Loading";
+import Tiptap from "@/components/Organisms/TipTap";
 import UploadDescriptionImage from "@/components/Organisms/UploadDescriptionImage";
 import UploadSingleImage from "@/components/Organisms/UploadSingleImage";
 import {
@@ -399,7 +400,12 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({
         </div>
 
         <Form.Item label={localeText.event.description} name="description">
-          <TextArea rows={4} />
+          <Tiptap
+            defaultValue={form.getFieldValue("description")}
+            setContent={(newContent) =>
+              form.setFieldValue("description", newContent)
+            }
+          />
         </Form.Item>
       </Form>
     </>

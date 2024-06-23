@@ -14,7 +14,7 @@ export const participantTypeOptions = (localeText: any) => [
 ];
 
 export const PAGE = 1;
-export const TAKE = 10;
+export const TAKE = 8;
 export const REJECT_REASON_MAX_LENGTH = 200;
 export const BLOCK_REASON_MAX_LENGTH = 200;
 export const DEBOUNCE_TIME = 500;

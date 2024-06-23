@@ -9,6 +9,7 @@ const initialState: User = {
   avatar: "",
   role: "",
   familyId: undefined,
+  templeIds: [],
 };
 
 const authSlice = createSlice({
@@ -22,6 +23,7 @@ const authSlice = createSlice({
       state.avatar = action.payload.avatar;
       state.role = action.payload.role;
       state.familyId = action.payload.familyId;
+      state.templeIds = action.payload.templeIds;
     },
     logout: (state) => {
       state.id = 0;
@@ -30,6 +32,7 @@ const authSlice = createSlice({
       state.avatar = "";
       state.role = "";
       state.familyId = undefined;
+      state.templeIds = [];
     },
   },
 });

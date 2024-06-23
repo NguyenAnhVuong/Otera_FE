@@ -13,7 +13,7 @@ type TipTapTextColorProps = {
 
 const TipTapTextColor: React.FC<TipTapTextColorProps> = ({ editor }) => {
   const { localeText } = useTrans();
-  const [textColor, setTextColor] = useState("");
+  const [textColor, setTextColor] = useState("#000000");
 
   const handleChangeTextColor = (color: string) => {
     editor.chain().focus().setColor(color).run();
@@ -22,7 +22,7 @@ const TipTapTextColor: React.FC<TipTapTextColorProps> = ({ editor }) => {
 
   const handleResetTextColor = () => {
     editor.chain().focus().unsetColor().run();
-    setTextColor("");
+    setTextColor("#000000");
   };
 
   return (
@@ -52,12 +52,12 @@ const TipTapTextColor: React.FC<TipTapTextColorProps> = ({ editor }) => {
       placement="bottom"
       trigger="click"
     >
-      <button className="text-black p-2 ">
+      <div className="text-black p-2">
         <div
-          className="w-5 h-5 border-2 rounded-full border-black bg-black "
+          className={`w-5 h-5 border-2 rounded-full border-black `}
           style={{ backgroundColor: `${textColor}` }}
         ></div>
-      </button>
+      </div>
     </Popover>
   );
 };

@@ -1,0 +1,8 @@
+mutation ChangePassword($changePasswordInput: VChangePasswordInput!) {
+  changePassword(changePasswordInput: $changePasswordInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

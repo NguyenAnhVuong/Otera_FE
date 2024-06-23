@@ -53,7 +53,7 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-white rounded-xl shadow-xl p-6 flex items-center flex-col w-full max-w-[320px]">
-        <h3 className="text-black">{localeText.login.title}</h3>
+        <h3 className="text-black font-medium">{localeText.login.title}</h3>
         <Form
           className="w-full"
           name="basic"

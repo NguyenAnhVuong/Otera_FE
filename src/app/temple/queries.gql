@@ -1,5 +1,5 @@
-query getTemples($keyword: String) {
-  getTemples(query: { keyword: $keyword }) {
+query getTemples($keyword: String, $page: Int, $take: Int) {
+  getTemples(query: { keyword: $keyword, page: $page, take: $take}) {
     errorCode
     errorMessage
     statusCode

@@ -24,6 +24,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "@/components/Molecules/Toolbar";
 import { useEffect } from "react";
+import useTrans from "@/hooks/useTrans";
 
 type TipTapProps = {
   setContent: (newContent: string) => void;
@@ -36,6 +37,7 @@ const Tiptap: React.FC<TipTapProps> = ({
   placeholder,
   defaultValue,
 }) => {
+  const { localeText } = useTrans();
   const handleChange = (newContent: string) => {
     setContent(newContent);
   };
@@ -66,7 +68,7 @@ const Tiptap: React.FC<TipTapProps> = ({
       }),
       Placeholder.configure({
         // Use a placeholder:
-        placeholder: placeholder ?? "",
+        placeholder: placeholder ?? localeText.tiptap.placeholder,
         // Use different placeholders depending on the node type:
         // placeholder: ({ node }) => {
         //   if (node.type.name === 'heading') {

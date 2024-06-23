@@ -19,8 +19,9 @@ const Offerings: React.FC<OfferingsProps> = ({ offerings }) => {
             key={offering.name}
             src={offering.image}
             alt={offering.name}
-            width={24}
-            height={24}
+            width={28}
+            height={28}
+            className="object-contain"
           />
         </Tooltip>
       ))}

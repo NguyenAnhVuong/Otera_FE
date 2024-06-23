@@ -18,7 +18,11 @@ import {
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { formatDate } from "@/utils/constants";
-import { formatTimeDifference, getGenderText } from "@/utils/helper";
+import {
+  formatTimeDifference,
+  getGenderText,
+  getLongevity,
+} from "@/utils/helper";
 import { DeepPartial } from "@apollo/client/utilities";
 import { Button, Divider, Image } from "antd";
 import dayjs from "dayjs";
@@ -191,7 +195,7 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
         </div>
 
         <div className="col-span-2 text-black p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
-          <div>
+          <div className="px-2">
             <div className="flex justify-between w-full items-center mb-2">
               <h2 className="text-2xl font-semibold">
                 {deceased?.userDetail?.name}
@@ -255,18 +259,30 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
                 )}
               </div>
             </div>
-            <div className="flex gap-5 mb-2">
-              <p>
-                {localeText.deceased.birthday}:{" "}
-                {dayjs(deceased?.userDetail?.birthday).format(
-                  formatDate.DD_MM_YYYY
-                )}{" "}
-              </p>
-              <p>
-                {localeText.deceased.dateOfDeath}:{" "}
-                {dayjs(deceased?.dateOfDeath).format(formatDate.DD_MM_YYYY)}
-              </p>
-            </div>
+            {deceased?.userDetail?.birthday && deceased?.dateOfDeath && (
+              <div>
+                <div className="flex gap-5 mb-2">
+                  <p>
+                    {localeText.deceased.birthday}:{" "}
+                    {dayjs(deceased?.userDetail?.birthday).format(
+                      formatDate.DD_MM_YYYY
+                    )}{" "}
+                  </p>
+                  <p>
+                    {localeText.deceased.dateOfDeath}:{" "}
+                    {dayjs(deceased?.dateOfDeath).format(formatDate.DD_MM_YYYY)}
+                  </p>
+                </div>
+                <p className="mb-2">
+                  {localeText.deceased.longevity}:{" "}
+                  {getLongevity(
+                    new Date(deceased.userDetail.birthday),
+                    new Date(deceased.dateOfDeath)
+                  )}{" "}
+                  {localeText.deceased.age}
+                </p>
+              </div>
+            )}
             <div className="flex gap-5 mb-2">
               {deceased?.dateOfDeath && (
                 <p>
@@ -299,21 +315,20 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
                 {deceased?.temple?.name} - {deceased?.tombAddress}
               </p>
             </div>
-
-            <div
-              className="min-h-[128px] tiptap"
-              dangerouslySetInnerHTML={{
-                __html: deceased?.description || "",
-              }}
-            ></div>
-            {deceased?.modifier && (
-              <div className="mt-4">
-                <span>{localeText.deceased.updateBy}: </span>
-                <span>{deceased?.modifier.userDetail?.name}</span>
-                <span> ({formatTimeDifference(deceased?.updatedAt)})</span>
-              </div>
-            )}
           </div>
+          <div
+            className="min-h-[128px] tiptap"
+            dangerouslySetInnerHTML={{
+              __html: deceased?.description || "",
+            }}
+          ></div>
+          {deceased?.modifier && (
+            <div className="mt-4 px-2">
+              <span>{localeText.deceased.updateBy}: </span>
+              <span>{deceased?.modifier.userDetail?.name}</span>
+              <span> ({formatTimeDifference(deceased?.updatedAt)})</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -312,7 +312,7 @@ const FamilyDeathAnniversaryTable: React.FC<
       key: "offerings",
       dataIndex: "offerings",
       align: "center",
-      width: 88,
+      width: 96,
       render: (offerings: Offering[]) => <Offerings offerings={offerings} />,
     },
     {

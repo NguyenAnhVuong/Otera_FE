@@ -21,6 +21,7 @@ const vi = {
   reset: "Đặt lại",
   status: "Trạng thái",
   search: "Tìm kiếm",
+  searchByNameOrAddress: "Nhập tên hoặc địa chỉ ...",
   detail: "Chi tiết",
   notification: "Thông báo",
   yes: "Có",
@@ -40,7 +41,29 @@ const vi = {
   restore: "Khôi phục",
   organize: "Tổ chức",
   declare: "Khai báo",
+  user: {
+    gender: "Giới tính",
+    email: "Email",
+    name: "Họ và tên",
+    address: "Địa chỉ",
+    birthday: "Ngày sinh",
+    update: "Cập nhật thông tin cá nhân",
+    personalInformation: "Thông tin cá nhân",
+    changePassword: "Đổi mật khẩu",
+    changePasswordSuccessMessage: "Đổi mật khẩu thành công!",
+    changePasswordFailMessage:
+      "Đổi mật khẩu thất bại! Mật khẩu hiện tại không đúng!",
+    phone: "Số điện thoại",
+    currentPassword: "Mật khẩu hiện tại",
+    newPassword: "Mật khẩu mới",
+    confirmPassword: "Nhập lại mật khẩu",
+    updateUserDetail: {
+      successMessage: "Cập nhật thông tin thành công!",
+      failMessage: "Cập nhật thông tin thất bại!",
+    },
+  },
   tiptap: {
+    placeholder: "Viết gì đó ...",
     resetColor: "Đặt lại màu",
   },
   participantType: {
@@ -101,6 +124,22 @@ const vi = {
     },
   },
   temple: {
+    list: "Danh sách nhà chùa",
+    updateTemple: {
+      title: "Cập nhật thông tin chùa",
+      successMessage: "Cập nhật nhà chùa thành công!",
+      failMessage: "Cập nhật nhà chùa thất bại!",
+    },
+    descriptionImages: "Ảnh mô tả",
+    avatar: "Ảnh đại diện",
+    email: "Email",
+    description: "Mô tả",
+    name: "Tên chùa",
+    templeRegister: {
+      successMessage: "Đăng ký chùa thành công. Vui lòng chờ phê duyệt!",
+      failMessage:
+        "Đăng ký chùa thất bại! Tài khoản này đã gửi yêu cầu đăng ký chùa. Vui lòng chờ phê duyệt!",
+    },
     preName: "Chùa",
     title: "Nhà chùa",
     temples: "Danh sách nhà chùa",
@@ -202,6 +241,7 @@ const vi = {
     max: (length: number) => `Vui lòng nhập tối đa ${length} ký tự`,
     confirmPassword: "Hai mật khẩu không trùng khớp. Vui lòng nhập lại!",
     selectRequired: (label: string) => `Vui lòng chọn ${label}!`,
+    min: (length: number) => `Vui lòng nhập ít nhất ${length} ký tự`,
   },
   deathAnniversary: {
     linkLiveStream: "Link live stream",
@@ -267,6 +307,8 @@ const vi = {
     readyFailMessage: "Cập nhật trạng thái lễ giỗ thất bại!",
   },
   deceased: {
+    age: "Tuổi",
+    longevity: "Hưởng thọ",
     declare: {
       declareSuccessMessage: "Khai báo thành công!",
       declareFailMessage: "Khai báo thất bại!",

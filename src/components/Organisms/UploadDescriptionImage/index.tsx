@@ -34,8 +34,6 @@ const UploadDescriptionImage: React.FC<UploadDescriptionImageProps> = ({
     removedNewDescriptionImage: string
   ) => {
     let removedIndex = -1;
-    console.log("removedNewDescriptionImage: ", removedNewDescriptionImage);
-    console.log("newDescriptionImagePreviews: ", newDescriptionImagePreviews);
     setNewDescriptionImagePreviews((newDescriptionImagePreviews) =>
       newDescriptionImagePreviews.filter(
         (newDescriptionImagePreview, index) => {

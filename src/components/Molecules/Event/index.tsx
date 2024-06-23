@@ -1,8 +1,10 @@
+import useTrans from "@/hooks/useTrans";
+import { formatDate } from "@/utils/constants";
+import { Card } from "antd";
+import Meta from "antd/es/card/Meta";
+import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import TimeInterval from "@/components/Atoms/TimeInterval";
-import useTrans from "@/hooks/useTrans";
 
 type Props = {
   id: number;
@@ -31,45 +33,42 @@ const Event = ({
 
   return (
     <Link
+      className="no-underline shadow-lg rounded-lg "
       href={`/event/${id}`}
       key={id}
-      className="flex items-center border border-gray-300 hover:shadow-md border-solid p-2 cursor-pointer text-black no-underline rounded-lg "
     >
-      <Image
-        className="object-cover"
-        src={avatar}
-        alt={`event-avatar-${id}}`}
-        width={60}
-        height={60}
-      />
-      <div className="px-2">
-        <span className="font-semibold text-lg">{name}</span>
-        <div>
-          <span>{localeText.event.address}: </span>
-          <span>{address}</span>
-        </div>
-        <div className="flex flex-col gap-2 mt-2">
-          <TimeInterval
-            title={localeText.event.time}
-            startTime={startDateEvent}
-            endTime={endDateEvent}
-            format={localeText.event.eventTimeFormat}
+      <Card
+        className="h-[420px]"
+        hoverable
+        cover={
+          <Image
+            className="h-[280px] object-cover"
+            alt={`temple-avatar-${id}`}
+            src={avatar}
+            width={300}
+            height={280}
           />
-          <div className="flex gap-2">
-            <TimeInterval
-              title={localeText.event.registration}
-              startTime={startDateBooking}
-              endTime={endDateBooking}
-              format={localeText.event.eventTimeFormat}
-            />
-            {/* <div>
-              {maxParticipant && (
-                <span>({localeText.event.maxParticipant(maxParticipant)})</span>
-              )}
-            </div> */}
-          </div>
-        </div>
-      </div>
+        }
+      >
+        <Meta
+          title={name}
+          description={
+            <div>
+              <p>
+                {localeText.event.startTime}:{" "}
+                {dayjs(startDateEvent).format(formatDate.HH_mm_DD_MM_YYYY)}
+              </p>
+              <p>
+                {localeText.event.endTime}:{" "}
+                {dayjs(endDateEvent).format(formatDate.HH_mm_DD_MM_YYYY)}
+              </p>
+              <p className="truncate">
+                {localeText.event.address}: {address}
+              </p>
+            </div>
+          }
+        />
+      </Card>
     </Link>
   );
 };

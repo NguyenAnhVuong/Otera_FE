@@ -1,6 +1,6 @@
 import RedoButton from "@/components/Atoms/RedoButton";
 import useTrans from "@/hooks/useTrans";
-import { Popconfirm, PopconfirmProps } from "antd";
+import { Popconfirm } from "antd";
 
 type UnblockTempleProps = {
   templeName: string;

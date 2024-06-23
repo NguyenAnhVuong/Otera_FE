@@ -10,23 +10,18 @@ import {
 import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { Carousel, Image as ImageAntd } from "antd";
-import Image from "next/image";
+import Link from "next/link";
 import { useRef, useState } from "react";
 
 type TempleDetailProps = {
   templeId: number;
 };
 
-// TODO responsive
 const TempleDetail: React.FC<TempleDetailProps> = ({ templeId }) => {
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
   const { id, role } = useAppSelector((state) => state.auth);
   const [images, setImages] = useState<string[]>([]);
-  const ref: any = useRef();
-  const goToSlide = (index: number) => {
-    ref.current.goTo(index);
-  };
   const { data } = useGetTempleDetailQuery({
     variables: {
       id: templeId,
@@ -80,43 +75,21 @@ const TempleDetail: React.FC<TempleDetailProps> = ({ templeId }) => {
 
   return (
     <div className="lg:flex lg:justify-center lg:mt-10 lg:p-4">
-      <div className="lg:w-[1200px] lg:grid lg:grid-cols-10">
-        <div className="lg:col-span-6 lg:grid lg:grid-cols-6 lg:pt-4">
-          <div className="hidden lg:col-span-1 lg:flex lg:flex-col lg:gap-2">
-            {images.map((image: string, index: number) => {
-              return (
-                <div
-                  className="lg:relative lg:pt-[56.25%] lg:w-full"
-                  onClick={() => goToSlide(index)}
-                  key={index}
-                >
-                  <Image
-                    className="lg:absolute lg:rounded-lg lg:cursor-pointer lg:object-cover lg:h-full lg:w-full lg:top-0 lg:left-0 lg:right-0 lg:bottom-0"
-                    src={image}
-                    alt=""
-                    key={index}
-                    fill
-                  />
-                </div>
-              );
-            })}
-          </div>
-          <div className="lg:col-span-5 lg:px-2">
+      <div className="lg:w-[1200px]">
+        <div className="grid grid-cols-2 gap-4 px-2 font-medium">
+          <div className="">
             <Carousel
               className="lg:rounded-lg lg:overflow-hidden"
               dots={false}
               autoplay={true}
-              ref={ref}
+              arrows
+              infinite
             >
               {images.map((image: string, index: number) => {
                 return (
-                  <div className="max-h-[329.0625px]" key={index}>
+                  <div className="max-h-[280px]" key={index}>
                     <ImageAntd
-                      className="lg:rounded-lg lg:overflow-hidden lg:object-cover max-h-[329.0625px]"
-                      // onClick={() => {
-                      //   setCurrentImage(index);
-                      //   setVisible(true);
-                      // }}
+                      className="lg:rounded-lg lg:overflow-hidden lg:object-cover h-[280px]"
                       src={image}
                       key={index}
                       width={"100%"}
@@ -128,42 +101,60 @@ const TempleDetail: React.FC<TempleDetailProps> = ({ templeId }) => {
               })}
             </Carousel>
           </div>
-        </div>
-
-        <div className="text-black lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
           <div>
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold uppercase">
-                {data?.getTempleDetail?.data?.name}
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-2xl font-semibold">
+                {localeText.temple.preName} {data?.getTempleDetail?.data?.name}
               </h2>
-              {id && role !== ERole.System && (
-                <FollowButton
-                  isFollowing={
-                    !!data?.getTempleDetail?.data.followerTemples.length
-                  }
-                  handleFollow={follow}
-                  handleUnFollow={unFollow}
-                />
-              )}
             </div>
-            <p>
+            <p className="mb-2">
               {localeText.temple.address}:{" "}
               {data?.getTempleDetail?.data?.address}
             </p>
-            <p>
+            <p className="mb-2">
               {localeText.temple.phone}: {data?.getTempleDetail?.data?.phone}
             </p>
-            <p className="min-h-[128px]">
-              {data?.getTempleDetail?.data?.description}
+            <p className="mb-2">
+              {localeText.temple.email}: {data?.getTempleDetail?.data?.email}
             </p>
             {data?.getTempleDetail?.data?.website && (
-              <p className="mt-8">
+              <p className="mb-2">
                 {localeText.temple.website}:{" "}
-                {data?.getTempleDetail?.data.website}
+                <Link
+                  href={
+                    data?.getTempleDetail?.data.website.includes("https://")
+                      ? data?.getTempleDetail?.data.website
+                      : `https://${data?.getTempleDetail?.data.website}`
+                  }
+                  target="_blank"
+                >
+                  {data?.getTempleDetail?.data.website}
+                </Link>
               </p>
             )}
+            <div className="mt-8">
+              {!!id &&
+                (role === ERole.FamilyAdmin ||
+                  role === ERole.FamilyMember ||
+                  role === ERole.PublicUser) && (
+                  <FollowButton
+                    isFollowing={
+                      !!data?.getTempleDetail?.data.followerTemples.length
+                    }
+                    handleFollow={follow}
+                    handleUnFollow={unFollow}
+                  />
+                )}
+            </div>
           </div>
         </div>
+
+        <div
+          className="tiptap"
+          dangerouslySetInnerHTML={{
+            __html: data?.getTempleDetail?.data?.description || "",
+          }}
+        ></div>
       </div>
     </div>
   );

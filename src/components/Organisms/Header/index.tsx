@@ -39,6 +39,14 @@ const Header = () => {
     () => [
       {
         label: (
+          <span className="block" onClick={() => router.push("/user/update")}>
+            {localeText.user.update}
+          </span>
+        ),
+        key: "/user/update",
+      },
+      {
+        label: (
           <span className="block" onClick={() => router.push("/temple")}>
             {localeText.temple.temples}
           </span>
@@ -105,6 +113,14 @@ const Header = () => {
     () => [
       {
         label: (
+          <span className="block" onClick={() => router.push("/user/update")}>
+            {localeText.user.update}
+          </span>
+        ),
+        key: "/user/update",
+      },
+      {
+        label: (
           <span className="block" onClick={() => router.push("/temple")}>
             {localeText.temple.temples}
           </span>
@@ -167,6 +183,14 @@ const Header = () => {
 
   const familyAdminItems: MenuProps["items"] = useMemo(
     () => [
+      {
+        label: (
+          <span className="block" onClick={() => router.push("/user/update")}>
+            {localeText.user.update}
+          </span>
+        ),
+        key: "/user/update",
+      },
       {
         label: (
           <span className="block" onClick={() => router.push("/temple")}>
@@ -251,6 +275,14 @@ const Header = () => {
     () => [
       {
         label: (
+          <span className="block" onClick={() => router.push("/user/update")}>
+            {localeText.user.update}
+          </span>
+        ),
+        key: "/user/update",
+      },
+      {
+        label: (
           <span className="block" onClick={() => router.push("/temple")}>
             {localeText.temple.temples}
           </span>
@@ -309,14 +341,18 @@ const Header = () => {
         ),
         key: "/temple/followers",
       },
-      // TODO If the temple wants to participate in the event, create a new account and participate as a public user
       {
         label: (
-          <span className="block" onClick={() => router.push("/event")}>
-            {localeText.event.events}
+          <span
+            className="block"
+            onClick={() =>
+              router.push(`/temple/${authUser.templeIds[0]}/update`)
+            }
+          >
+            {localeText.temple.updateTemple.title}
           </span>
         ),
-        key: "event",
+        key: `/temple/${authUser.templeIds[0]}/update`,
       },
       {
         label: (
@@ -390,6 +426,10 @@ const Header = () => {
             avatar: user.userDetail.avatar,
             role: user.role,
             familyId: user.familyId,
+            templeIds: [
+              ...(user.templeId ? [user.templeId] : []),
+              ...(user.followerTemples.map((temple) => temple.templeId) || []),
+            ],
           };
           dispatch(authActions.login(userLogin));
         }
@@ -426,13 +466,14 @@ const Header = () => {
 
                 <Dropdown menu={{ items }} trigger={["click"]}>
                   <div className="flex items-center cursor-pointer">
-                    <Image
-                      src={authUser.avatar}
-                      width={40}
-                      height={40}
-                      alt="avatar"
-                      className="rounded-full"
-                    />
+                    <div className="w-10 h-10 mx-2">
+                      <Image
+                        src={authUser.avatar}
+                        fill
+                        alt="avatar"
+                        className="rounded-full object-cover static"
+                      />
+                    </div>
                     <span className="text-black"> {authUser.name}</span>
                   </div>
                 </Dropdown>
