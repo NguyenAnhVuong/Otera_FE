@@ -1,5 +1,5 @@
-query FamilyGetListDeceased($page: Int, $take: Int) {
-  familyGetListDeceased(page: $page, take: $take) {
+query FamilyGetListDeceased($page: Int, $take: Int, $keyword: String) {
+  familyGetListDeceased(page: $page, take: $take, keyword: $keyword) {
     timestamp
     statusCode
     errorMessage

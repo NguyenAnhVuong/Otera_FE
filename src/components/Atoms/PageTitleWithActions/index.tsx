@@ -10,9 +10,9 @@ const PageTitleWithActions: React.FC<PageTitleWithActionsProps> = ({
   children,
 }) => {
   return (
-    <div className="flex items-center justify-between mt-8">
+    <div className="flex items-center justify-between mt-8 w-full">
       <div className="mb-6">
-        <h3 className="text-black m-0 font-bold">{title}</h3>
+        <h3 className="text-black m-0 font-bold text-xl">{title}</h3>
       </div>
       {children}
     </div>

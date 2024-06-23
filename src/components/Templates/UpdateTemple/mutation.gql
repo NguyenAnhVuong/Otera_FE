@@ -1,0 +1,8 @@
+mutation UpdateTemple($updateTempleInput: VUpdateTempleInput!) {
+  updateTemple(updateTempleInput: $updateTempleInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

@@ -1,0 +1,8 @@
+mutation UpdateUser($updateUserDetailInput: VUpdateUserDetailInput = {}) {
+  updateUser(updateUserDetailInput: $updateUserDetailInput) {
+    timestamp
+    statusCode
+    errorMessage
+    errorCode
+  }
+}

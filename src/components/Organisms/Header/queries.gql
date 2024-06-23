@@ -4,12 +4,21 @@ query GetUser {
       createdAt
       email
       familyId
+      templeId
       id
       role
       userDetail {
         id
         avatar
         name
+        gender
+        birthday
+        phone
+        address
+      }
+      followerTemples {
+        id
+        templeId
       }
     }
     timestamp

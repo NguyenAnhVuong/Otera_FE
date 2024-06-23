@@ -7,9 +7,13 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 type SearchInputProps = {
   setSearchKeyword: Dispatch<SetStateAction<string>>;
+  placeholder?: string;
 };
 
-const SearchInput: React.FC<SearchInputProps> = ({ setSearchKeyword }) => {
+const SearchInput: React.FC<SearchInputProps> = ({
+  setSearchKeyword,
+  placeholder,
+}) => {
   const { localeText } = useTrans();
   const [searchVal, setSearchVal] = useState("");
   useEffect(() => {
@@ -24,9 +28,13 @@ const SearchInput: React.FC<SearchInputProps> = ({ setSearchKeyword }) => {
 
   return (
     <Input
-      onChange={(e) => setSearchVal(e.target.value)}
+      onChange={(e) =>
+        setSearchVal(
+          e.target.value.replace("Chùa", "").replace("chùa", "").trim()
+        )
+      }
       prefix={<SearchOutlined />}
-      placeholder={localeText.search}
+      placeholder={placeholder ?? localeText.search}
     />
   );
 };

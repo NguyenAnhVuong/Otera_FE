@@ -1,5 +1,8 @@
 "use client";
 import PageTitle from "@/components/Atoms/PageTitle";
+import PageTitleWithActions from "@/components/Atoms/PageTitleWithActions";
+import SearchInput from "@/components/Atoms/SearchInput";
+import DeceasedCard from "@/components/Organisms/DeceasedCard";
 import { useFamilyGetListDeceasedQuery } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { PAGE, TAKE } from "@/utils/constants";
@@ -9,13 +12,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-// TODO Pagination
 const DeceasedList = () => {
   const { localeText } = useTrans();
   const [page, setPage] = useState(PAGE);
   const [totalItems, setTotalItems] = useState(0);
+  const [keyword, setKeyword] = useState("");
   const { data } = useFamilyGetListDeceasedQuery({
-    variables: { page, take: TAKE },
+    variables: { page, take: TAKE, keyword },
     onCompleted: (data) => {
       setTotalItems(data.familyGetListDeceased.data.totalItems);
     },
@@ -24,41 +27,33 @@ const DeceasedList = () => {
   });
   return (
     <div className="bg-white flex flex-col items-center">
-      <PageTitle title={localeText.deceased.deceasedList} />
-      <div className="grid grid-cols-3 gap-5">
-        {data?.familyGetListDeceased.data.data.map((deceased) => {
-          return (
-            <Link
-              className="no-underline h-[400px] shadow-lg rounded-lg"
-              href={`/deceased/${deceased.id}`}
-              key={deceased.id}
-            >
-              <Card
-                hoverable
-                style={{ width: 300, height: 280 }}
-                cover={
-                  <Image
-                    className="h-[280px] object-cover"
-                    alt={`deceased-avatar-${deceased.id}`}
-                    src={deceased.userDetail.avatar}
-                    width={300}
-                    height={280}
-                  />
-                }
-              >
-                <Meta
-                  title={deceased.userDetail.name}
-                  description={
-                    deceased.userDetail.birthday + "-" + deceased.dateOfDeath
-                  }
+      <div className="w-[1200px]">
+        <PageTitleWithActions title={localeText.deceased.deceasedList}>
+          <div className="w-80">
+            <SearchInput
+              setSearchKeyword={setKeyword}
+              placeholder={localeText.searchByNameOrAddress}
+            />
+          </div>
+        </PageTitleWithActions>
+        <div className="grid grid-cols-4 gap-5">
+          {data?.familyGetListDeceased.data.data.map((deceased) => {
+            return (
+              <div className="col-span-1" key={deceased.id}>
+                <DeceasedCard
+                  id={deceased.id}
+                  name={deceased.userDetail.name}
+                  avatar={deceased.userDetail.avatar}
+                  birthday={deceased.userDetail.birthday}
+                  dateOfDeath={deceased.dateOfDeath}
                 />
-              </Card>
-            </Link>
-          );
-        })}
+              </div>
+            );
+          })}
+        </div>
       </div>
       <Pagination
-        className="mt-3"
+        className="mt-5"
         defaultCurrent={page}
         total={totalItems}
         onChange={(page) => setPage(page)}

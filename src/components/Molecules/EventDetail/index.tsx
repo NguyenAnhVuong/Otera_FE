@@ -23,7 +23,6 @@ import { useRef, useState } from "react";
 type EventDetailProps = {
   id: number;
 };
-// TODO fix display
 
 const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
   const { id: userId } = useAppSelector((state) => state.auth);
@@ -123,8 +122,8 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
   return (
     <div className="lg:flex lg:justify-center lg:mt-10 lg:p-4">
       {loading && <Loading />}
-      <div className="lg:w-[1200px] lg:grid lg:grid-cols-10">
-        <div className="lg:col-span-6 lg:grid lg:grid-cols-6 lg:pt-4">
+      <div className="lg:w-[1200px] lg:grid lg:grid-cols-2">
+        <div className="lg:col-span-1 lg:grid lg:grid-cols-6 lg:pt-4">
           <div className="hidden lg:col-span-1 lg:flex lg:flex-col lg:gap-2">
             {images.map((image: string, index: number) => {
               return (
@@ -169,10 +168,10 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
           </div>
         </div>
 
-        <div className="text-black lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
+        <div className="text-black lg:col-span-1 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between">
           <div>
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold uppercase">{event?.name}</h2>
+              <h2 className="text-xl font-medium mb-2">{event?.name}</h2>
               {role === ERole.TempleAdmin || role === ERole.TempleMember ? (
                 <div className="flex items-center gap-3">
                   <EditButton
@@ -211,42 +210,47 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
                 <></>
               )}
             </div>
-            <p>
+            <p className="mb-2">
               {localeText.event.address}: {event?.address}
             </p>
-            <TimeInterval
-              title={localeText.event.time}
-              startTime={event?.startDateEvent}
-              endTime={event?.endDateEvent}
-              format={formatDate.HH_mm_DD_MM_YYYY}
-            />
-            <div className="mt-3">
+            <div className="mb-2">
               <TimeInterval
-                title={localeText.event.registration}
-                startTime={event?.startDateBooking}
-                endTime={event?.endDateBooking}
+                title={localeText.event.time}
+                startTime={event?.startDateEvent}
+                endTime={event?.endDateEvent}
                 format={formatDate.HH_mm_DD_MM_YYYY}
               />
             </div>
-            <div className="mt-3">
-              <span>{localeText.event.participants}: </span>
-              {participants &&
-                !!participants.length &&
-                participants.map((participant, index) => (
+
+            {event?.startDateBooking && event?.endDateBooking && (
+              <div className="mb-2">
+                <TimeInterval
+                  title={localeText.event.registration}
+                  startTime={event?.startDateBooking}
+                  endTime={event?.endDateBooking}
+                  format={formatDate.HH_mm_DD_MM_YYYY}
+                />
+              </div>
+            )}
+            {participants && !!participants.length && (
+              <div className="mb-2">
+                <span>{localeText.event.participants}: </span>
+                {participants.map((participant, index) => (
                   <span key={index}>
                     {participant}
                     {index < participants.length - 1 && ", "}
                   </span>
                 ))}
-            </div>
+              </div>
+            )}
             {event?.maxParticipant && (
               <div className="flex gap-4">
-                <div className="mt-3">
+                <div className="mb-2">
                   <span className="mr-2">
                     {localeText.event.maxParticipant(event.maxParticipant)}
                   </span>
                 </div>
-                <div className="mt-3">
+                <div className="mb-2">
                   <span>{localeText.event.currentParticipant}: </span>
                   <span>{event?.currentParticipant}</span>
                 </div>
@@ -258,12 +262,17 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
                 {localeText.event.email}: {event.email}
               </p>
             )}
-            <p className="min-h-[128px]">{event?.description}</p>
 
             {event?.phone && (
               <p>
                 {localeText.event.phone}: {event.phone}
               </p>
+            )}
+
+            {event?.description && (
+              <div
+                dangerouslySetInnerHTML={{ __html: event.description }}
+              ></div>
             )}
           </div>
         </div>

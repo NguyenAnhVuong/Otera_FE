@@ -13,7 +13,7 @@ const DescriptionImage: React.FC<DescriptionImageProps> = ({
 }) => {
   return (
     <div className="relative">
-      <div className="rounded-lg overflow-hidden">
+      <div className="rounded-lg overflow-hidden w-24 h-24">
         <Image
           className="w-24 h-24 object-cover"
           src={imageSrc}

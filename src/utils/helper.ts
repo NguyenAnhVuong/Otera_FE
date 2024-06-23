@@ -98,3 +98,8 @@ export const formatTimeDifference = (date: Date) => {
     }
   }
 };
+
+export const getLongevity = (birthday: Date, dateOfDeath: Date) => {
+  const diff = dayjs(dateOfDeath).diff(birthday, "year");
+  return diff;
+};

@@ -16,4 +16,5 @@ export interface User {
   avatar: string;
   role: string;
   familyId?: number | null;
+  templeIds: number[];
 }

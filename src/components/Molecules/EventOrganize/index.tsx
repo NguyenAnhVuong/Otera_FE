@@ -1,6 +1,7 @@
 "use client";
 import axiosJWT from "@/api/axiosJWT";
 import Loading from "@/components/Atoms/Loading";
+import Tiptap from "@/components/Organisms/TipTap";
 import UploadDescriptionImage from "@/components/Organisms/UploadDescriptionImage";
 import UploadSingleImage from "@/components/Organisms/UploadSingleImage";
 import {
@@ -359,7 +360,7 @@ const EventOrganize: React.FC<EventOrganizeProps> = ({
 
           <Form.Item
             className="col-span-2"
-            label="Ảnh mô tả"
+            label={localeText.event.descriptionImages}
             name="descriptionImages"
           >
             <UploadDescriptionImage
@@ -371,7 +372,11 @@ const EventOrganize: React.FC<EventOrganizeProps> = ({
         </div>
 
         <Form.Item label={localeText.event.description} name="description">
-          <TextArea rows={4} />
+          <Tiptap
+            setContent={(newContent) =>
+              form.setFieldValue("description", newContent)
+            }
+          />
         </Form.Item>
       </Form>
     </>

@@ -15,7 +15,7 @@ const UploadedLabel: React.FC<UploadedLabelProps> = ({
   return (
     <label
       htmlFor={htmlFor}
-      className="overflow-hidden cursor-pointer rounded-lg"
+      className="overflow-hidden cursor-pointer w-24 h-24  rounded-lg"
     >
       <Image
         className="object-cover w-24 h-24 rounded-lg"
