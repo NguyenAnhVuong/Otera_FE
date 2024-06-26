@@ -26,6 +26,7 @@ import { useState } from "react";
 
 interface DataType {
   id: number;
+  deceasedId: number;
   avatar: string;
   name: string;
   note?: string | null;
@@ -93,6 +94,7 @@ const FamilyDeathAnniversaryTable: React.FC<
         setDataSource(
           deathAnniversaries.map((deathAnniversary) => ({
             id: deathAnniversary.id,
+            deceasedId: deathAnniversary.deceased.id,
             avatar: deathAnniversary.deceased.userDetail.avatar,
             name: deathAnniversary.deceased.userDetail.name,
             note: deathAnniversary.note,
@@ -144,7 +146,7 @@ const FamilyDeathAnniversaryTable: React.FC<
       align: "center",
       width: 68,
       render: (avatar, record) => (
-        <Link href={`/deceased/${record.id}`}>
+        <Link href={`/deceased/${record.deceasedId}`}>
           <Image
             className="object-contain"
             src={avatar}

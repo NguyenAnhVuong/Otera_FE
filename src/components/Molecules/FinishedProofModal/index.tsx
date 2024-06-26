@@ -43,11 +43,11 @@ const FinishedProofModal: React.FC<FinishedProofModalProps> = ({
   const [templeUpdateDeathAnniversary, { loading }] =
     useTempleUpdateDeathAnniversaryMutation({
       onCompleted: () => {
-        messageApi.success(localeText.deathAnniversary.readySuccessMessage);
+        messageApi.success(localeText.deathAnniversary.finishSuccessMessage);
         setIsModalOpen(false);
       },
       onError: () => {
-        messageApi.error(localeText.deathAnniversary.readyFailMessage);
+        messageApi.error(localeText.deathAnniversary.finishFailMessage);
       },
       refetchQueries: [TempleGetDeathAnniversariesDocument],
     });

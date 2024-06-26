@@ -1,3 +1,4 @@
+import { ListDeathAnniversary } from "./../graphql/generated/schema";
 import { title } from "process";
 
 const vi = {
@@ -41,6 +42,34 @@ const vi = {
   restore: "Khôi phục",
   organize: "Tổ chức",
   declare: "Khai báo",
+  logout: "Đăng xuất",
+  footer: {
+    home: "Trang chủ",
+    login: "Đăng nhập",
+    register: "Đăng ký",
+    introduce: "Giới thiệu",
+    introduceContent:
+      "Otera là hệ thống hỗ trợ tổ chức lễ giỗ và sự kiện tâm linh trực tuyến. Được lên ý tưởng và phát triển dưới sự hướng dẫn của thầy Cao Tuấn Dũng và thực hiện bởi sinh viên Nguyễn Anh Vương.",
+    link: "Liên kết",
+    contact: "Thông tin liên hệ",
+    address: "1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng, Hà Nội",
+    fanpage: "Fanpage",
+  },
+  header: {
+    home: "Trang chủ",
+    temple: "Nhà chùa",
+    event: "Sự kiện",
+    family: "Hộ gia đình",
+    listEvent: "Danh sách sự kiện",
+    listDeceased: "Danh sách người thân đã khuất",
+    listFamilyMember: "Danh sách thành viên",
+    listDeathAnniversary: "Danh sách lễ giỗ",
+    listMonk: "Danh sách hoà thượng",
+    eventManagement: "Quản lý sự kiện",
+    listFollower: "Danh sách người theo dõi",
+    listGraves: "Danh sách phần mộ và tro cốt",
+    templeManagement: "Quản lý nhà chùa",
+  },
   user: {
     gender: "Giới tính",
     email: "Email",
@@ -229,7 +258,7 @@ const vi = {
     },
   },
   request: "Yêu cầu",
-  declareDeceased: "Khai báo người thân đã khuất",
+  declareDeceased: "Khai báo",
   filter: "Lọc",
   all: "Tất cả",
   noData: "Không có dữ liệu",
@@ -305,12 +334,15 @@ const vi = {
     approveFailMessage: "Chấp nhận yêu cầu thất bại!",
     readySuccessMessage: "Đã sẵn sàng tổ chức lễ giỗ!",
     readyFailMessage: "Cập nhật trạng thái lễ giỗ thất bại!",
+    finishSuccessMessage: "Lễ giỗ đã được hoàn thành!",
+    finishFailMessage: "Cập nhật trạng thái lễ giỗ thất bại!",
   },
   deceased: {
     age: "Tuổi",
     longevity: "Hưởng thọ",
     declare: {
-      declareSuccessMessage: "Khai báo thành công!",
+      declareSuccessMessage:
+        "Khai báo thành công! Vui lòng chờ nhà chùa xét duyệt",
       declareFailMessage: "Khai báo thất bại!",
     },
     contributeImageSuccessMessage: "Đóng góp ảnh thành công!",
@@ -352,6 +384,16 @@ const vi = {
     },
   },
   family: {
+    register: {
+      title: "Đăng ký hộ gia đình",
+      name: "Tên hộ gia đình",
+      address: "Địa chỉ",
+      description: "Mô tả",
+      phone: "Số điện thoại",
+      avatar: "Ảnh đại diện",
+      registerSuccessMessage: "Đăng ký hộ gia đình thành công!",
+      registerFailMessage: "Đăng ký hộ gia đình thất bại!",
+    },
     title: "Hộ gia đình",
     members: "Danh sách thành viên",
     familyMember: {

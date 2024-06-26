@@ -317,7 +317,7 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
             </div>
           </div>
           <div
-            className="min-h-[128px] tiptap"
+            className="tiptap min-h-min"
             dangerouslySetInnerHTML={{
               __html: deceased?.description || "",
             }}

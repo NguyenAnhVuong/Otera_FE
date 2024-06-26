@@ -8,12 +8,27 @@ import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { EGender } from "@/utils/enum";
 import { Button, DatePicker, Form, Input, Radio } from "antd";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 type RegisterProps = {};
 
 const Register: RegisterProps = ({}) => {
   const router = useRouter();
-  const [userRegister] = useUserRegisterMutation();
+  const [userRegister] = useUserRegisterMutation({
+    onCompleted: () => {
+      messageApi.open({
+        type: "success",
+        content: localeText.registerAccount.registerSuccessMessage,
+      });
+      router.push("/login");
+    },
+    onError: () => {
+      messageApi.open({
+        type: "error",
+        content: localeText.registerAccount.registerFailMessage,
+      });
+    },
+  });
   const messageApi = useAppSelector(messageApiSelector);
   const { localeText } = useTrans();
   const onFinish = async (
@@ -25,19 +40,6 @@ const Register: RegisterProps = ({}) => {
         input,
       },
     });
-
-    if (!errors) {
-      messageApi.open({
-        type: "success",
-        content: localeText.registerAccount.registerSuccessMessage,
-      });
-      router.push("/login");
-    } else {
-      messageApi.open({
-        type: "error",
-        content: localeText.registerAccount.registerFailMessage,
-      });
-    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -46,7 +48,7 @@ const Register: RegisterProps = ({}) => {
 
   return (
     <div className="flex justify-center items-center h-screen w-full">
-      <div className="bg-white shadow-xl p-6 flex items-center flex-col w-full max-w-[360px] rounded-xl">
+      <div className="bg-white shadow-xl p-4 flex items-center flex-col w-full max-w-[360px] rounded-xl">
         <h3 className="font-medium">{localeText.register}</h3>
         <Form
           className="w-full"
@@ -108,6 +110,7 @@ const Register: RegisterProps = ({}) => {
               className="w-full"
               placeholder={localeText.registerAccount.birthday}
               format="DD-MM-YYYY"
+              disabledDate={(current) => current && current > dayjs()}
             />
           </Form.Item>
 

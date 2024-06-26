@@ -24,6 +24,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import Header from "@/components/Organisms/Header";
 import viVN from "antd/locale/vi_VN";
 import { onError } from "@apollo/client/link/error";
+import Footer from "@/components/Organisms/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -142,6 +143,7 @@ export default function RootLayout({
                   <div className="flex justify-center w-full py-header min-h-screen text-black">
                     <div className="p-4 w-full">{children}</div>
                   </div>
+                  <Footer />
                 </body>
               </html>
             </AntdProvider>

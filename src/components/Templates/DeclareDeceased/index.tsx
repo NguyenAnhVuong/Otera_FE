@@ -1,5 +1,6 @@
 "use client";
 import { deceasedApi } from "@/api/deceasedApi";
+import Loading from "@/components/Atoms/Loading";
 import TempleSelect from "@/components/Atoms/TempleSelect";
 import Tiptap from "@/components/Organisms/TipTap";
 import UploadDescriptionImage from "@/components/Organisms/UploadDescriptionImage";
@@ -9,6 +10,7 @@ import { useAppSelector } from "@/rtk/hook";
 import { formatDate } from "@/utils/constants";
 import { EGender } from "@/utils/enum";
 import { Button, DatePicker, Form, Input, Radio } from "antd";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 type Props = {};
@@ -22,8 +24,10 @@ const DeceasedDeclare = (props: Props) => {
   >([]);
   const [descriptionImages, setDescriptionImages] = useState<File[]>([]);
   const { localeText } = useTrans();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onFinish = async (values: any) => {
+    setLoading(true);
     const newDeceased = new FormData();
     newDeceased.append("images[]", avatar);
     descriptionImages?.forEach((descriptionImage) => {
@@ -48,6 +52,7 @@ const DeceasedDeclare = (props: Props) => {
         content: localeText.deceased.declare.declareFailMessage,
       });
     }
+    setLoading(false);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -56,6 +61,7 @@ const DeceasedDeclare = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center mt-header">
+      {loading && <Loading />}
       <div className="bg-white flex justify-center px-5 py-4 pt-8 shadow-xl w-full max-w-[688px]">
         <Form
           name="basic"
@@ -142,6 +148,7 @@ const DeceasedDeclare = (props: Props) => {
                   className="w-full"
                   placeholder={localeText.deceased.birthday}
                   format={formatDate.DD_MM_YYYY}
+                  disabledDate={(current) => current && current > dayjs()}
                 />
               </Form.Item>
 
@@ -163,6 +170,7 @@ const DeceasedDeclare = (props: Props) => {
                   picker="date"
                   placeholder={localeText.deceased.dateOfDeath}
                   format={formatDate.DD_MM_YYYY}
+                  disabledDate={(current) => current && current > dayjs()}
                 />
               </Form.Item>
             </div>

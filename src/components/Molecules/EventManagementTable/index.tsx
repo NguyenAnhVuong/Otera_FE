@@ -1,4 +1,3 @@
-import FilterCheckboxInput from "@/components/Atoms/FilterCheckboxInput";
 import FilterSearchInput from "@/components/Atoms/FilterSearchInput";
 import Loading from "@/components/Atoms/Loading";
 import ParticipantTexts from "@/components/Atoms/ParticipantTexts";
@@ -14,12 +13,12 @@ import useTrans from "@/hooks/useTrans";
 import { useAppSelector } from "@/rtk/hook";
 import { PAGE, TAKE, formatDate } from "@/utils/constants";
 import { handleSortByColumn } from "@/utils/helper";
-import { DeleteOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
+import { DeleteOutlined, TeamOutlined } from "@ant-design/icons";
 import { Checkbox, Popconfirm, Table, TableProps, Tooltip } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type EventManagementTableProps = {
   filter: {
@@ -27,7 +26,7 @@ type EventManagementTableProps = {
   };
 };
 
-// TODO add priority, check-in count
+// TODO add priority
 interface DataType {
   id: number;
   avatar: string;

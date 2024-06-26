@@ -13,7 +13,6 @@ const TipTapImage: React.FC<TipTapImageProps> = ({ editor }) => {
     const file = files[0];
     const formData = new FormData();
     formData.append("file", file);
-    // TODO Upload image API
     try {
       const res = await uploadApi.uploadImage(formData);
       editor.chain().focus().setImage({ src: res.data.url }).run();

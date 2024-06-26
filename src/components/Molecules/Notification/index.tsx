@@ -150,6 +150,8 @@ const Notification: React.FC<NotificationProps> = ({
     case ENotificationType.ApproveTemple:
     case ENotificationType.RejectTemple:
     case ENotificationType.BlockTemple:
+    case ENotificationType.DeathAnniversaryComingAfterDays:
+    case ENotificationType.DeathAnniversaryToday:
       return (
         <div
           className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg overflow-hidden"
