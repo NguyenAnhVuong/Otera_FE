@@ -371,7 +371,18 @@ const EventOrganize: React.FC<EventOrganizeProps> = ({
           </Form.Item>
         </div>
 
-        <Form.Item label={localeText.event.description} name="description">
+        <Form.Item
+          label={localeText.event.description}
+          name="description"
+          rules={[
+            {
+              required: true,
+              message: localeText.validateMessages.required(
+                localeText.event.description
+              ),
+            },
+          ]}
+        >
           <Tiptap
             setContent={(newContent) =>
               form.setFieldValue("description", newContent)

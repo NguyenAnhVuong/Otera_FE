@@ -54,6 +54,7 @@ const TempleSelect: React.FC<TempleSelectProps> = ({
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <Form.Item
+      className="min-w-[200px]"
       label={displayLabel ? localeText.temple.title : ""}
       name="templeId"
       rules={[

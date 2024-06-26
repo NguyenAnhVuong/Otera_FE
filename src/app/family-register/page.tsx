@@ -1,30 +1,26 @@
 "use client";
 import { familyApi } from "@/api/familyApi";
+import PageTitle from "@/components/Atoms/PageTitle";
 import TempleSelect from "@/components/Atoms/TempleSelect";
-import { useGetTemplesQuery } from "@/graphql/generated/schema";
+import UploadSingleImage from "@/components/Organisms/UploadSingleImage";
 import { useLogout } from "@/hooks/useLogout";
+import useTrans from "@/hooks/useTrans";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
 import { Button, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 const { TextArea } = Input;
 
 type Props = {};
 
 const FamilyRegister = (props: Props) => {
+  const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
-  const [avatarPreview, setAvatarPreview] = useState<string>();
   const [avatar, setAvatar] = useState<File>();
   const handleLogout = useLogout();
   const dispatch = useAppDispatch();
   const router = useRouter();
-
-  function handleUploadAvatar(e: ChangeEvent<HTMLInputElement>) {
-    if (!e.target.files) return;
-    setAvatarPreview(URL.createObjectURL(e.target.files[0]));
-    setAvatar(e.target.files[0]);
-  }
 
   const onFinish = async (values: any) => {
     const newFamily = new FormData();
@@ -40,10 +36,15 @@ const FamilyRegister = (props: Props) => {
     if (res) {
       messageApi.open({
         type: "success",
-        content: "Đăng ký thành công!",
+        content: localeText.family.register.registerSuccessMessage,
       });
       handleLogout(dispatch);
       router.push("/login");
+    } else {
+      messageApi.open({
+        type: "error",
+        content: localeText.family.register.registerFailMessage,
+      });
     }
   };
 
@@ -53,74 +54,103 @@ const FamilyRegister = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center pt-header">
-      <div className="bg-white flex justify-center px-12 py-4 pt-8 shadow-xl w-full max-w-[380px]">
+      <div className="bg-white flex flex-col items-center px-4 py-4 pt-8 shadow-xl w-full max-w-[480px]">
+        <PageTitle size="small" title={localeText.family.register.title} />
         <Form
           name="basic"
-          className="w-full text-center"
+          className="w-full text-center mt-4"
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           layout="vertical"
         >
+          <div className="grid grid-cols-2 gap-2">
+            <Form.Item
+              className="col-span-1"
+              label={localeText.family.register.name}
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: localeText.validateMessages.required(
+                    localeText.family.register.name
+                  ),
+                },
+              ]}
+            >
+              <Input placeholder={localeText.family.register.name} />
+            </Form.Item>
+            <Form.Item
+              label={localeText.family.register.phone}
+              name="phone"
+              rules={[
+                {
+                  required: true,
+                  message: localeText.validateMessages.required(
+                    localeText.family.register.phone
+                  ),
+                },
+              ]}
+            >
+              <Input placeholder={localeText.family.register.phone} />
+            </Form.Item>
+          </div>
+          <div className="flex gap-2 w-full">
+            <Form.Item
+              className="flex-1"
+              label={localeText.family.register.address}
+              name="address"
+              rules={[
+                {
+                  required: true,
+                  message: localeText.validateMessages.required(
+                    localeText.family.register.address
+                  ),
+                },
+              ]}
+            >
+              <Input placeholder={localeText.family.register.address} />
+            </Form.Item>
+
+            <TempleSelect />
+          </div>
+
           <Form.Item
-            label="Tên gia đình"
-            name="name"
+            label={localeText.family.register.avatar}
+            name="avatar"
             rules={[
-              { required: true, message: "Please input your temple name!" },
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.family.register.avatar
+                ),
+              },
             ]}
           >
-            <Input />
+            <div className="flex justify-center">
+              <UploadSingleImage setUploadImage={setAvatar} />
+            </div>
           </Form.Item>
 
           <Form.Item
-            label="Địa chỉ"
-            name="address"
-            rules={[{ required: true, message: "Please input your address!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Mô tả"
+            label={localeText.family.register.description}
             name="description"
             rules={[
-              { required: true, message: "Please input your description!" },
+              {
+                max: 5000,
+                message: localeText.validateMessages.max(5000),
+              },
             ]}
           >
-            <TextArea rows={4} />
+            <TextArea
+              rows={4}
+              placeholder={localeText.family.register.description}
+            />
           </Form.Item>
-
-          <Form.Item
-            label="Số điện thoại"
-            name="phone"
-            rules={[{ required: true, message: "Please input your phone!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Avatar"
-            name="avatar"
-            rules={[{ required: true, message: "Please input your Avatar!" }]}
-          >
-            {avatarPreview ? (
-              <img className="max-w-[80px]" src={avatarPreview} />
-            ) : (
-              <input
-                name="avatar"
-                type="file"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  handleUploadAvatar(e)
-                }
-              />
-            )}
-          </Form.Item>
-
-          <TempleSelect />
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Đăng ký
+              {localeText.register}
             </Button>
           </Form.Item>
         </Form>

@@ -1,4 +1,5 @@
 "use client";
+import HeaderMenu from "@/components/Molecules/HeaderMenu/index.tsx";
 import Notifications from "@/components/Molecules/Notifications";
 import { authActions } from "@/features/auth";
 import { useGetUserLazyQuery } from "@/graphql/generated/schema";
@@ -24,393 +25,24 @@ const Header = () => {
   let items: MenuProps["items"] = [
     {
       label: (
+        <span className="block" onClick={() => router.push("/user/update")}>
+          {localeText.user.update}
+        </span>
+      ),
+      key: "/user/update",
+    },
+    {
+      label: (
         <span
           className="block"
           onClick={async () => await handleLogout(dispatch)}
         >
-          Đăng xuất
+          {localeText.logout}
         </span>
       ),
       key: "2",
     },
   ];
-
-  const publicUserItems: MenuProps["items"] = useMemo(
-    () => [
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/user/update")}>
-            {localeText.user.update}
-          </span>
-        ),
-        key: "/user/update",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/temple")}>
-            {localeText.temple.temples}
-          </span>
-        ),
-        key: "temple",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/family-register")}
-          >
-            Đăng ký gia đình
-          </span>
-        ),
-        key: "family-register",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/temple-register")}
-          >
-            Đăng ký chùa
-          </span>
-        ),
-        key: "temple-register",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/event")}>
-            {localeText.event.events}
-          </span>
-        ),
-        key: "event",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={async () => router.push("/event/user")}
-          >
-            {localeText.event.bookingEvents}
-          </span>
-        ),
-        key: "/event/user",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={async () => await handleLogout(dispatch)}
-          >
-            Đăng xuất
-          </span>
-        ),
-        key: "logout",
-      },
-    ],
-    [dispatch, handleLogout, localeText, router]
-  );
-
-  const familyMemberItems: MenuProps["items"] = useMemo(
-    () => [
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/user/update")}>
-            {localeText.user.update}
-          </span>
-        ),
-        key: "/user/update",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/temple")}>
-            {localeText.temple.temples}
-          </span>
-        ),
-        key: "temple",
-      },
-
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/death-anniversary")}
-          >
-            {localeText.deathAnniversary.list}
-          </span>
-        ),
-        key: "death-anniversary",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/deceased")}>
-            {localeText.deceased.deceasedList}
-          </span>
-        ),
-        key: "deceased",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/event")}>
-            {localeText.event.events}
-          </span>
-        ),
-        key: "event",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={async () => router.push("/event/user")}
-          >
-            {localeText.event.bookingEvents}
-          </span>
-        ),
-        key: "event/user",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={async () => await handleLogout(dispatch)}
-          >
-            Đăng xuất
-          </span>
-        ),
-        key: "logout",
-      },
-    ],
-    [dispatch, handleLogout, localeText, router]
-  );
-
-  const familyAdminItems: MenuProps["items"] = useMemo(
-    () => [
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/user/update")}>
-            {localeText.user.update}
-          </span>
-        ),
-        key: "/user/update",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/temple")}>
-            {localeText.temple.temples}
-          </span>
-        ),
-        key: "temple",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/death-anniversary")}
-          >
-            {localeText.deathAnniversary.list}
-          </span>
-        ),
-        key: "death-anniversary",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/event")}>
-            {localeText.event.events}
-          </span>
-        ),
-        key: "event",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={async () => router.push("/event/user")}
-          >
-            {localeText.event.bookingEvents}
-          </span>
-        ),
-        key: "event/user",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/deceased/declare")}
-          >
-            {localeText.declareDeceased}
-          </span>
-        ),
-        key: "/deceased/declare",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/deceased")}>
-            {localeText.deceased.deceasedList}
-          </span>
-        ),
-        key: "deceased",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/family")}>
-            {localeText.family.members}
-          </span>
-        ),
-        key: "family",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={async () => await handleLogout(dispatch)}
-          >
-            Đăng xuất
-          </span>
-        ),
-        key: "logout",
-      },
-    ],
-    [dispatch, handleLogout, localeText, router]
-  );
-
-  const templeAdminItems: MenuProps["items"] = useMemo(
-    () => [
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/user/update")}>
-            {localeText.user.update}
-          </span>
-        ),
-        key: "/user/update",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/temple")}>
-            {localeText.temple.temples}
-          </span>
-        ),
-        key: "temple",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/death-anniversary")}
-          >
-            {localeText.deathAnniversary.list}
-          </span>
-        ),
-        key: "death-anniversary",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/temple/deceased")}
-          >
-            {localeText.temple.deceasedList.title}
-          </span>
-        ),
-        key: "/temple/deceased",
-      },
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/event/temple")}>
-            {localeText.event.eventManagements}
-          </span>
-        ),
-        key: "event/temple",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/temple/members")}
-          >
-            {localeText.temple.members.title}
-          </span>
-        ),
-        key: "temple/members",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() => router.push("/temple/followers")}
-          >
-            {localeText.temple.followers.title}
-          </span>
-        ),
-        key: "/temple/followers",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={() =>
-              router.push(`/temple/${authUser.templeIds[0]}/update`)
-            }
-          >
-            {localeText.temple.updateTemple.title}
-          </span>
-        ),
-        key: `/temple/${authUser.templeIds[0]}/update`,
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={async () => await handleLogout(dispatch)}
-          >
-            Đăng xuất
-          </span>
-        ),
-        key: "logout",
-      },
-    ],
-    [dispatch, handleLogout, localeText, router]
-  );
-
-  const systemItems: MenuProps["items"] = useMemo(
-    () => [
-      {
-        label: (
-          <span className="block" onClick={() => router.push("/system/temple")}>
-            {localeText.temple.temples}
-          </span>
-        ),
-        key: "system/temple",
-      },
-      {
-        label: (
-          <span
-            className="block"
-            onClick={async () => await handleLogout(dispatch)}
-          >
-            Đăng xuất
-          </span>
-        ),
-        key: "logout",
-      },
-    ],
-    [dispatch, handleLogout, localeText, router]
-  );
-
-  switch (authUser.role) {
-    case ERole.PUBLIC_USER:
-      items = [...publicUserItems];
-      break;
-    case ERole.FAMILY_MEMBER:
-      items = [...familyMemberItems];
-      break;
-    case ERole.FAMILY_ADMIN:
-      items = [...familyAdminItems];
-      break;
-    case ERole.TEMPLE_ADMIN:
-      items = [...templeAdminItems];
-      break;
-    case ERole.SYSTEM:
-      items = [...systemItems];
-      break;
-  }
 
   useEffect(() => {
     const getUserData = async () => {
@@ -441,10 +73,7 @@ const Header = () => {
   return (
     <div className="flex justify-center h-14 shadow-xl bg-white fixed top-0 left-0 right-0 items-center px-2 z-10">
       <div className="max-w-[1200px] w-full flex justify-between">
-        <Link
-          href="/temple"
-          className="flex items-center no-underline text-black"
-        >
+        <Link href="/" className="flex items-center no-underline text-black">
           <Image
             src="/images/otera-logo.png"
             width={30}
@@ -454,11 +83,13 @@ const Header = () => {
           <span className="ml-2 text-xl font-semibold">Otera</span>
         </Link>
 
-        <div className="flex items-center">
-          <div className="ml-4 flex items-center ">
+        <HeaderMenu />
+
+        <div className="flex items-center min-w-fit">
+          <div className="ml-4 flex items-center">
             {!authUser.id ? (
               <Link className="text-black no-underline" href="/login">
-                Đăng nhập
+                {localeText.login.title}
               </Link>
             ) : (
               <div className="flex items-center">

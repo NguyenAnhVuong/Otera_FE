@@ -1,14 +1,11 @@
 "use client";
-import PageTitle from "@/components/Atoms/PageTitle";
 import PageTitleWithActions from "@/components/Atoms/PageTitleWithActions";
 import SearchInput from "@/components/Atoms/SearchInput";
 import DeceasedCard from "@/components/Organisms/DeceasedCard";
 import { useFamilyGetListDeceasedQuery } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { PAGE, TAKE } from "@/utils/constants";
-import { Card, Pagination } from "antd";
-import Meta from "antd/es/card/Meta";
-import Image from "next/image";
+import { Button, Pagination } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -29,11 +26,14 @@ const DeceasedList = () => {
     <div className="bg-white flex flex-col items-center">
       <div className="w-[1200px]">
         <PageTitleWithActions title={localeText.deceased.deceasedList}>
-          <div className="w-80">
+          <div className="w-80 flex">
             <SearchInput
               setSearchKeyword={setKeyword}
               placeholder={localeText.searchByNameOrAddress}
             />
+            <Button type="primary" className="ml-2">
+              <Link href="/deceased/declare">{localeText.declareDeceased}</Link>
+            </Button>
           </div>
         </PageTitleWithActions>
         <div className="grid grid-cols-4 gap-5">

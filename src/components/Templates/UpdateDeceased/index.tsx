@@ -240,6 +240,7 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
                   className="w-full"
                   placeholder={localeText.deceased.birthday}
                   format={formatDate.DD_MM_YYYY}
+                  disabledDate={(current) => current && current > dayjs()}
                 />
               </Form.Item>
 
@@ -261,6 +262,7 @@ const UpdateDeceased: React.FC<UpdateDeceasedProps> = ({ id }) => {
                   picker="date"
                   placeholder={localeText.deceased.dateOfDeath}
                   format={formatDate.DD_MM_YYYY}
+                  disabledDate={(current) => current && current > dayjs()}
                 />
               </Form.Item>
             </div>

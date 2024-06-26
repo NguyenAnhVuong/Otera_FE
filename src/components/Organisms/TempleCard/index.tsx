@@ -1,3 +1,4 @@
+import useTrans from "@/hooks/useTrans";
 import { Card } from "antd";
 import Meta from "antd/es/card/Meta";
 import Image from "next/image";
@@ -17,6 +18,7 @@ const TempleCard: React.FC<TempleCardProps> = ({
   address,
   avatar,
 }) => {
+  const { localeText } = useTrans();
   return (
     <Link
       className="no-underline shadow-lg rounded-lg "
@@ -36,7 +38,10 @@ const TempleCard: React.FC<TempleCardProps> = ({
           />
         }
       >
-        <Meta title={name} description={address} />
+        <Meta
+          title={localeText.temple.preName + " " + name}
+          description={address}
+        />
       </Card>
     </Link>
   );
