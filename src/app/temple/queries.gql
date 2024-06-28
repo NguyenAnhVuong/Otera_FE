@@ -19,10 +19,10 @@ query getTemples($keyword: String, $page: Int, $take: Int) {
         id
         name
         phone
-        plan
-        planExpired
-        priority
-        priorityExpired
+        # plan
+        # planExpired
+        # priority
+        # priorityExpired
         status
         updatedAt
         website

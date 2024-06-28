@@ -98,7 +98,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
           autoComplete="off"
           layout="vertical"
         >
-          <div className="grid grid-cols-5">
+          <div className="grid grid-cols-5 gap-2">
             <Form.Item
               className="col-span-3"
               label={localeText.deathAnniversary.desiredTime}
@@ -119,7 +119,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
               />
             </Form.Item>
             <Form.Item
-              className="col-span-2"
+              className="col-span-2 ml-4"
               label={localeText.deathAnniversary.organizeLivestream}
               name="isLiveStream"
               rules={[
@@ -178,6 +178,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
             ]}
           >
             <Checkbox.Group
+              className="grid grid-cols-5"
               options={
                 offeringData?.getOfferings.data.data.map((offering) => ({
                   label: (
@@ -206,7 +207,7 @@ const DeathAnniversaryInforModal: React.FC<DeathAnniversaryInforModalProps> = ({
               },
             ]}
           >
-            <TextArea rows={4} />
+            <TextArea rows={4} placeholder={localeText.deathAnniversary.note} />
           </Form.Item>
         </Form>
       </Modal>

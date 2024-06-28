@@ -24,10 +24,10 @@ query getTempleDetail($id: Int!) {
       website
       updatedAt
       status
-      priorityExpired
-      priority
-      planExpired
-      plan
+      # priorityExpired
+      # priority
+      # planExpired
+      # plan
       phone
       name
       followerTemples {

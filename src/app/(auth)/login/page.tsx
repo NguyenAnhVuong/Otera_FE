@@ -35,7 +35,7 @@ const Login = () => {
         if (accessToken) {
           localStorage.setItem("accessToken", accessToken);
         }
-        router.push("/temple");
+        router.push("/");
       },
       onError: () => {
         messageApi.open({

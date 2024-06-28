@@ -88,7 +88,10 @@ const RejectDeathAnniversaryModal = ({
           name="rejectReason"
           // rules={[{ required: true, message: "Please input your username!" }]}
         >
-          <TextArea rows={4} />
+          <TextArea
+            rows={4}
+            placeholder={localeText.deathAnniversary.rejectModal.rejectReason}
+          />
         </Form.Item>
         <Form.Item
           label={localeText.deathAnniversary.rejectModal.enableUpdate}

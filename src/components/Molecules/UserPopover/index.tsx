@@ -1,6 +1,5 @@
 import { Popover } from "antd";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 type UserPopoverProps = {
@@ -17,13 +16,14 @@ const UserPopover: React.FC<UserPopoverProps> = ({ user }) => {
     <Popover
       content={
         <div className="flex gap-2">
-          <Image
-            className="object-cover static"
-            src={user.avatar}
-            alt={user.name}
-            width={48}
-            height={48}
-          />
+          <div className="w-12 h-12 ">
+            <Image
+              className="object-cover static rounded-full"
+              src={user.avatar}
+              alt={user.name}
+              fill
+            />
+          </div>
           <div className="flex flex-col">
             <span className="text-gray-500">{user.email}</span>
             {user.phone && <span className="text-gray-500">{user.phone}</span>}
@@ -32,13 +32,14 @@ const UserPopover: React.FC<UserPopoverProps> = ({ user }) => {
       }
       title={user.name}
     >
-      <Image
-        className="object-cover static"
-        src={user.avatar}
-        alt={user.name}
-        width={32}
-        height={32}
-      />
+      <div className="w-8 h-8 ">
+        <Image
+          className="object-cover static rounded-full"
+          src={user.avatar}
+          alt={user.name}
+          fill
+        />
+      </div>
     </Popover>
   );
 };

@@ -59,7 +59,7 @@ const EventManagements = (props: Props) => {
   };
 
   return (
-    <div className="mt-8">
+    <div className="">
       <PageTitle title={localeText.event.eventManagements} />
       <div className="flex items-center justify-between gap-2">
         <Tabs

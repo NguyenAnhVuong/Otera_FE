@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
   ];
 
   return (
-    <div className="h-80 relative bottom-0 left-0 grid grid-cols-1 sm:grid-cols-2 xl:px-32 xl:gap-16 lg:grid-cols-4 lg:pt-10 2xl:px-72 bg-[#232323] text-sm gap-8 px-8 pt-4 pb-48 mt-56 lg:pb-[448px]">
+    <div className="h-80 relative bottom-0 left-0 grid grid-cols-1 sm:grid-cols-2 xl:px-32 xl:gap-16 lg:grid-cols-4 lg:pt-10 2xl:px-72 bg-[#232323] text-sm gap-8 px-8 pt-4 pb-48 mt-20 lg:pb-[448px]">
       <div>
         <h1 className="text-white mb-4 text-xl font-semibold">
           {localeText.footer.introduce}

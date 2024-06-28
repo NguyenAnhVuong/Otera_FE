@@ -30,7 +30,7 @@ export const authorizer: PageAuthorizeConfig[] = [
     auth: false,
   },
   {
-    path: "/temple",
+    path: "/",
     auth: false,
   },
   {
@@ -43,6 +43,10 @@ export const authorizer: PageAuthorizeConfig[] = [
   },
   {
     path: "/reset-password",
+    auth: false,
+  },
+  {
+    path: "/event",
     auth: false,
   },
   {
