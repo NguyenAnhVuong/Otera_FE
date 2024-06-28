@@ -78,6 +78,7 @@ const Events: React.FC<EventsProps> = ({}) => {
             total={data.getEvents.data.totalItems}
             onChange={(page) => setPage(page)}
             pageSize={TAKE}
+            current={page}
           />
         )}
       </div>

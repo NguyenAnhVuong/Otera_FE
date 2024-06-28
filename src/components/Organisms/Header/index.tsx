@@ -7,12 +7,11 @@ import { useLogout } from "@/hooks/useLogout";
 import useTrans from "@/hooks/useTrans";
 import { User } from "@/models/auth";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
-import { ERole } from "@/utils/enum";
 import { Dropdown, MenuProps } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 const Header = () => {
   const authUser = useAppSelector((state) => state.auth);

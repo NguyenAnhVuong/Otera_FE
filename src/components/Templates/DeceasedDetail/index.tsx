@@ -62,16 +62,16 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
           new Date(registerExpiredDateThisYear).setFullYear(currentYear + 1)
         )
       : registerExpiredDateThisYear;
-
+  // trong khoang thoi gian 1 ngay truoc le gio thi k dc yeu cau
   const disableCreateDeathAnniversary =
     (registerExpiredDateThisYear <= currentDate &&
       deathAnniversary >= currentDate) ||
     !!deceased?.deathAnniversaries?.length;
 
   const ref: any = useRef();
-  const goToSlide = (index: Number) => {
-    ref.current.goTo(index);
-  };
+  // const goToSlide = (index: Number) => {
+  //   ref.current.goTo(index);
+  // };
 
   // useCheckIsExistedRequestDeathAnniversaryQuery({
   //   variables: {

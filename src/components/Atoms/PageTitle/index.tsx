@@ -15,7 +15,7 @@ const PageTitle: React.FC<PageTitleProps> = ({ title, size }) => {
       );
     default:
       return (
-        <div className="text-center">
+        <div className="text-center mt-8">
           {title && <h3 className="text-2xl">{title}</h3>}
         </div>
       );

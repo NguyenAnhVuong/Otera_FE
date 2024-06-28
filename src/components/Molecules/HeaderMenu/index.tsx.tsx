@@ -18,6 +18,21 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({}) => {
     setCurrent(e.key);
   };
 
+  const guestItems: MenuItem[] = [
+    {
+      label: <Link href="/">{localeText.header.home}</Link>,
+      key: "/",
+    },
+    {
+      label: (
+        <Link className="text-black" href="/event" style={{ width: "164px" }}>
+          {localeText.header.event}
+        </Link>
+      ),
+      key: "/event",
+    },
+  ];
+
   const publicUserItems: MenuItem[] = [
     {
       label: <Link href="/">{localeText.header.home}</Link>,
@@ -50,6 +65,18 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({}) => {
           key: "/event/user",
         },
       ],
+    },
+    {
+      label: (
+        <Link href="/family/register">{localeText.header.familyRegister}</Link>
+      ),
+      key: "/family/register",
+    },
+    {
+      label: (
+        <Link href="/temple/register">{localeText.header.templeRegister}</Link>
+      ),
+      key: "/temple/register",
     },
   ];
 
@@ -246,7 +273,9 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({}) => {
           key: "/death-anniversary",
         },
         {
-          label: <Link href="/temple">{localeText.header.listMonk}</Link>,
+          label: (
+            <Link href="/temple/members">{localeText.header.listMonk}</Link>
+          ),
           key: "/temple/members",
         },
         {
@@ -317,7 +346,7 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({}) => {
       case ERole.System:
         return systemItems;
       default:
-        return publicUserItems;
+        return guestItems;
     }
   };
 
@@ -329,6 +358,7 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({}) => {
       mode="horizontal"
       items={getMenuItems()}
       style={{ borderBottom: "none" }}
+      triggerSubMenuAction="hover"
     />
   );
 };

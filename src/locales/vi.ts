@@ -69,6 +69,8 @@ const vi = {
     listFollower: "Danh sách người theo dõi",
     listGraves: "Danh sách phần mộ và tro cốt",
     templeManagement: "Quản lý nhà chùa",
+    templeRegister: "Đăng ký chùa",
+    familyRegister: "Đăng ký hộ gia đình",
   },
   user: {
     gender: "Giới tính",

@@ -1,14 +1,17 @@
 import { uploadApi } from "@/api/uploadApi";
 import Loading from "@/components/Atoms/Loading";
+import { authActions } from "@/features/auth";
 import {
   EGender,
   GetUserDocument,
   GetUserQuery,
   VUpdateUserDetailInput,
+  useGetUserLazyQuery,
   useUpdateUserMutation,
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
-import { useAppSelector } from "@/rtk/hook";
+import { User } from "@/models/auth";
+import { useAppDispatch, useAppSelector } from "@/rtk/hook";
 import { formatDate } from "@/utils/constants";
 import { Button, DatePicker, Form, FormProps, Input, Radio } from "antd";
 import dayjs from "dayjs";
@@ -34,14 +37,17 @@ const PersonalInforTab: React.FC<PersonalInforTabProps> = ({
 }) => {
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
+  const authUser = useAppSelector((state) => state.auth);
   const [isUploading, setIsUploading] = useState<boolean>(false);
-
+  const dispatch = useAppDispatch();
   const [updateUserDetail, { loading }] = useUpdateUserMutation({
-    onCompleted: () => {
+    onCompleted: async () => {
       messageApi.open({
         type: "success",
         content: localeText.user.updateUserDetail.successMessage,
       });
+      // TODO reload header
+      window.location.reload();
     },
     onError: () => {
       messageApi.open({

@@ -18,8 +18,8 @@ query GetEventById($id: Int!) {
       endDateEvent
       maxParticipant
       phone
-      priority
-      priorityExpired
+      # priority
+      # priorityExpired
       startDateBooking
       startDateEvent
       currentParticipant

@@ -95,25 +95,22 @@ const FamilyRegister = (props: Props) => {
               <Input placeholder={localeText.family.register.phone} />
             </Form.Item>
           </div>
-          <div className="flex gap-2 w-full">
-            <Form.Item
-              className="flex-1"
-              label={localeText.family.register.address}
-              name="address"
-              rules={[
-                {
-                  required: true,
-                  message: localeText.validateMessages.required(
-                    localeText.family.register.address
-                  ),
-                },
-              ]}
-            >
-              <Input placeholder={localeText.family.register.address} />
-            </Form.Item>
 
-            <TempleSelect />
-          </div>
+          <Form.Item
+            className="flex-1"
+            label={localeText.family.register.address}
+            name="address"
+            rules={[
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.family.register.address
+                ),
+              },
+            ]}
+          >
+            <Input placeholder={localeText.family.register.address} />
+          </Form.Item>
 
           <Form.Item
             label={localeText.family.register.avatar}
