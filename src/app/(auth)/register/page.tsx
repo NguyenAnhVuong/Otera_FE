@@ -10,9 +10,8 @@ import { EGender } from "@/utils/enum";
 import { Button, DatePicker, Form, Input, Radio } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-type RegisterProps = {};
 
-const Register: RegisterProps = ({}) => {
+const Register = ({}) => {
   const router = useRouter();
   const [userRegister] = useUserRegisterMutation({
     onCompleted: () => {
