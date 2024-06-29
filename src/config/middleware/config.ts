@@ -50,6 +50,10 @@ export const authorizer: PageAuthorizeConfig[] = [
     auth: false,
   },
   {
+    path: "/event/:id",
+    auth: false,
+  },
+  {
     path: authRequireRouters,
     auth: true,
   },
@@ -59,4 +63,5 @@ export const redirectRouters = {
   login: "/login",
   register: "/register",
   temple: "/temple",
+  home: "/",
 };

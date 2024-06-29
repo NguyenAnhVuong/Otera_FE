@@ -41,7 +41,7 @@ const Events: React.FC<EventsProps> = ({}) => {
         <PageTitleWithActions title={localeText.event.listEvents}>
           <Form form={form} className="flex justify-end items-center gap-2">
             <div className="w-48">
-              <TempleSelect required={false} displayLabel={false} />
+              <TempleSelect required={false} displayLabel={false} allowClear />
             </div>
             {/* <Form.Item name="filter" initialValue={"all"}>
               <Select
