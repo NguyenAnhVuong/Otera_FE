@@ -232,7 +232,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
                 />
               </div>
             )}
-            {participants && !!participants.length && (
+            {participants && !!participants.length ? (
               <div className="mb-2">
                 <span>{localeText.event.participants}: </span>
                 {participants.map((participant, index) => (
@@ -242,6 +242,8 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
                   </span>
                 ))}
               </div>
+            ) : (
+              <div className="mb-2">{localeText.event.isFreeOpen}</div>
             )}
             {event?.maxParticipant && (
               <div className="flex gap-4">
@@ -258,13 +260,13 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
             )}
 
             {event?.email && (
-              <p>
+              <p className="mb-2">
                 {localeText.event.email}: {event.email}
               </p>
             )}
 
             {event?.phone && (
-              <p>
+              <p className="mb-2">
                 {localeText.event.phone}: {event.phone}
               </p>
             )}

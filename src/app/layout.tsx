@@ -34,9 +34,9 @@ const inter = Inter({ subsets: ["latin"] });
 // };
 
 const handleRemoveToken = async () => {
-  localStorage.removeItem("accessToken");
-  // remove cookie
   await authApi.removeRefreshToken();
+  // remove cookie
+  localStorage.removeItem("accessToken");
   window.location.replace("/login");
 };
 

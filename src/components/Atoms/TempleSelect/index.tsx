@@ -7,12 +7,14 @@ type TempleSelectProps = {
   required?: boolean;
   displayLabel?: boolean;
   disabled?: boolean;
+  allowClear?: boolean;
 };
 
 const TempleSelect: React.FC<TempleSelectProps> = ({
   required = true,
   displayLabel = true,
   disabled = false,
+  allowClear = false,
 }) => {
   const [keyword, setKeyword] = useState("");
   const { data: templesData } = useGetTempleListQuery({
@@ -75,6 +77,7 @@ const TempleSelect: React.FC<TempleSelectProps> = ({
         filterOption={filterOption}
         options={options}
         disabled={disabled}
+        allowClear={allowClear}
       />
     </Form.Item>
   );

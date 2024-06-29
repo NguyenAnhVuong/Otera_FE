@@ -25,7 +25,7 @@ export default async function middleware(
         return NextResponse.redirect(absoluteURL.toString());
       }
       if (validToken && match(config.path)(redirectRouters.login)) {
-        const absoluteURL = new URL(redirectRouters.temple, req.nextUrl.origin);
+        const absoluteURL = new URL(redirectRouters.home, req.nextUrl.origin);
         return NextResponse.redirect(absoluteURL.toString());
       }
       // if (validToken) {
