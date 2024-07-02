@@ -91,12 +91,14 @@ const FamilyMemberTable: React.FC<FamilyMemberTableProps> = ({ familyId }) => {
       key: "avatar",
       align: "center",
       render: (avatar) => (
-        <Image
-          className="object-contain"
-          src={avatar}
-          alt={localeText.avatar}
-          fill
-        />
+        <div className="h-12 w-12 rounded-full overflow-hidden">
+          <Image
+            className="object-cover static"
+            src={avatar}
+            alt={localeText.avatar}
+            fill
+          />
+        </div>
       ),
       width: 84,
     },

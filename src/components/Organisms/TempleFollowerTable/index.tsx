@@ -68,12 +68,14 @@ const TempleFollowerTable: React.FC<TempleFollowerTableProps> = ({
       title: localeText.temple.followers.avatar,
       align: "center",
       render: (avatar) => (
-        <Image
-          className="object-contain"
-          src={avatar}
-          alt={localeText.temple.followers.avatar}
-          fill
-        />
+        <div className="w-12 h-12 rounded-full overflow-hidden">
+          <Image
+            className="object-cover static"
+            src={avatar}
+            alt={localeText.temple.followers.avatar}
+            fill
+          />
+        </div>
       ),
       width: 84,
     },

@@ -45,6 +45,7 @@ const UploadSingleImage: React.FC<UploadSingleImageProps> = ({
           id="image"
           name="image"
           type="file"
+          accept="image/*"
           onChange={(e) =>
             handleUpload(e.target.files ? e.target.files[0] : null)
           }

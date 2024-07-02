@@ -30,6 +30,7 @@ const TipTapImage: React.FC<TipTapImageProps> = ({ editor }) => {
       <input
         id="tiptap-image-input"
         type="file"
+        accept="image/*"
         hidden
         onChange={(event) => uploadImage(event.target.files)}
       />

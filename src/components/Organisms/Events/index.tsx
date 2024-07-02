@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/components/Atoms/Loading";
+import NoData from "@/components/Atoms/NoData";
 import PageTitleWithActions from "@/components/Atoms/PageTitleWithActions";
 import TempleSelect from "@/components/Atoms/TempleSelect";
 import Event from "@/components/Molecules/Event";
@@ -56,20 +57,24 @@ const Events: React.FC<EventsProps> = ({}) => {
           </Form>
         </PageTitleWithActions>
         <div className="grid grid-cols-4 gap-4">
-          {data?.getEvents.data.data.map((event) => (
-            <Event
-              key={event.id}
-              id={event.id}
-              avatar={event.avatar}
-              name={event.name}
-              address={event.address}
-              startDateEvent={event.startDateEvent}
-              endDateEvent={event.endDateEvent}
-              startDateBooking={event.startDateBooking}
-              endDateBooking={event.endDateBooking}
-              maxParticipant={event.maxParticipant}
-            />
-          ))}
+          {data ? (
+            data.getEvents.data.data.map((event) => (
+              <Event
+                key={event.id}
+                id={event.id}
+                avatar={event.avatar}
+                name={event.name}
+                address={event.address}
+                startDateEvent={event.startDateEvent}
+                endDateEvent={event.endDateEvent}
+                startDateBooking={event.startDateBooking}
+                endDateBooking={event.endDateBooking}
+                maxParticipant={event.maxParticipant}
+              />
+            ))
+          ) : (
+            <NoData />
+          )}
         </div>
         {data && (
           <Pagination

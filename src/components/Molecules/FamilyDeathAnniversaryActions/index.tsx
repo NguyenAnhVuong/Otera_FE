@@ -28,6 +28,7 @@ type FamilyDeathAnniversaryActionsProps = {
   deathAnniversaryType: EDeathAnniversaryType;
   readyImage?: string | null;
   finishedImage?: string | null;
+  creatorId: number;
 };
 
 const FamilyDeathAnniversaryActions: React.FC<
@@ -45,7 +46,9 @@ const FamilyDeathAnniversaryActions: React.FC<
   deathAnniversaryType,
   readyImage,
   finishedImage,
+  creatorId,
 }) => {
+  const { id: userId } = useAppSelector((state) => state.auth);
   const { localeText } = useTrans();
   const { messageApi } = useAppSelector((state) => state.antd);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -123,57 +126,89 @@ const FamilyDeathAnniversaryActions: React.FC<
     case EDeathAnniversaryStatus.Pending:
       return (
         <div className="flex justify-center gap-2 items-center">
-          {new Date(desiredStartTime) > new Date() && (
-            <DeathAnniversaryInforModal
-              title={localeText.deathAnniversary.updateDeathAnniversary}
-              isModalOpen={isEditModalOpen}
-              setIsModalOpen={setIsEditModalOpen}
-              handleSubmitForm={handleEditDeathAnniversary}
-              data={{
-                desiredStartTime,
-                desiredEndTime,
-                note,
-                isLiveStream,
-                offeringIds,
-                deathAnniversaryType,
-              }}
-              openButton={
-                <Tooltip
-                  placement="top"
-                  title={localeText.deathAnniversary.editInfo}
-                >
-                  <EditOutlined
-                    className="text-green-400 text-xl cursor-pointer"
-                    onClick={() => {
-                      setIsEditModalOpen(true);
-                    }}
-                    size={20}
-                  />
-                </Tooltip>
-              }
-            />
-          )}
+          {userId === creatorId && (
+            <>
+              {new Date(desiredStartTime) > new Date() && (
+                <DeathAnniversaryInforModal
+                  title={localeText.deathAnniversary.updateDeathAnniversary}
+                  isModalOpen={isEditModalOpen}
+                  setIsModalOpen={setIsEditModalOpen}
+                  handleSubmitForm={handleEditDeathAnniversary}
+                  data={{
+                    desiredStartTime,
+                    desiredEndTime,
+                    note,
+                    isLiveStream,
+                    offeringIds,
+                    deathAnniversaryType,
+                  }}
+                  openButton={
+                    <Tooltip
+                      placement="top"
+                      title={localeText.deathAnniversary.editInfo}
+                    >
+                      <EditOutlined
+                        className="text-green-400 text-xl cursor-pointer"
+                        onClick={() => {
+                          setIsEditModalOpen(true);
+                        }}
+                        size={20}
+                      />
+                    </Tooltip>
+                  }
+                />
+              )}
 
-          <Tooltip
-            placement="top"
-            title={localeText.deathAnniversary.cancelRegister}
-          >
-            <Popconfirm
-              title={
-                localeText.deathAnniversary.cancelDeathAnniversaryPopConfirm
-                  .title
-              }
-              description={
-                localeText.deathAnniversary.cancelDeathAnniversaryPopConfirm
-                  .description
-              }
-              onConfirm={handleCancelDeathAnniversary}
-              okText={localeText.OK}
-              cancelText={localeText.cancel}
+              <Tooltip
+                placement="top"
+                title={localeText.deathAnniversary.cancelRegister}
+              >
+                <Popconfirm
+                  title={
+                    localeText.deathAnniversary.cancelDeathAnniversaryPopConfirm
+                      .title
+                  }
+                  description={
+                    localeText.deathAnniversary.cancelDeathAnniversaryPopConfirm
+                      .description
+                  }
+                  onConfirm={handleCancelDeathAnniversary}
+                  okText={localeText.OK}
+                  cancelText={localeText.cancel}
+                >
+                  <DeleteOutlined className="text-red-500 text-xl h-fit cursor-pointer" />
+                </Popconfirm>
+              </Tooltip>
+            </>
+          )}
+        </div>
+      );
+
+    case EDeathAnniversaryStatus.Approved:
+      return (
+        <div className="flex justify-center gap-2 items-center">
+          {userId === creatorId && (
+            <Tooltip
+              placement="top"
+              title={localeText.deathAnniversary.cancelRegister}
             >
-              <DeleteOutlined className="text-red-500 text-xl h-fit cursor-pointer" />
-            </Popconfirm>
-          </Tooltip>
+              <Popconfirm
+                title={
+                  localeText.deathAnniversary.cancelDeathAnniversaryPopConfirm
+                    .title
+                }
+                description={
+                  localeText.deathAnniversary.cancelDeathAnniversaryPopConfirm
+                    .description
+                }
+                onConfirm={handleCancelDeathAnniversary}
+                okText={localeText.OK}
+                cancelText={localeText.cancel}
+              >
+                <DeleteOutlined className="text-red-500 text-xl h-fit cursor-pointer" />
+              </Popconfirm>
+            </Tooltip>
+          )}
         </div>
       );
 
