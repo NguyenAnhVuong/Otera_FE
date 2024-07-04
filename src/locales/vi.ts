@@ -245,6 +245,7 @@ const vi = {
     name: "Họ và tên",
     gender: "Giới tính",
     birthday: "Ngày sinh",
+    address: "Địa chỉ",
     email: "Email",
     password: "Mật khẩu",
     confirmPassword: "Nhập lại mật khẩu",

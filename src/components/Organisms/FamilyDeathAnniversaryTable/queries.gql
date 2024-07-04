@@ -42,6 +42,7 @@ query FamilyGetDeathAnniversaries(
         status
         note
         deathAnniversaryType
+        creatorId
         deathAnniversaryOfferings {
           id
           offeringId

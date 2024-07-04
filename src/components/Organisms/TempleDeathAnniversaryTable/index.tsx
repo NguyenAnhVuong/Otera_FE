@@ -61,6 +61,7 @@ interface DataType {
     name: string;
     code: string;
   };
+  deceasedId: number;
 }
 
 type FamilyDeathAnniversaryTableProps = {
@@ -139,6 +140,7 @@ const TempleDeathAnniversaryTable: React.FC<
               name: deathAnniversary.family.name,
               code: deathAnniversary.family.familyCode,
             },
+            deceasedId: deathAnniversary.deceased.id,
           }))
         );
       }
@@ -155,7 +157,7 @@ const TempleDeathAnniversaryTable: React.FC<
       align: "center",
       width: 68,
       render: (avatar, record) => (
-        <Link href={`/deceased/${record.id}`}>
+        <Link href={`/deceased/${record.deceasedId}`}>
           <Image
             className="object-contain"
             src={avatar}
@@ -175,7 +177,7 @@ const TempleDeathAnniversaryTable: React.FC<
         <FilterSearchInput {...props} setKeyword={setName} />
       ),
       render: (name, record) => (
-        <Link href={`/deceased/${record.id}`}>
+        <Link href={`/deceased/${record.deceasedId}`}>
           <span className="text-black">{name}</span>
         </Link>
       ),

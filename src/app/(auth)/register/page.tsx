@@ -114,6 +114,24 @@ const Register = ({}) => {
           </Form.Item>
 
           <Form.Item
+            label={localeText.registerAccount.address}
+            name="address"
+            rules={[
+              {
+                required: true,
+                message: localeText.validateMessages.required(
+                  localeText.registerAccount.address
+                ),
+              },
+            ]}
+          >
+            <Input
+              placeholder={localeText.registerAccount.address}
+              name="address"
+            />
+          </Form.Item>
+
+          <Form.Item
             label={localeText.registerAccount.email}
             name="email"
             rules={[

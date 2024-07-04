@@ -16,6 +16,7 @@ const MultipleImageInput: React.FC<MultipleImageInputProps> = ({
         className="hidden"
         type="file"
         multiple
+        accept="image/*"
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           onChange(e.target.files)
         }

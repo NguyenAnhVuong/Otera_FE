@@ -152,6 +152,11 @@ const Notification: React.FC<NotificationProps> = ({
     case ENotificationType.BlockTemple:
     case ENotificationType.DeathAnniversaryComingAfterDays:
     case ENotificationType.DeathAnniversaryToday:
+    case ENotificationType.FamilyUpdateRejectedDeathAnniversary:
+    case ENotificationType.ApproveInviteFamily:
+    case ENotificationType.RejectInviteFamily:
+    case ENotificationType.AddTempleMember:
+    case ENotificationType.FamilyCancelDeathAnniversary:
       return (
         <div
           className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg overflow-hidden"

@@ -30,6 +30,7 @@ interface DataType {
   avatar: string;
   name: string;
   note?: string | null;
+  creatorId: number;
   desiredStartTime: Date;
   desiredEndTime: Date;
   actualStartTime?: Date | null;
@@ -129,6 +130,7 @@ const FamilyDeathAnniversaryTable: React.FC<
               ...deathAnniversary.user.userDetail,
               email: deathAnniversary.user.email,
             },
+            creatorId: deathAnniversary.creatorId,
           }))
         );
       }
@@ -137,7 +139,6 @@ const FamilyDeathAnniversaryTable: React.FC<
     notifyOnNetworkStatusChange: true,
   });
 
-  // TODO add column requestor
   const columns: TableProps<DataType>["columns"] = [
     {
       title: localeText.deathAnniversary.avatar,
@@ -166,7 +167,7 @@ const FamilyDeathAnniversaryTable: React.FC<
         <FilterSearchInput {...props} setKeyword={setName} />
       ),
       render: (name, record) => (
-        <Link href={`/deceased/${record.id}`}>
+        <Link href={`/deceased/${record.deceasedId}`}>
           <span className="text-black">{name}</span>
         </Link>
       ),
@@ -424,6 +425,7 @@ const FamilyDeathAnniversaryTable: React.FC<
           deathAnniversaryType={record.deathAnniversaryType}
           readyImage={record.readyImage}
           finishedImage={record.finishedImage}
+          creatorId={record.creatorId}
         />
       ),
     },

@@ -14,6 +14,7 @@ import { PAGE, TAKE, formatDate } from "@/utils/constants";
 import { handleSortByColumn } from "@/utils/helper";
 import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
+import Link from "next/link";
 import React, { useState } from "react";
 
 type TempleDeceasedTableProps = {
@@ -93,7 +94,11 @@ const TempleDeceasedTable: React.FC<TempleDeceasedTableProps> = ({
       dataIndex: "avatar",
       title: localeText.temple.deceasedList.avatar,
       align: "center",
-      render: (avatar) => <AvatarCustom src={avatar} />,
+      render: (avatar, record) => (
+        <Link className="text-black" href={`/deceased/${record.id}`}>
+          <AvatarCustom src={avatar} />
+        </Link>
+      ),
       width: 112,
     },
     {
@@ -101,7 +106,11 @@ const TempleDeceasedTable: React.FC<TempleDeceasedTableProps> = ({
       dataIndex: "name",
       key: "name",
       align: "center",
-      render: (name) => <span>{name}</span>,
+      render: (name, record) => (
+        <Link className="text-black" href={`/deceased/${record.id}`}>
+          <span>{name}</span>
+        </Link>
+      ),
       filterDropdown: (props) => (
         <FilterSearchInput {...props} setKeyword={setName} />
       ),
