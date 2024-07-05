@@ -37,7 +37,9 @@ const TempleRegister = (props: Props) => {
     });
     for (const key in values) {
       if (key !== "images" && key !== "descriptionImages") {
-        newTemple.append(key, values[key]);
+        if (values[key] !== null && values[key] !== undefined) {
+          newTemple.append(key, values[key]);
+        }
       }
     }
     const res = await templeApi.createTemple(newTemple);

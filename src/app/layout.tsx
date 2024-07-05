@@ -1,9 +1,13 @@
 "use client";
-import "@/styles/globals.css";
-import "@/styles/tiptap.scss";
 import { authApi } from "@/api/authApi";
+import NoData from "@/components/Atoms/NoData";
+import Footer from "@/components/Organisms/Footer";
+import Header from "@/components/Organisms/Header";
 import AntdProvider from "@/lib/AntdProvider";
 import { store } from "@/rtk/store";
+import "@/styles/globals.css";
+import "@/styles/tiptap.scss";
+import { removeSession, saveSession } from "@/utils/helper";
 import { validateJwtToken } from "@/utils/jwt";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import {
@@ -14,17 +18,14 @@ import {
   split,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
 import { ConfigProvider } from "antd";
+import viVN from "antd/locale/vi_VN";
+import { createClient } from "graphql-ws";
 import { Inter } from "next/font/google";
 import { Provider } from "react-redux";
-import NoData from "@/components/Atoms/NoData";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
-import { getMainDefinition } from "@apollo/client/utilities";
-import Header from "@/components/Organisms/Header";
-import viVN from "antd/locale/vi_VN";
-import { onError } from "@apollo/client/link/error";
-import Footer from "@/components/Organisms/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,9 +35,8 @@ const inter = Inter({ subsets: ["latin"] });
 // };
 
 const handleRemoveToken = async () => {
-  await authApi.removeRefreshToken();
   // remove cookie
-  localStorage.removeItem("accessToken");
+  removeSession();
   window.location.replace("/login");
 };
 
@@ -48,8 +48,8 @@ const getAuthHeader = async () => {
       const { data } = await authApi.refreshToken();
 
       if (data) {
-        const { accessToken } = data;
-        localStorage.setItem("accessToken", accessToken);
+        const { accessToken, refreshToken } = data;
+        saveSession(accessToken, refreshToken);
         token = accessToken;
       } else {
         await handleRemoveToken();

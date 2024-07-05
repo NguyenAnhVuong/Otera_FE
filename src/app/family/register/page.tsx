@@ -29,7 +29,9 @@ const FamilyRegister = (props: Props) => {
     }
     for (const key in values) {
       if (key !== "avatar") {
-        newFamily.append(key, values[key]);
+        if (values[key] !== null && values[key] !== undefined) {
+          newFamily.append(key, values[key]);
+        }
       }
     }
     const res = await familyApi.createFamily(newFamily);

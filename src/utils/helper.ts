@@ -7,6 +7,7 @@ import {
 import { SortOrder } from "antd/es/table/interface";
 import dayjs from "dayjs";
 import { formatDate } from "./constants";
+import Cookies from "js-cookie";
 
 export const getGenderText = (gender?: EGender) => {
   switch (gender) {
@@ -102,4 +103,16 @@ export const formatTimeDifference = (date: Date) => {
 export const getLongevity = (birthday: Date, dateOfDeath: Date) => {
   const diff = dayjs(dateOfDeath).diff(birthday, "year");
   return diff;
+};
+
+export const saveSession = (accessToken: string, refreshToken: string) => {
+  localStorage.setItem("accessToken", accessToken);
+  Cookies.set("refreshToken", refreshToken, {
+    expires: +(process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRES_IN ?? 30),
+  });
+};
+
+export const removeSession = () => {
+  localStorage.removeItem("accessToken");
+  Cookies.remove("refreshToken");
 };

@@ -33,6 +33,7 @@ const PreviewTempleDetail: React.FC<PreviewTempleDetailProps> = ({
         onOk={handleOk}
         footer={null}
         onCancel={handleCancel}
+        width={1200}
       >
         <TempleDetail templeId={templeId} />
       </Modal>
