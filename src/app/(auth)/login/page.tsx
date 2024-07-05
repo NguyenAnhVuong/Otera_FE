@@ -11,6 +11,8 @@ import { useAppDispatch, useAppSelector } from "@/rtk/hook";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import cookies from "js-cookie";
+import { saveSession } from "@/utils/helper";
 
 const Login = () => {
   const router = useRouter();
@@ -32,8 +34,9 @@ const Login = () => {
 
         dispatch(authActions.login(data?.userLogin?.data?.user));
         const accessToken = data.userLogin?.data?.accessToken;
-        if (accessToken) {
-          localStorage.setItem("accessToken", accessToken);
+        const refreshToken = data.userLogin?.data?.refreshToken;
+        if (accessToken && refreshToken) {
+          saveSession(accessToken, refreshToken);
         }
         router.push("/");
       },
@@ -92,6 +95,7 @@ const Login = () => {
                   localeText.login.password
                 ),
               },
+              { min: 6, message: localeText.validateMessages.min(6) },
             ]}
           >
             <Input.Password

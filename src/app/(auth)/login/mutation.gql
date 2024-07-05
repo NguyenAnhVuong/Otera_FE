@@ -2,6 +2,7 @@ mutation UserLogin($input: UserLoginInput!) {
   userLogin(input: $input) {
     data {
       accessToken
+      refreshToken
       user {
         role
         name

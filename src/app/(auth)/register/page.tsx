@@ -155,6 +155,7 @@ const Register = ({}) => {
             name="password"
             rules={[
               { required: true, message: localeText.registerAccount.password },
+              { min: 6, message: localeText.validateMessages.min(6) },
             ]}
           >
             <Input.Password placeholder={localeText.registerAccount.password} />

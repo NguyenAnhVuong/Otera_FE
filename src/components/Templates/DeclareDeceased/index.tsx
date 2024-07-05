@@ -35,7 +35,9 @@ const DeceasedDeclare = (props: Props) => {
     });
     for (const key in values) {
       if (key !== "avatar" && key !== "descriptionImages") {
+        if (values[key] !== null && values[key] !== undefined) {
         newDeceased.append(key, values[key]);
+        }
       }
     }
     const res = await deceasedApi.declareDeceased(newDeceased);
