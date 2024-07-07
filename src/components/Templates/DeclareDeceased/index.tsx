@@ -1,6 +1,7 @@
 "use client";
 import { deceasedApi } from "@/api/deceasedApi";
 import Loading from "@/components/Atoms/Loading";
+import PageTitle from "@/components/Atoms/PageTitle";
 import TempleSelect from "@/components/Atoms/TempleSelect";
 import Tiptap from "@/components/Organisms/TipTap";
 import UploadDescriptionImage from "@/components/Organisms/UploadDescriptionImage";
@@ -36,7 +37,7 @@ const DeceasedDeclare = (props: Props) => {
     for (const key in values) {
       if (key !== "avatar" && key !== "descriptionImages") {
         if (values[key] !== null && values[key] !== undefined) {
-        newDeceased.append(key, values[key]);
+          newDeceased.append(key, values[key]);
         }
       }
     }
@@ -62,8 +63,9 @@ const DeceasedDeclare = (props: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center mt-header">
+    <div className="flex flex-col justify-center items-center">
       {loading && <Loading />}
+      <PageTitle title={localeText.deceased.declare.title} />
       <div className="bg-white flex justify-center px-5 py-4 pt-8 shadow-xl w-full max-w-[688px]">
         <Form
           name="basic"

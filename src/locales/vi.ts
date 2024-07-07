@@ -344,6 +344,7 @@ const vi = {
     age: "Tuổi",
     longevity: "Hưởng thọ",
     declare: {
+      title: "Khai báo người thân đã khuất",
       declareSuccessMessage:
         "Khai báo thành công! Vui lòng chờ nhà chùa xét duyệt",
       declareFailMessage: "Khai báo thất bại!",

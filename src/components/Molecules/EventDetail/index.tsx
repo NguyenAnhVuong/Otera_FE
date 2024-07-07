@@ -1,9 +1,9 @@
 "use client";
 
 import DeleteButton from "@/components/Atoms/DeleteButton";
-import EditButton from "@/components/Atoms/EditButton";
 import Loading from "@/components/Atoms/Loading";
 import TimeInterval from "@/components/Atoms/TimeInterval";
+import UpdateEventButton from "@/components/Organisms/UpdateEventButton";
 import {
   ERole,
   GetEventByIdDocument,
@@ -174,10 +174,11 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
               <h2 className="text-xl font-medium mb-2">{event?.name}</h2>
               {role === ERole.TempleAdmin || role === ERole.TempleMember ? (
                 <div className="flex items-center gap-3">
-                  <EditButton
+                  {/* <EditButton
                     title={localeText.event.updateEvent}
                     onClick={() => router.push(`${id}/update`)}
-                  />
+                  /> */}
+                  <UpdateEventButton id={id} />
                   <DeleteButton
                     tooltipTitle={localeText.event.cancelEvent}
                     popConfirmTitle={localeText.event.cancelConfirmTitle}
