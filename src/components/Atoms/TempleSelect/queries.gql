@@ -1,5 +1,5 @@
-query getTempleList($keyword: String, $familyId: Int) {
-  getTemples(query: { keyword: $keyword, familyId: $familyId }) {
+query getTempleList($keyword: String, $familyId: Int, $take: Int, $page: Int) {
+  getTemples(query: { keyword: $keyword, familyId: $familyId, take: $take, page: $page}) {
     errorCode
     errorMessage
     statusCode

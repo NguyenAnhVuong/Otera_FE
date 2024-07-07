@@ -1,5 +1,6 @@
 "use client";
 import { templeApi } from "@/api/templeApi";
+import Loading from "@/components/Atoms/Loading";
 import Tiptap from "@/components/Organisms/TipTap";
 import UploadDescriptionImage from "@/components/Organisms/UploadDescriptionImage";
 import UploadSingleImage from "@/components/Organisms/UploadSingleImage";
@@ -25,10 +26,12 @@ const TempleRegister = (props: Props) => {
   const handleLogout = useLogout();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { refetch } = useGetTemplesQuery({ variables: { keyword: "" } });
 
   const onFinish = async (values: any) => {
+    setIsLoading(true);
     if (!avatar) return;
     const newTemple = new FormData();
     newTemple.append("images[]", avatar);
@@ -58,6 +61,7 @@ const TempleRegister = (props: Props) => {
         content: localeText.temple.templeRegister.failMessage,
       });
     }
+    setIsLoading(false);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -66,6 +70,7 @@ const TempleRegister = (props: Props) => {
 
   return (
     <div className="flex justify-center items-center py-header ">
+      {isLoading && <Loading />}
       <div className="bg-white flex justify-center px-5 py-4 pt-8 shadow-xl w-full max-w-[688px]">
         <Form
           name="basic"

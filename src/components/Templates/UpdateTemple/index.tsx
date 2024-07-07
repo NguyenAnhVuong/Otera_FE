@@ -5,7 +5,8 @@ import Tiptap from "@/components/Organisms/TipTap";
 import UploadDescriptionImage from "@/components/Organisms/UploadDescriptionImage";
 import UploadSingleImage from "@/components/Organisms/UploadSingleImage";
 import {
-  GetTempleListDocument,
+  GetTempleDetailDocument,
+  GetTemplesDocument,
   VUpdateTempleInput,
   useGetTempleDetailQuery,
   useUpdateTempleMutation,
@@ -47,7 +48,7 @@ const UpdateTemple: React.FC<UpdateTempleProps> = ({ id }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const router = useRouter();
   const [updateTemple, { loading }] = useUpdateTempleMutation({
-    refetchQueries: [GetTempleListDocument],
+    refetchQueries: [GetTemplesDocument, GetTempleDetailDocument],
     onCompleted: () => {
       messageApi.open({
         type: "success",

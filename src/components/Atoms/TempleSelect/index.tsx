@@ -18,7 +18,7 @@ const TempleSelect: React.FC<TempleSelectProps> = ({
 }) => {
   const [keyword, setKeyword] = useState("");
   const { data: templesData } = useGetTempleListQuery({
-    variables: { keyword },
+    variables: { keyword, take: 1000 },
   });
 
   const { localeText } = useTrans();

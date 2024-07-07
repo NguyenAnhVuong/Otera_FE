@@ -1,4 +1,5 @@
 "use client";
+import NoData from "@/components/Atoms/NoData";
 import PageTitleWithActions from "@/components/Atoms/PageTitleWithActions";
 import SearchInput from "@/components/Atoms/SearchInput";
 import DeceasedCard from "@/components/Organisms/DeceasedCard";
@@ -36,21 +37,27 @@ const DeceasedList = () => {
             </Button>
           </div>
         </PageTitleWithActions>
-        <div className="grid grid-cols-4 gap-5">
-          {data?.familyGetListDeceased.data.data.map((deceased) => {
-            return (
-              <div className="col-span-1" key={deceased.id}>
-                <DeceasedCard
-                  id={deceased.id}
-                  name={deceased.userDetail.name}
-                  avatar={deceased.userDetail.avatar}
-                  birthday={deceased.userDetail.birthday}
-                  dateOfDeath={deceased.dateOfDeath}
-                />
-              </div>
-            );
-          })}
-        </div>
+        {data && data.familyGetListDeceased.data.data.length ? (
+          <div className="grid grid-cols-4 gap-5">
+            {data.familyGetListDeceased.data.data.map((deceased) => {
+              return (
+                <div className="col-span-1" key={deceased.id}>
+                  <DeceasedCard
+                    id={deceased.id}
+                    name={deceased.userDetail.name}
+                    avatar={deceased.userDetail.avatar}
+                    birthday={deceased.userDetail.birthday}
+                    dateOfDeath={deceased.dateOfDeath}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="w-full content-center">
+            <NoData />
+          </div>
+        )}
       </div>
       <Pagination
         className="mt-5"
