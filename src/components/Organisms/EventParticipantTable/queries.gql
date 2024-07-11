@@ -6,7 +6,7 @@ query getEventParticipants(
   $name: String
   $email: String
   $address: String
-  $familyName: String
+  $familyKeyword: String
   $isFollowing: Boolean
   $orderBy: [OrderBy!]
 ) {
@@ -18,7 +18,7 @@ query getEventParticipants(
     name: $name
     email: $email
     address: $address
-    familyName: $familyName
+    familyKeyword: $familyKeyword
     isFollowing: $isFollowing
     orderBy: $orderBy
   ) {
@@ -35,6 +35,7 @@ query getEventParticipants(
         rejectReason
         checkInAt
         familyName
+        familyCode
         isFollowing
         user {
           id

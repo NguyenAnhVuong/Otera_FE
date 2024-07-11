@@ -56,9 +56,9 @@ const Events: React.FC<EventsProps> = ({}) => {
             </Form.Item> */}
           </Form>
         </PageTitleWithActions>
-        <div className="grid grid-cols-4 gap-4">
-          {data ? (
-            data.getEvents.data.data.map((event) => (
+        {data && data.getEvents.data.data.length ? (
+          <div className="grid grid-cols-4 gap-4">
+            {data.getEvents.data.data.map((event) => (
               <Event
                 key={event.id}
                 id={event.id}
@@ -71,11 +71,11 @@ const Events: React.FC<EventsProps> = ({}) => {
                 endDateBooking={event.endDateBooking}
                 maxParticipant={event.maxParticipant}
               />
-            ))
-          ) : (
-            <NoData />
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <NoData />
+        )}
         {data && (
           <Pagination
             className="mt-4 text-center"

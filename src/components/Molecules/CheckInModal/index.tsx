@@ -37,6 +37,7 @@ const CheckInModal: React.FC<CheckInModalProps> = ({
   const [eventParticipantCheckIn] = useEventParticipantCheckInMutation({
     onCompleted: () => {
       messageApi.success(localeText.event.participant.checkInSuccessMessage);
+      setCode("");
     },
     onError: () => {
       messageApi.error(localeText.event.participant.checkInFailMessage);
@@ -57,7 +58,6 @@ const CheckInModal: React.FC<CheckInModalProps> = ({
         },
       },
     });
-    setCode("");
   };
 
   const handleCancel = () => {
@@ -82,6 +82,7 @@ const CheckInModal: React.FC<CheckInModalProps> = ({
         <Input
           placeholder={localeText.event.participant.code}
           onChange={(e) => setCode(e.target.value)}
+          value={code}
         />
       </Modal>
     </>

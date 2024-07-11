@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/components/Atoms/Loading";
+import NoData from "@/components/Atoms/NoData";
 import PageTitleWithActions from "@/components/Atoms/PageTitleWithActions";
 import SearchInput from "@/components/Atoms/SearchInput";
 import TempleCard from "@/components/Organisms/TempleCard";
@@ -36,10 +37,9 @@ const TempList: React.FC<TempListProps> = ({}) => {
           </div>
         </PageTitleWithActions>
 
-        <div className="grid grid-cols-4 gap-5">
-          {templesData &&
-            !!templesData.length &&
-            templesData.map((temple: any) => {
+        {templesData && !!templesData.length ? (
+          <div className="grid grid-cols-4 gap-5">
+            {templesData.map((temple: any) => {
               return (
                 <TempleCard
                   key={temple.id}
@@ -50,7 +50,12 @@ const TempList: React.FC<TempListProps> = ({}) => {
                 />
               );
             })}
-        </div>
+          </div>
+        ) : (
+          <div className="flex flex-1 justify-center">
+            <NoData />
+          </div>
+        )}
       </div>
       <Pagination
         className="mt-4"

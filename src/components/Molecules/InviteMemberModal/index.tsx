@@ -22,6 +22,7 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
       await form.validateFields();
       await handleInviteMember(values.email);
       setIsModalOpen(false);
+      form.resetFields();
     } catch (error) {
       return;
     }

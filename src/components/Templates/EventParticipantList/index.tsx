@@ -1,7 +1,6 @@
 "use client";
 import Loading from "@/components/Atoms/Loading";
 import PageTitle from "@/components/Atoms/PageTitle";
-import SearchInput from "@/components/Atoms/SearchInput";
 import CheckInModal from "@/components/Molecules/CheckInModal";
 import EventParticipantTable from "@/components/Organisms/EventParticipantTable";
 import {
@@ -72,7 +71,7 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
         <div className="flex gap-2">
           <Select
             defaultValue="all"
-            style={{ width: 128 }}
+            style={{ width: 138 }}
             onChange={handleChange}
             options={[
               { value: "all", label: localeText.all },

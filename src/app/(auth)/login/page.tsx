@@ -2,17 +2,17 @@
 import { messageApiSelector } from "@/features/antd";
 import { authActions } from "@/features/auth";
 import {
+  ERole,
   UserLoginInput,
   useUserLoginMutation,
 } from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
 import { useAppDispatch, useAppSelector } from "@/rtk/hook";
 
+import { saveSession } from "@/utils/helper";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import cookies from "js-cookie";
-import { saveSession } from "@/utils/helper";
 
 const Login = () => {
   const router = useRouter();
@@ -38,7 +38,16 @@ const Login = () => {
         if (accessToken && refreshToken) {
           saveSession(accessToken, refreshToken);
         }
-        router.push("/");
+        if (
+          data?.userLogin?.data?.user?.role === ERole.TempleAdmin ||
+          data?.userLogin?.data?.user?.role === ERole.TempleMember
+        ) {
+          router.push("/death-anniversary");
+        } else if (data?.userLogin?.data?.user?.role === ERole.System) {
+          router.push("/system/temple");
+        } else {
+          router.push("/");
+        }
       },
       onError: () => {
         messageApi.open({
