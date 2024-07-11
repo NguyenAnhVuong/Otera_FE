@@ -1,3 +1,4 @@
+import Family from "@/components/Atoms/Family";
 import FilterSearchInput from "@/components/Atoms/FilterSearchInput";
 import Loading from "@/components/Atoms/Loading";
 import EventParticipantListActions from "@/components/Molecules/EventParticipantListActions";
@@ -22,6 +23,7 @@ interface DataType {
   phone?: string;
   address?: string | null;
   familyName?: string | null;
+  familyCode?: string | null;
   isFollowing: boolean;
   rejectReason?: string | null;
   approverName?: string;
@@ -47,7 +49,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [familyName, setFamilyName] = useState("");
+  const [familyKeyword, setFamilyKeyword] = useState("");
   const [orderBy, setOrderBy] = useState<OrderBy[]>([]);
   const { loading } = useGetEventParticipantsQuery({
     variables: {
@@ -58,7 +60,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       name,
       email,
       address,
-      familyName,
+      familyKeyword,
       isFollowing,
       orderBy,
     },
@@ -73,6 +75,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
             name: item.user.userDetail.name,
             address: item.user.userDetail.address,
             familyName: item.familyName,
+            familyCode: item.familyCode,
             isFollowing: item.isFollowing,
             createdAt: item.createdAt,
             rejectReason: item.rejectReason,
@@ -96,12 +99,14 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       key: "avatar",
       align: "center",
       render: (avatar) => (
-        <Image
-          className="object-contain"
-          src={avatar}
-          alt={localeText.event.avatar}
-          fill
-        />
+        <div className="w-10 h-10 rounded-full overflow-hidden">
+          <Image
+            className="object-cover static "
+            src={avatar}
+            alt={localeText.event.avatar}
+            fill
+          />
+        </div>
       ),
       width: 84,
     },
@@ -144,13 +149,18 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       ),
     },
     {
-      title: localeText.event.participant.familyName,
-      key: "familyName",
-      dataIndex: "familyName",
+      title: localeText.deceased.family,
+      dataIndex: "family",
+      key: "family",
       align: "center",
-      render: (familyName) => <span>{familyName}</span>,
+      width: 160,
       filterDropdown: (props) => (
-        <FilterSearchInput {...props} setKeyword={setFamilyName} />
+        <FilterSearchInput {...props} setKeyword={setFamilyKeyword} />
+      ),
+      render: (_, record) => (
+        <div>
+          <Family name={record.familyName} code={record.familyCode} />
+        </div>
       ),
     },
     {

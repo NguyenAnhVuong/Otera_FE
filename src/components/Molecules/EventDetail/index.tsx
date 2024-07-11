@@ -59,6 +59,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
       }
     },
     fetchPolicy: "no-cache",
+    notifyOnNetworkStatusChange: true,
   });
 
   let event = data?.getEventById?.data;
@@ -172,7 +173,8 @@ const EventDetail: React.FC<EventDetailProps> = ({ id }) => {
           <div>
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium mb-2">{event?.name}</h2>
-              {role === ERole.TempleAdmin || role === ERole.TempleMember ? (
+              {(role === ERole.TempleAdmin || role === ERole.TempleMember) &&
+              new Date(event?.startDateEvent) > new Date() ? (
                 <div className="flex items-center gap-3">
                   {/* <EditButton
                     title={localeText.event.updateEvent}

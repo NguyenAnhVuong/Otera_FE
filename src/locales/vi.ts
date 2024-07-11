@@ -43,6 +43,7 @@ const vi = {
   organize: "Tổ chức",
   declare: "Khai báo",
   logout: "Đăng xuất",
+  beforeDay: "Trước ngày",
   footer: {
     home: "Trang chủ",
     login: "Đăng nhập",
@@ -372,6 +373,7 @@ const vi = {
     comingDeathAnniversary: "Ngày giỗ sắp tới",
     registerDeathAnniversary: "Yêu cầu tổ chức lễ giỗ",
     deathAnniversaryRegisterExpired: "Hạn đăng ký",
+
     updateBy: "Cập nhật lần cuối bởi",
     delete: "Xoá người thân đã khuất",
     deleteDeceasedPopConfirm: {

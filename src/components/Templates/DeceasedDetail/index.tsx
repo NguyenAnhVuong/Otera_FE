@@ -299,6 +299,7 @@ const DeceasedDetail: React.FC<DeceasedDetailProps> = ({ id }) => {
 
               <p>
                 {localeText.deceased.deathAnniversaryRegisterExpired}:{" "}
+                {localeText.beforeDay}{" "}
                 {dayjs(registerExpiredDate).format(formatDate.DD_MM_YYYY)}
               </p>
             </div>

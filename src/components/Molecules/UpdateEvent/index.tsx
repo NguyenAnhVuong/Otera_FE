@@ -7,6 +7,7 @@ import UploadSingleImage from "@/components/Organisms/UploadSingleImage";
 import {
   ERole,
   GetEventByIdDocument,
+  TempleGetEventsDocument,
   useGetEventByIdQuery,
   useUpdateEventMutation,
 } from "@/graphql/generated/schema";
@@ -174,7 +175,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({
             content: localeText.event.updateEventFailMessage,
           });
         },
-        refetchQueries: [GetEventByIdDocument],
+        refetchQueries: [GetEventByIdDocument, TempleGetEventsDocument],
       });
     } catch (error) {
       console.log("error", error);

@@ -1,16 +1,16 @@
 import React from "react";
 
 type FamilyProps = {
-  name: string;
-  code: string;
+  name?: string | null;
+  code?: string | null;
 };
 
 const Family: React.FC<FamilyProps> = ({ name, code }) => {
   return (
     <div className="flex">
       <div className="flex flex-col items-center">
-        <span className="font-bold truncate w-40">{name}</span>
-        <span className="italic">{code}</span>
+        {name && <span className="font-bold truncate w-40">{name}</span>}
+        {code && <span className="italic">{code}</span>}
       </div>
     </div>
   );
