@@ -1,6 +1,6 @@
 query getEventParticipants(
   $eventId: Int!
-  $bookingStatus: EBookingStatus!
+  $bookingStatus: EBookingStatus
   $page: Int
   $take: Int
   $name: String
@@ -9,6 +9,7 @@ query getEventParticipants(
   $familyKeyword: String
   $isFollowing: Boolean
   $orderBy: [OrderBy!]
+  $isCheckIn: Boolean
 ) {
   getEventParticipants(
     eventId: $eventId
@@ -21,6 +22,7 @@ query getEventParticipants(
     familyKeyword: $familyKeyword
     isFollowing: $isFollowing
     orderBy: $orderBy
+    isCheckIn: $isCheckIn
   ) {
     statusCode
     errorMessage
@@ -37,6 +39,7 @@ query getEventParticipants(
         familyName
         familyCode
         isFollowing
+        bookingStatus
         user {
           id
           email

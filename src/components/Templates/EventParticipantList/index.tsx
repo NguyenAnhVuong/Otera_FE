@@ -19,9 +19,10 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
   eventId,
 }) => {
   const { localeText } = useTrans();
-  const [bookingStatus, setBookingStatus] = useState<EBookingStatus>(
-    EBookingStatus.Booking
+  const [bookingStatus, setBookingStatus] = useState<EBookingStatus | null>(
+    null
   );
+  const [isCheckIn, setIsCheckIn] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const { data, loading } = useGetEventByIdQuery({
@@ -31,10 +32,23 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
   });
 
   const onChange = (key: string) => {
-    setBookingStatus(key as EBookingStatus);
+    if (key === "all") {
+      setBookingStatus(null);
+      setIsCheckIn(false);
+    } else if (key === "isCheckIn") {
+      setIsCheckIn(true);
+      setBookingStatus(null);
+    } else {
+      setIsCheckIn(false);
+      setBookingStatus(key as EBookingStatus);
+    }
   };
 
   const items: TabsProps["items"] = [
+    {
+      key: "all",
+      label: localeText.all,
+    },
     {
       key: EBookingStatus.Booking,
       label: localeText.event.registration,
@@ -46,6 +60,10 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
     {
       key: EBookingStatus.Rejected,
       label: localeText.event.rejected,
+    },
+    {
+      key: "isCheckIn",
+      label: localeText.event.participant.checkIn,
     },
   ];
 
@@ -93,6 +111,7 @@ const EventParticipantList: React.FC<EventParticipantListProps> = ({
         eventId={eventId}
         isFollowing={isFollowing}
         bookingStatus={bookingStatus}
+        isCheckIn={isCheckIn}
       />
     </div>
   );
