@@ -57,8 +57,8 @@ const EventApprovedAction: React.FC<EventApprovedActionProps> = ({
         {approverName && updatedAt && (
           <div>
             <span>{localeText.event.participant.approvedBy(approverName)}</span>
-            <span> {localeText.event.participant.at} </span>
-            <span>{dayjs(updatedAt).format(formatDate.HH_mm_DD_MM_YYYY)}</span>
+            {/* <span> {localeText.event.participant.at} </span>
+            <span>{dayjs(updatedAt).format(formatDate.HH_mm_DD_MM_YYYY)}</span> */}
           </div>
         )}
       </Modal>

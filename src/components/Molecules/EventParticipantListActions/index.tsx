@@ -6,7 +6,7 @@ import React from "react";
 
 type EventParticipantListActionsProps = {
   eventParticipantId: number;
-  bookingStatus: EBookingStatus;
+  bookingStatus: EBookingStatus | null;
   name: string;
   rejectReason?: string | null;
   approverName?: string;
@@ -48,9 +48,10 @@ const EventParticipantListActions: React.FC<
       return <ShowRejectReasonAction rejectReason={rejectReason} />;
     default:
       return (
-        <EventBookingStatusAction
-          eventParticipantId={eventParticipantId}
-          name={name}
+        <EventApprovedAction
+          approverName={approverName}
+          checkInAt={checkInAt}
+          updatedAt={updatedAt}
         />
       );
   }

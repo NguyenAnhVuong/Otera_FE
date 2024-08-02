@@ -3,8 +3,12 @@ import NoData from "@/components/Atoms/NoData";
 import PageTitleWithActions from "@/components/Atoms/PageTitleWithActions";
 import SearchInput from "@/components/Atoms/SearchInput";
 import DeceasedCard from "@/components/Organisms/DeceasedCard";
-import { useFamilyGetListDeceasedQuery } from "@/graphql/generated/schema";
+import {
+  ERole,
+  useFamilyGetListDeceasedQuery,
+} from "@/graphql/generated/schema";
 import useTrans from "@/hooks/useTrans";
+import { useAppSelector } from "@/rtk/hook";
 import { PAGE, TAKE } from "@/utils/constants";
 import { Button, Pagination } from "antd";
 import Link from "next/link";
@@ -15,6 +19,7 @@ const DeceasedList = () => {
   const [page, setPage] = useState(PAGE);
   const [totalItems, setTotalItems] = useState(0);
   const [keyword, setKeyword] = useState("");
+  const { role } = useAppSelector((state) => state.auth);
   const { data } = useFamilyGetListDeceasedQuery({
     variables: { page, take: TAKE, keyword },
     onCompleted: (data) => {
@@ -32,9 +37,13 @@ const DeceasedList = () => {
               setSearchKeyword={setKeyword}
               placeholder={localeText.searchByNameOrAddress}
             />
-            <Button type="primary" className="ml-2">
-              <Link href="/deceased/declare">{localeText.declareDeceased}</Link>
-            </Button>
+            {role === ERole.FamilyAdmin && (
+              <Button type="primary" className="ml-2">
+                <Link href="/deceased/declare">
+                  {localeText.declareDeceased}
+                </Link>
+              </Button>
+            )}
           </div>
         </PageTitleWithActions>
         {data && data.familyGetListDeceased.data.data.length ? (

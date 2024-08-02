@@ -31,17 +31,20 @@ interface DataType {
   updatedAt?: Date | null;
   createdAt: Date;
   endDateBooking: Date;
+  bookingStatus: EBookingStatus;
 }
 type EventParticipantTableProps = {
   eventId: number;
-  bookingStatus: EBookingStatus;
+  bookingStatus: EBookingStatus | null;
   isFollowing: boolean;
+  isCheckIn?: boolean;
 };
 
 const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
   eventId,
   bookingStatus,
   isFollowing,
+  isCheckIn,
 }) => {
   const [page, setPage] = useState(PAGE);
   const [totalItems, setTotalItems] = useState(0);
@@ -63,6 +66,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
       familyKeyword,
       isFollowing,
       orderBy,
+      isCheckIn,
     },
     fetchPolicy: "no-cache",
     onCompleted: (data) => {
@@ -83,6 +87,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
             checkInAt: item.checkInAt,
             updatedAt: item.updatedAt,
             endDateBooking: item.event.endDateBooking,
+            bookingStatus: item.bookingStatus,
           }))
         );
         setTotalItems(data.getEventParticipants.data?.totalItems);
@@ -199,7 +204,7 @@ const EventParticipantTable: React.FC<EventParticipantTableProps> = ({
         <EventParticipantListActions
           eventParticipantId={record.id}
           name={record.name}
-          bookingStatus={bookingStatus}
+          bookingStatus={record.bookingStatus}
           rejectReason={record.rejectReason}
           approverName={record.approverName}
           checkInAt={record.checkInAt}
